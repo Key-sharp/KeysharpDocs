@@ -16,8 +16,16 @@ For current implementation status, consult:
 - the Keysharp source and tests; and
 - a reproducible script run against the current Keysharp build.
 
-If support is partial or unverified, say so explicitly. Prefer a short note near
-the relevant behavior over a broad claim that the whole page is cross-platform.
+If support is partial or unverified, say so explicitly. Prefer a narrowly
+scoped qualification near the relevant behavior over a broad claim that the
+whole page is cross-platform. Put each platform qualification in the section
+for the part of the contract it affects: a parameter, return value, error,
+general behavior, or example. Ordinary prose is the default; use a note for
+important supplemental information which is easy to miss, including an
+entire API which is unavailable on a supported platform. Reserve warnings for
+high-consequence traps. In `Remarks`, put general OS-dependent behavior under
+`Windows`, `Linux`, or `macOS` H3 headings rather than a generic `Platform
+Behavior` heading.
 
 ## Preserve compatibility names
 
@@ -33,6 +41,11 @@ Do not globally replace `AutoHotkey` or `AHK`. These can be intentional:
 
 Use **Keysharp** when describing this implementation, executable, installer,
 runtime behavior, downloads, issue tracker, or project community.
+
+In KeysharpDocs reference pages, Keysharp is already the implied subject. Use
+the product name when contrasting it with AutoHotkey, naming a
+Keysharp-specific component or resource, or avoiding ambiguity; do not prefix
+ordinary behavior with "In Keysharp."
 
 ## Page titles and links
 

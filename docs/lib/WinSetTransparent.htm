@@ -40,26 +40,34 @@
 <p>An <a href="Error.htm#OSError">OSError</a> is thrown if the change could not be applied.</p>
 
 <h2 id="Remarks">Remarks</h2>
+<h3 id="Windows">Windows</h3>
 <p>For example, to make the task bar transparent, use <code>WinSetTransparent 150, "ahk_class Shell_TrayWnd"</code>. Similarly, to make the classic Start Menu transparent, see <a href="#ExTransStartMenu">example #2</a>. To make the Start Menu's submenus transparent, also include the script from <a href="#ExTransMenu">example #3</a>.</p>
 <p>Setting the transparency level to 255 before using Off might avoid window redrawing problems such as a black background. If the window still fails to be redrawn correctly, see <a href="WinRedraw.htm">WinRedraw</a> for a possible workaround.</p>
+
+<h3 id="Linux">Linux</h3>
+<p><strong>X11:</strong> Sets the <code>_NET_WM_WINDOW_OPACITY</code> property. The window manager or compositor must honor this property.</p>
+<p><strong>Wayland:</strong> Supported for windows exposed through KWin compositor scripting or the supplied GNOME or Cinnamon shell extension. Other backends cause an <a href="Error.htm#OSError">OSError</a>.</p>
+
+<h3 id="macOS">macOS</h3>
+<p>Supported only for windows owned by the script's process. Targeting another application's window causes an <a href="Error.htm#OSError">OSError</a>.</p>
 
 <h2 id="Related">Related</h2>
 <p><a href="WinSetTransColor.htm">WinSetTransColor</a>, <a href="Win.htm">Win functions</a>, <a href="Control.htm">Control functions</a></p>
 
 <h2 id="Examples">Examples</h2>
 <div class="ex" id="ExBasic">
-<p><a class="ex_number" href="#ExBasic"></a> Makes Notepad a little bit transparent.</p>
+<p><a class="ex_number" href="#ExBasic"></a> On Windows, makes Notepad a little bit transparent.</p>
 <pre>WinSetTransparent 200, "Untitled - Notepad"</pre>
 </div>
 
 <div class="ex" id="ExTransStartMenu">
-<p><a class="ex_number" href="#ExTransStartMenu"></a> Makes the classic Start Menu transparent (to additionally make the Start Menu's submenus transparent, see <a href="#ExTransMenu">example #3</a>).</p>
+<p><a class="ex_number" href="#ExTransStartMenu"></a> On Windows, makes the classic Start Menu transparent (to additionally make the Start Menu's submenus transparent, see <a href="#ExTransMenu">example #3</a>).</p>
 <pre>DetectHiddenWindows True
 WinSetTransparent 150, "ahk_class BaseBar"</pre>
 </div>
 
 <div class="ex" id="ExTransMenu">
-<p><a class="ex_number" href="#ExTransMenu"></a> Makes all or selected menus transparent throughout the system as soon as they appear. Note that although such a script cannot make its own menus transparent, it can make those of other scripts transparent.</p>
+<p><a class="ex_number" href="#ExTransMenu"></a> On Windows, makes all or selected menus transparent throughout the system as soon as they appear. Note that although such a script cannot make its own menus transparent, it can make those of other scripts transparent.</p>
 <pre>SetTimer WatchForMenu, 5
 
 WatchForMenu()
@@ -71,7 +79,7 @@ WatchForMenu()
 </div>
 
 <div class="ex" id="ExTransHotkey">
-<p><a class="ex_number" href="#ExTransHotkey"></a> Demonstrates the effects of WinSetTransparent and <a href="WinSetTransColor.htm">WinSetTransColor</a>. Note: If you press one of the hotkeys while the mouse cursor is hovering over a pixel that is invisible as a result of TransColor, the window visible beneath that pixel will be acted upon instead!</p>
+<p><a class="ex_number" href="#ExTransHotkey"></a> On Windows, demonstrates the effects of WinSetTransparent and <a href="WinSetTransColor.htm">WinSetTransColor</a>. Note: If you press one of the hotkeys while the mouse cursor is hovering over a pixel that is invisible as a result of TransColor, the window visible beneath that pixel will be acted upon instead!</p>
 <pre>#t::  <em>; Press Win+T to make the color under the mouse cursor invisible.</em>
 {
     MouseGetPos &amp;MouseX, &amp;MouseY, &amp;MouseWin

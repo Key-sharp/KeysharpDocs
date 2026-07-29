@@ -79,6 +79,13 @@ report the stale capability data separately.
 Use **Keysharp** for the implementation, executable, installer, runtime
 behavior, downloads, issue tracker, and project community.
 
+On KeysharpDocs reference pages, the subject is already implicit. Do not
+prefix ordinary statements with "In Keysharp" or repeatedly name Keysharp in
+descriptions of its own behavior. Use the name when contrasting Keysharp with
+AutoHotkey, identifying a Keysharp-specific component or external resource,
+or avoiding genuine ambiguity. Otherwise prefer "this function", "the
+runtime", "the script's process", or a direct statement of the behavior.
+
 Do not globally replace `AutoHotkey` or `AHK`. Preserve names and references
 which are part of compatibility or attribution, including:
 
@@ -98,88 +105,133 @@ the difference matters to compatible scripts.
 
 ## Adding platform-specific material
 
-Platform notes should answer a user-visible question: Is the feature
+Platform material should answer a user-visible question: Is the feature
 available? Does it behave differently? Does it require permission, a helper,
 or a particular desktop backend? Avoid implementation trivia which does not
 change setup, observable behavior, portability, security, or performance.
 
-Write the platform-independent contract first. Add the exception as close as
-possible to the affected statement without interrupting every paragraph.
+### Inherited placement and Keysharp visibility
 
-Use this decision table:
+AutoHotkeyDocs organizes qualifications by the part of the contract they
+affect. Preserve that semantic placement, while using the visibility
+conventions below for restrictions which cross-platform readers need to find
+quickly:
 
-| Situation | Presentation | Placement |
-| --- | --- | --- |
-| The whole feature is unavailable or materially restricted on a platform | One `warning` paragraph | Immediately after the introductory description or syntax |
-| One platform has a short behavioral difference or prerequisite | One `note` paragraph | In `Remarks`, next to the affected behavior |
-| Two or more platforms differ in meaningful ways | `Platform Notes` subsection with an `info` table | Near the start of `Remarks` |
-| A long setup procedure is platform-specific | A dedicated platform subsection | On an install/how-to page; link to it from the API page |
-| Only one example is platform-specific | Label that example | In the example description; keep a portable example first when possible |
+| The difference affects... | Put it... |
+| --- | --- |
+| The availability of the whole feature | In a `note` immediately after the description or syntax |
+| One parameter | In that parameter's `<dd>` |
+| The returned value | In `Return Value` |
+| Whether or how the operation fails | In `Error Handling` |
+| General runtime behavior | Under the named platform's subsection in `Remarks` |
+| One example | In that example's description, before the code |
+| A lengthy setup procedure | In the relevant how-to or platform guide, linked from the reference page |
 
-### Whole-feature availability
+Write the common contract once, then qualify it at the narrowest accurate
+scope. Do not move a parameter-specific limitation into `Remarks` merely
+because it concerns an operating system. Conversely, state a whole-feature
+restriction early enough that a reader will see it before planning around the
+API.
 
-Use an early warning when a reader otherwise could build around an API which
-is unavailable:
-
-```html
-<p class="warning"><strong>Platform:</strong> This function is supported only
-on Windows and is unavailable on Linux and macOS.</p>
-```
-
-Name the actual result: compile-time error, thrown exception, empty value,
-no-op, or missing integration. Do not write only "Windows-specific" if the
-runtime outcome is known.
-
-### One compact divergence
-
-Use a note for one bounded caveat:
+Ordinary prose is the default for a qualification scoped to a parameter,
+return value, error, or example:
 
 ```html
-<p class="note"><strong>macOS:</strong> Reading the screen requires Screen
-Recording permission. Keysharp requests it when this feature is first used.</p>
+<p>On Linux, this behavior depends on the active desktop backend.</p>
 ```
 
-Do not stack three consecutive platform note boxes. Once multiple platforms
-need separate explanations, use a table.
+Name the observed result when known: compile-time error, thrown exception,
+empty value, no-op, unavailable integration, or different behavior. Do not
+write only "Windows-specific" or "not fully supported."
 
-### Multiple platform differences
+### Notes and warnings express importance
 
-Use this structure when comparison materially helps:
+Use the inherited `note` and `warning` styles according to their editorial
+meaning, not merely because a statement is platform-specific:
+
+- Use ordinary prose for a normal qualification.
+- Use `note` for supplemental information or a prerequisite which is
+  important and easy to miss, including whole-feature platform availability.
+- Use `warning` for a high-consequence trap, such as data loss, a security or
+  privacy concern, or a surprising hard failure.
+
+Keep the conventional label and put the platform in the sentence:
 
 ```html
-<h3 id="Platform_Notes">Platform Notes</h3>
-<table class="info">
-  <tr><th>Platform</th><th>Behavior</th><th>Requirements</th></tr>
-  <tr>
-    <td>Windows</td>
-    <td>Describe the observable behavior.</td>
-    <td>None.</td>
-  </tr>
-  <tr>
-    <td>Linux (X11)</td>
-    <td>Describe the observable behavior or exact limitation.</td>
-    <td>Describe any helper or permission.</td>
-  </tr>
-  <tr>
-    <td>Linux (Wayland)</td>
-    <td>Describe protocol- or compositor-dependent behavior.</td>
-    <td>Name the helper, portal, extension, or compositor requirement.</td>
-  </tr>
-  <tr>
-    <td>macOS</td>
-    <td>Describe the observable behavior or exact limitation.</td>
-    <td>Name the required Privacy &amp; Security permission.</td>
-  </tr>
-</table>
+<p class="note"><strong>Note:</strong> On macOS, reading the screen requires
+Screen Recording permission.</p>
+
+<p class="note"><strong>Note:</strong> This function is available only
+on Windows.</p>
 ```
 
-Use the platform order **Windows, Linux, macOS**. Within Linux, use **X11,
-Wayland**. Split Wayland into GNOME, KDE/KWin, Cinnamon, or another compositor
-only when the distinction changes the documented result.
+Do not introduce `Platform:`, `Windows:`, `Linux:`, or `macOS:` as a separate
+callout taxonomy. Treat whole-feature unavailability as an availability
+notice, not a warning. Use `warning` only when the consequence itself warrants
+that severity.
 
-Do not use "Unix" as a synonym for Linux and macOS unless the statement was
-verified for both. Do not describe all Wayland environments from a result on
-one compositor.
+### Subsections and tables
+
+For general platform-dependent behavior in `Remarks`, make the operating
+system directly scannable:
+
+```html
+<h3 id="Linux">Linux</h3>
+<p><strong>X11:</strong> Describe the verified behavior.</p>
+<p><strong>Wayland:</strong> Describe the verified behavior and backend
+requirements.</p>
+
+<h3 id="macOS">macOS</h3>
+<p>Describe the verified behavior and permission requirements.</p>
+```
+
+Use only the platform headings needed by that page, in the standard Windows,
+Linux, macOS order. Within Linux, use bold **X11:** and **Wayland:** lead-ins
+for short differences; use H4 subsections when each backend needs multiple
+paragraphs. Avoid generic headings such as `Platform Behavior` and `Platform
+Notes`, which require readers to inspect the content before finding their
+operating system.
+
+Use `table.info` only when readers need to compare the same attributes across
+platforms or backends. The number of platforms is not a threshold: two dense,
+parallel cases may justify a table, while four unrelated caveats may be
+clearer as prose beside the behavior each one affects. Avoid empty cells,
+repeated boilerplate, and a full copy of the capability matrix. Put platform
+names in the first column so the table remains scannable.
+
+If the project needs a uniform, highly visible availability summary on many
+pages, treat that as a separate design change. Define a neutral shared
+component, its status vocabulary, and its source-of-truth/update process;
+preview it in the static site and CHM; and pilot it across representative API
+families before adopting it repository-wide. Do not approximate such a
+component by overloading `note` or `warning`.
+
+### Keep documentation responsibilities separate
+
+- An individual reference page describes the local, observable contract a
+  reader needs to use that feature.
+- The capability matrix inventories implementation status and broad coverage.
+- Platform and how-to guides explain shared setup, permissions, helpers, and
+  backend limitations in depth.
+
+Link between those layers instead of copying the same explanation into each
+one. A page may summarize the portion needed to use its feature, but it should
+not embed a second capability matrix or repeat a long setup procedure.
+
+### Keysharp platform terminology
+
+The following are Keysharp-specific consistency rules, not inherited
+AutoHotkeyDocs conventions:
+
+- When several platforms are presented together, use the order **Windows,
+  Linux, macOS**.
+- Within Linux, use **X11, Wayland**. Split Wayland into GNOME, KDE/KWin,
+  Cinnamon, or another compositor only when the distinction changes the
+  documented result.
+- Do not use "Unix" as a synonym for Linux and macOS unless the statement was
+  verified for both.
+- Do not generalize a result from one Wayland compositor to all Wayland
+  environments.
 
 ### Availability is not the same as prerequisites
 
@@ -195,7 +247,7 @@ A required permission or privileged helper does not automatically make a
 feature partial. Conversely, successful parsing or compilation does not prove
 that the native operation works.
 
-### Keep notes concise
+### Keep platform material concise
 
 - Lead with the difference, then the reason only if it helps the user.
 - Prefer one exact limitation over a list of internal backends.
@@ -211,8 +263,9 @@ that the native operation works.
 - Page titles end with `| Keysharp`, except the explicitly archived
   AutoHotkey changelog and license pages.
 - Preserve the existing heading hierarchy and stable anchor IDs.
-- Put general semantics before `Remarks`, platform differences in or near
-  `Remarks`, and runnable material under `Examples`.
+- Put platform qualifications in the section for the part of the contract
+  they affect; do not collect them in `Remarks` by default.
+- Put runnable material under `Examples`.
 - Use `<code>` for identifiers and inline code, `<pre>` for Keysharp script
   examples, and `<pre class="no-highlight">` for shell commands or plain text.
 - Use relative links between documentation pages.
@@ -237,8 +290,8 @@ Do not add a platform label merely because an inherited page mentions
 Windows. Determine whether it means the Windows operating system, a GUI
 window, or historical AutoHotkey behavior, and whether Keysharp actually
 differs. If a whole family of pages shares one limitation, keep each page's
-warning short and link to one maintained explanation instead of copying a
-large platform essay everywhere.
+local statement short and link to one maintained explanation instead of
+copying a large platform essay everywhere.
 
 ## Examples
 

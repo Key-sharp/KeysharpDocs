@@ -31,9 +31,17 @@
 
 <h2 id="Error_Handling">Error Handling</h2>
 <p>A <a href="Error.htm#TargetError">TargetError</a> is thrown if the window could not be found.</p>
+<p>An <a href="Error.htm#OSError">OSError</a> is thrown if the selected platform backend cannot redraw the matching window.</p>
 
 <h2 id="Remarks">Remarks</h2>
 <p>This function attempts to update the appearance/contents of a window by informing the OS that the window's rectangle needs to be redrawn. If this approach does not work for a particular window, try <a href="WinMove.htm">WinMove</a>. If that does not work, try <a href="WinHide.htm">WinHide</a> in combination with <a href="WinShow.htm">WinShow</a>.</p>
+
+<h3 id="Linux">Linux</h3>
+<p><strong>X11:</strong> The target window is cleared through X11 rather than by Windows-style invalidation, so results can differ between applications.</p>
+<p><strong>Wayland:</strong> Support for native Wayland windows has not yet been verified.</p>
+
+<h3 id="macOS">macOS</h3>
+<p>This function does not request a redraw. If the target exists, the call succeeds without changing the window.</p>
 
 <h2 id="Related">Related</h2>
 <p><a href="WinMoveBottom.htm">WinMoveBottom</a>, <a href="WinSetAlwaysOnTop.htm">WinSetAlwaysOnTop</a>, <a href="Win.htm">Win functions</a>, <a href="Control.htm">Control functions</a></p>
