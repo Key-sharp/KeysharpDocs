@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>Frequently Asked Questions (FAQ) | AutoHotkey v2</title>
+<title>Frequently Asked Questions (FAQ) | Keysharp</title>
 <meta name="description" content="This page lists questions and answers about general troubleshooting, common tasks, hotkeys, hotstrings and remapping." />
 <link href="static/theme.css" rel="stylesheet" type="text/css" />
 <link href="static/dark.css" rel="stylesheet" type="text/css" media="(prefers-color-scheme: dark)" id="dark_css" />
@@ -96,24 +96,16 @@
 <p>UAC may also prevent <a href="lib/SendMode.htm#Play">SendPlay</a> and <a href="lib/BlockInput.htm">BlockInput</a> from working.</p>
 <p>Common workarounds are as follows:</p>
 <ul>
-  <li><strong>Recommended:</strong> <a href="Program.htm#Installer_uiAccess">Run with UI access</a>. This requires AutoHotkey to be installed under Program Files. There are several ways to do this, including:
-  <ul>
-    <li>Right-click the script in Explorer and select <em>Run with UI access</em>.</li>
-    <li>Use the <em>UIAccess</em> shell verb with Run, as in <code>Run '*UIAccess "Your script.ahk"'</code>.</li>
-    <li>Use a <a href="Scripts.htm#cmd">command line</a> such as <code>"AutoHotkey32_UIA.exe" "Your script.ahk"</code> (but include full paths where necessary).</li>
-    <li>Set scripts to run with UI access by default, by checking the appropriate box in the <a href="Program.htm#launcher-config">Launch Settings</a> GUI.</li>
-  </ul></li>
+  <li>Run Keysharp or the script as administrator when interaction with an elevated process is required. Note that programs launched by the script can inherit elevation.</li>
+  <li>Prefer running both applications at the same integrity level when elevation is not otherwise required.</li>
   <li>Run the script <a href="Variables.htm#IsAdmin">as administrator</a>. Note that this also causes any programs launched by the script to run as administrator, and may require the user to accept an approval prompt when launching the script.</li>
   <li>Disable the local security policy "Run all administrators in Admin Approval Mode" (not recommended).</li>
   <li>Disable UAC completely. This is not recommended, and is not feasible on Windows 8 or later.</li>
 </ul>
 
-<h3 id="DefaultScript">I can't edit my script via tray icon because it won't start due to an error. What should I do?</h3>
-<p>You need to fix the error in your script before you can get your <a href="Program.htm#tray-icon">tray icon</a> back. This will require locating the script and opening it in an editor by some other means than the tray icon.</p>
-<p>If you are running an AutoHotkey executable file directly, the name of the script depends on the executable. For example, if you are running AutoHotkey32.exe, look for AutoHotkey32.ahk in the same directory. Note that depending on your system settings the ".ahk" part may be hidden, but the file should have an icon like <img src="static/ahkfile16.png" alt="[H]"></p>
-<p>You can usually <a href="Program.htm#edit">edit a script file</a> by right clicking it and selecting <em>Edit Script</em>. If that doesn't work, you can open the file in Notepad or another editor.</p>
-<p>Normally, you should <a href="Program.htm#create">create a script file</a> (something.ahk) anywhere you like, and run that script file instead of running AutoHotkey.</p>
-<p>See also <a href="Scripts.htm#defaultfile">Command Line Parameter "Script Filename"</a> and <a href="Program.htm#portability">Portability of AutoHotkey.exe</a>.</p>
+<h3 id="DefaultScript">I can't edit my script through the tray because it exits with an error. What should I do?</h3>
+<p>Open the original <code class="no-highlight">.ks</code> or <code class="no-highlight">.ahk</code> file directly in Keyview or another <a href="misc/Editors.htm">text editor</a>. Fix the reported error, save the file, and run it again.</p>
+<p>You can check the script without executing it by running <code class="no-highlight">Keysharp.exe --validate "path\to\script.ks"</code>. See <a href="Program.htm#cmd">Keysharp command-line options</a>.</p>
 <h3 id="Debug">How can I find and fix errors in my code?</h3>
 <p>For simple scripts, see <a href="Scripts.htm#debug">Debugging a Script</a>. To show contents of a variable, use <a href="lib/MsgBox.htm">MsgBox</a> or <a href="lib/ToolTip.htm">ToolTip</a>. For complex scripts, see <a href="Scripts.htm#idebug">Interactive Debugging</a>.</p>
 <h3 id="run">Why is the <a href="lib/Run.htm">Run</a> function unable to launch my game or program?</h3>

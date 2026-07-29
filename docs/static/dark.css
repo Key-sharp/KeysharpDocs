@@ -53,8 +53,8 @@ select {
 /* theme.css */
 
 body {
-  background-color: #202124;
-  color: #bdc1c6;
+  background-color: #19161f;
+  color: #ece7f3;
 }
 
 h1 {
@@ -62,28 +62,28 @@ h1 {
 }
 
 h2 {
-  color: #a25a5a;
+  color: #c4a7ff;
 }
 
 h3 {
-  color: #428242;
+  color: #73d6a7;
 }
 
 h4.func_section {
-  color: #a25a5a;
-  border-bottom-color: #2e2e2e;
+  color: #c4a7ff;
+  border-bottom-color: #443852;
 }
 
 h1, h2, h3, h4 {
-  border-bottom-color: #353535;
+  border-bottom-color: #443852;
 }
 
 a:link, a:visited, a:visited:hover {
-  color: #8ab4f8;
+  color: #c4a7ff;
 }
 
 pre, code {
-  background-color: #262525;
+  background-color: #25202d;
 }
 
 .Syntax {
@@ -141,7 +141,7 @@ blockquote {
 }
 
 dt {
-  color: inherit;
+  color: #c4a7ff;
 }
 
 dd {
@@ -171,8 +171,8 @@ kbd {
 /* content.css */
 
 #head {
-  background-color: #171717;
-  color: #a3a3a3;
+  background-color: #221a2c;
+  color: #ece7f3;
 }
 
 #head li:hover {
@@ -246,8 +246,8 @@ kbd {
 }
 
 #left .list {
-  background-color: #202124;
-  border-color: #353535;
+  background-color: #19161f;
+  border-color: #443852;
 }
 
 #left .search .checkbox label {
@@ -263,8 +263,8 @@ kbd {
 }
 
 #left .list > a.selected {
-  background-color: #6a6e72;
-  color: #171717;
+  background-color: #6D3FC0;
+  color: #fff;
 }
 
 #left .deprecated {
@@ -285,8 +285,8 @@ kbd {
 }
 
 #right .back-to-top {
-  background-color: #171717;
-  color: #a3a3a3;
+  background-color: #5B32A3;
+  color: #fff;
 }
 
 #right pre.parent > div.buttons > a {
@@ -321,4 +321,14 @@ kbd {
 
 pre.origin em, code em {
   color: #6a9955;
+}
+
+#keysharplogo .ks-wordmark {
+  color: #c4a7ff;
+}
+
+.ks-disclaimer, .ks-compat-notice {
+  background: #2c2438;
+  border-left-color: #a77bf3;
+  color: #ece7f3;
 }

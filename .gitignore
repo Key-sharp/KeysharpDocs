@@ -2,3 +2,5 @@
 # Ignore auto-generated files
 Index.hhk
 Table of Contents.hhc
+_site/
+.lycheecache

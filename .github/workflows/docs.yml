@@ -1,0 +1,50 @@
+name: Validate and deploy docs
+
+on:
+  push:
+    branches: [alpha]
+  pull_request:
+    branches: [alpha]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Validate documentation
+        shell: pwsh
+        run: ./scripts/Test-Docs.ps1
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: validate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/configure-pages@v5
+      - name: Prepare site
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path _site | Out-Null
+          Copy-Item -Path docs,index.html,404.html,.nojekyll -Destination _site -Recurse
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

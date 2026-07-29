@@ -1,8 +1,8 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-<title>Editors with AutoHotkey Support | AutoHotkey v2</title>
-<meta name="description" content="Information about editors with AutoHotkey support." />
+<title>Editors for Keysharp Scripts | Keysharp</title>
+<meta name="description" content="Keyview and third-party editors suitable for Keysharp scripts." />
 <meta name="ahk:equiv-v1" content="lib/Edit.htm#Editors" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,20 +12,23 @@
 </head>
 <body>
 
-<h1>Editors with AutoHotkey Support</h1>
+<h1>Editors for Keysharp Scripts</h1>
 
-<p>Any text editor can be used to edit an AutoHotkey script, but editors which are (or can be configured to be) more AutoHotkey-aware tend to make reading, editing and testing scripts much easier. AutoHotkey-aware editors may provide:</p>
+<p>Any text editor can edit a Keysharp <code class="no-highlight">.ks</code> or <code class="no-highlight">.ahk</code> script. Keysharp includes <strong>Keyview</strong>, its cross-platform script viewer/editor utility.</p>
+<p>Because Keysharp targets the AutoHotkey v2 language, AutoHotkey-aware editors can also make Keysharp scripts easier to read and edit. They may provide:</p>
 <ul>
   <li>Syntax highlighting, like what is used in this documentation. With syntax highlighting, words, symbols and segments of code are colour-coded to indicate their meaning. For instance, literal text, comments and variable names are displayed in different colours.</li>
   <li>Auto-complete, which typically offers a list of suggestions when you start typing the name of a known function or variable.</li>
   <li>Calltips may show you what the parameters are for a function while you are writing code to call the function.</li>
   <li><a href="../Scripts.htm#idebug">Interactive debugging</a>, such as to step through the script line by line and inspect variables at each step, or to view and modify variables or objects, beyond what <a href="../lib/ListVars.htm">ListVars</a> allows.</li>
 </ul>
-<p>Recommendations:</p>
+<p>Options:</p>
 <ul>
-  <li>SciTE4AutoHotkey is simple to install, relatively light-weight, and fully supports AutoHotkey v1 and v2 without further configuration.</li>
-  <li>VS Code (plus extensions) provides an even higher level of support and a wider range of features, but can be heavy on resources.</li>
+  <li><strong>Keyview</strong> is distributed with Keysharp and is the most directly Keysharp-oriented option.</li>
+  <li>VS Code with AutoHotkey v2 Language Support provides language tooling and can be configured to launch <code class="no-highlight">Keysharp.exe</code>.</li>
+  <li>SciTE4AutoHotkey and other AutoHotkey tools can provide compatible editing features, but their run/debug commands may require manual Keysharp configuration.</li>
 </ul>
+<p class="note"><strong>Third-party notice:</strong> The projects below are not part of Keysharp. References are provided for compatibility and convenience.</p>
 
 <h2 id="SciTE4AutoHotkey">SciTE4AutoHotkey</h2>
 <p>SciTE4AutoHotkey is a custom version of the text editor known as SciTE. Its features include:</p>
@@ -42,7 +45,7 @@
 <p>SciTE4AutoHotkey can be found here: <a href="https://www.autohotkey.com/scite4ahk/">https://www.autohotkey.com/scite4ahk/</a></p>
 
 <h2 id="Visual_Studio_Code_VS_Code">Visual Studio Code (VS Code)</h2>
-<p>Visual Studio Code can be configured with a high level of support for AutoHotkey by installing extensions.</p>
+<p>Visual Studio Code can be configured with a high level of AutoHotkey v2 language support that is also useful for Keysharp.</p>
 <p><a href="https://marketplace.visualstudio.com/items?itemName=thqby.vscode-autohotkey2-lsp">AutoHotkey2 Language Support</a> provides many features, including:</p>
 <ul>
   <li>Syntax highlighting</li>
@@ -56,6 +59,7 @@
 </ul>
 <p>Additional notes:</p>
 <ul>
+  <li>Set the extension's interpreter/executable path to your installed <code class="no-highlight">Keysharp.exe</code> when you want its run command to execute Keysharp.</li>
   <li>This extension only supports AutoHotkey v2, but can also detect v1 scripts and automatically switch over to a v1 extension if one is installed.</li>
   <li>This extension can also be used with other editors, such as <b>vim</b>, <b>neovim</b> and <b>Sublime Text 4</b>. For details, see <a href="https://github.com/thqby/vscode-autohotkey2-lsp#use-in-other-editors">Use in other editors</a>. However, VS Code likely provides the best experience, with easiest setup.</li>
 </ul>

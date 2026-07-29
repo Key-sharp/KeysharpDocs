@@ -31,7 +31,7 @@ box-sizing:border-box
 #head {
 box-shadow:0px 4px 16px 0px rgba(0,0,0,0.2);
 z-index:999;
-background:#3F627F;
+background:#5B32A3;
 position:absolute;
 height:3em;
 width:100%;
@@ -160,7 +160,7 @@ max-width:1.75em
 
 #head li:hover {
 background:#fff;
-color:#d06d3c;
+color:#6D3FC0;
 cursor:pointer
 }
 
@@ -331,7 +331,7 @@ margin-left:1.8em
 }
 
 #left .toc ul > li.highlighted > ul {
-border-left:1px solid #d06d3c
+border-left:1px solid #8B5CF6
 }
 
 #left .toc li.closed > span,#left .toc li.opened > span {
@@ -382,7 +382,7 @@ text-align: left;
 
 #left .toc .selected {
 font-weight:700;
-border-left:.2em solid #d06d3c
+border-left:.2em solid #8B5CF6
 }
 
 #left .index,#left .search {

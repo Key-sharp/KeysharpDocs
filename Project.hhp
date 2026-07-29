@@ -1,17 +1,17 @@
 [OPTIONS]
 Binary Index=No
 Compatibility=1.1 or later
-Compiled file=AutoHotkey.chm
+Compiled file=Keysharp.chm
 Default Window=Contents
 Default topic=docs\index.htm
 Display compile progress=No
 Full-text search=Yes
 Index file=Index.hhk
 Language=0x409 English (United States)
-Title=AutoHotkey v2 Help
+Title=Keysharp Help
 
 [WINDOWS]
-Contents="AutoHotkey v2 Help",,,"docs\index.htm","docs\index.htm",,,,,0x73500,,0x10200e,[200,0,1080,700],,,,,3,,0
+Contents="Keysharp Help",,,"docs\index.htm","docs\index.htm",,,,,0x73500,,0x10200e,[200,0,1080,700],,,,,3,,0
 
 
 [FILES]
@@ -19,7 +19,7 @@ docs\search.htm
 docs\settings.htm
 docs\static\content.css
 docs\static\dark.css
-docs\static\ahk_logo.png
+docs\static\keysharp_logo.png
 docs\static\fonts\icons.eot
 docs\static\fonts\icons.svg
 docs\static\fonts\icons.ttf

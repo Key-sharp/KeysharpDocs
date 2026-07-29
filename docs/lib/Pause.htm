@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-<title>Pause - Syntax &amp; Usage | AutoHotkey v2</title>
+<title>Pause - Syntax &amp; Usage | Keysharp</title>
 <meta name="description" content="The Pause function pauses the script's current thread or sets the pause state of the underlying thread." />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -36,7 +36,7 @@
 <p>By default, the script can also be paused via its <a href="../Program.htm#tray-icon">tray icon</a> or <a href="../Program.htm#main-window">main window</a>.</p>
 <p>Unlike <a href="Suspend.htm">Suspend</a> -- which disables <a href="../Hotkeys.htm">hotkeys</a> and <a href="../Hotstrings.htm">hotstrings</a> -- turning on pause will freeze the thread (the <a href="../misc/Threads.htm">current thread</a> if <em>UnderlyingThreadState</em> was omitted, otherwise the underlying thread). As a side-effect, any interrupted threads underneath it will lie dormant until the current thread is unpaused and finishes.</p>
 <p>Whenever any thread or the script itself is paused, <a href="SetTimer.htm">timers</a> will not run. By contrast, explicitly launched threads such as <a href="../Hotkeys.htm">hotkeys</a> and <a href="Menu.htm">menu items</a> can still be launched; but when their <a href="../misc/Threads.htm">threads</a> finish, the underlying thread will still be paused. In other words, each thread can be paused independently of the others.</p>
-<p>The <a href="../Program.htm#tray-icon">tray icon</a> changes to <img src="../static/ahk16_pause.png" alt="a green icon with a Pause symbol" style="vertical-align:-.2em;"> (or to <img src="../static/ahk16_pause_suspend.png" alt="a green icon with a transparent Pause symbol" style="vertical-align:-.2em;"> if the script is also <a href="Suspend.htm">suspended</a>), whenever the script's <a href="../misc/Threads.htm">current thread</a> is in a paused state. This icon change can be avoided by freezing the icon, which is achieved by using <code><a href="TraySetIcon.htm">TraySetIcon</a>(,, true)</code>.</p>
+<p>On platforms with a notification-area interface, the tray presentation may indicate that the current thread is paused. Its appearance varies by platform. An icon change can be avoided by freezing the icon with <code><a href="TraySetIcon.htm">TraySetIcon</a>(,, true)</code>.</p>
 <p>To disable <a href="SetTimer.htm">timers</a> without pausing the script, use <a href="Thread.htm#NoTimers">Thread NoTimers</a>.</p>
 <p>A script is always halted (though not officially paused) while it is displaying any kind of <a href="Menu.htm">menu</a> (tray menu, menu bar, GUI context menu, etc.)</p>
 <p>The built-in variable <strong>A_IsPaused</strong> contains 1 if the thread immediately underneath the current thread is paused and 0 otherwise.</p>

@@ -1,8 +1,9 @@
 tocData = [
   ["Quick Reference","index.htm"],
-  ["Usage and Syntax","",
+  ["About Keysharp","Keysharp.htm"],
+  ["Using Keysharp","",
   [
-    ["Using the Program","Program.htm"],
+    ["Using Keysharp","Program.htm"],
     ["Concepts and Conventions","Concepts.htm"],
     ["Scripting Language","Language.htm"],
     ["Hotkeys","Hotkeys.htm"],
@@ -14,9 +15,7 @@ tocData = [
     ["Functions","Functions.htm"],
     ["Labels","misc/Labels.htm"],
     ["Threads","misc/Threads.htm"],
-    ["Editors with AHK Support","misc/Editors.htm"],
-    ["Debugging Clients","AHKL_DBGPClients.htm"],
-    ["Compiler Directives","misc/Ahk2ExeDirectives.htm"],
+    ["Editors for Keysharp Scripts","misc/Editors.htm"],
     ["Objects","Objects.htm"],
     ["Modules","Modules.htm"],
     ["Structures","Structs.htm"]
@@ -24,7 +23,7 @@ tocData = [
   ["Frequently Asked Questions","FAQ.htm"],
   ["Tutorials","",
   [
-    ["Install AutoHotkey","howto/Install.htm"],
+    ["Install Keysharp","howto/Install.htm"],
     ["Run Example Code","howto/RunExamples.htm"],
     ["Run Programs","howto/RunPrograms.htm"],
     ["Write Hotkeys","howto/WriteHotkeys.htm"],
@@ -32,9 +31,13 @@ tocData = [
     ["Manage Windows","howto/ManageWindows.htm"],
     ["Tutorial by tidbit","Tutorial.htm"]
   ]],
-  ["Recent Changes","ChangeLog.htm"],
-  ["Changes from v2.0 to v2.1","v2.1-changes.htm"],
-  ["Changes from v1.1 to v2.0","v2-changes.htm"],
+  ["Keysharp Releases and Changes","ChangeLog.htm"],
+  ["AutoHotkey Compatibility Reference","",
+  [
+    ["Changes from v2.0 to v2.1","v2.1-changes.htm"],
+    ["Changes from v1.1 to v2.0","v2-changes.htm"],
+    ["Archived AutoHotkey Change Log","AutoHotkeyChangeLog.htm"]
+  ]],
   ["Script Showcase","scripts/index.htm"],
   ["Function Index","lib/index.htm"],
   ["Drive", "lib/Drive.htm",

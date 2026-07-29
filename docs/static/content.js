@@ -893,11 +893,11 @@ function ctor_search()
 function ctor_structure()
 {
   var self = this;
-  self.metaViewport = '<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">';
-  self.template = '<div id="head" role="banner"><button onclick="structure.focusContent();" class="skip-nav" data-translate aria-label="data-content" data-content="Skip navigation"></button><div class="h-area"><div class="h-tabs"><ul><li><button data-translate title="Shortcut: ALT+C" aria-label="Content tab" data-content="C̲ontent"></button></li><li><button data-translate title="Shortcut: ALT+N" aria-label="Index tab" data-content="In̲dex"></button></li><li><button data-translate title="Shortcut: ALT+S" aria-label="Search tab" data-content="S̲earch"></button></li></ul></div><div class="h-tools sidebar"><ul><li class="sidebar"><button title="Hide or show the sidebar" data-translate aria-label="title">&#926;</button></li></ul></div><div class="h-tools online"><ul><li class="home"><a href="{0}" title="Go to the homepage" data-translate aria-label="title">&#916;</a></li><li class="language"><button data-translate title="Change the language" data-translate aria-label="title" data-content="en"></button><ul class="dropdown languages selected"><li><a href="#" title="English" aria-label="title" data-content="en"></a></li><li><a href="#" title="Deutsch (German)" data-content="de" aria-label="title"></a></li><li><a href="#" title="&#x65e5;&#x672c;&#x8a9e; (Japanese)" data-content="ja" aria-label="title"></a></li><li><a href="#" title="&#xD55C;&#xAD6D;&#xC5B4 (Korean)" aria-label="title" data-content="ko"></a></li><li><a href="#" title="Português (Portuguese)" data-content="pt" aria-label="title"></a></li><li><a href="#" title="&#x4E2D;&#x6587; (Chinese)" aria-label="title" data-content="zh"></a></li></ul></li><li class="version"><button title="Change the version" data-translate aria-label="title" data-content="v1"></button><ul class="dropdown versions selected"><li><a href="#" title="AHK v1.1" aria-label="title" data-content="v1"></a></li><li><a href="#" title="AHK v2.0" aria-label="title" data-content="v2"></a></li></ul></li><li class="edit"><a href="#" title="Edit this document on GitHub" data-translate=2 aria-label="title" data-content="E"></a></li></ul></div><div class="h-tools chm"><ul><li class="back"><button title="Go back" data-translate=2 aria-label="title">&#9668;</button></li><li class="forward"><button title="Go forward" data-translate=2 aria-label="title">&#9658;</button></li><li class="zoom"><button title="Change the font size" data-translate=2 aria-label="title" data-content="Z"></button></li><li class="print"><button title="Print this document" data-translate=2 aria-label="title" data-content="P"></button></li><li class="browser"><a href="#" target="_blank" title="Open this document in the default browser (requires internet connection). Middle-click to copy the link address." data-translate aria-label="title">¬</a></li></ul></div><div class="h-tools main visible"><ul><li class="color"><button title="Use the dark or light scheme" data-translate=2 aria-label="title" data-content="C"></button></li><li class="settings"><button title="Open the help settings" data-translate=2 aria-label="title">&#1029;</button></li></ul></div></div></div><div id="main"><div id="left" role="navigation"><div class="tab toc"></div><div class="tab index"><div class="input"><input type="search" placeholder="Search" data-translate=2 /></div><div class="select"><select size="1" class="empty"><option value="-1" class="empty" selected data-translate>Filter</option><option value="0" data-translate>Directives</option><option value="1" data-translate>Built-in Variables</option><option value="2" data-translate>Built-in Functions</option><option value="3" data-translate>Control Flow Statements</option><option value="4" data-translate>Operators</option><option value="5" data-translate>Declarations</option><option value="6" data-translate>Built-in Classes</option><option value="7" data-translate>Built-in Methods/Properties</option><option value="99" data-translate>Ahk2Exe Compiler</option></select></div><div class="list"></div></div><div class="tab search"><div class="input"><input type="search" placeholder="Search" data-translate=2 /></div><div class="checkbox"><input type="checkbox" id="highlightWords"><label for="highlightWords" data-translate>Highlight keywords</label><div class="updown" title="Go to previous/next occurrence" data-translate aria-label="title"><div class="up"><div class="triangle-up"></div></div><div class="down"><div class="triangle-down"></div></div></div></div><div class="list"></div></div><div class="load"><div class="lds-dual-ring"></div></div><div class="quick"><button class="header" title="Collapse or uncollapse the quick reference" data-translate aria-label="title"><div class="chevron"></div><span data-translate data-content="Quick reference"></span></button><div class="main"></div></div></div><div class="dragbar"></div><div id="right" tabIndex="-1"><div class="load"><div class="lds-dual-ring"></div></div><iframe class="hidden" frameBorder="0" id="frame" src="" role="main">';
+  self.metaViewport = '<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><link rel="icon" type="image/png" href="' + scriptDir + '/keysharp_logo.png">';
+  self.template = '<div id="head" role="banner"><button onclick="structure.focusContent();" class="skip-nav" data-translate aria-label="data-content" data-content="Skip navigation"></button><div class="h-area"><div class="h-tabs"><ul><li><button data-translate title="Shortcut: ALT+C" aria-label="Content tab" data-content="C̲ontent"></button></li><li><button data-translate title="Shortcut: ALT+N" aria-label="Index tab" data-content="In̲dex"></button></li><li><button data-translate title="Shortcut: ALT+S" aria-label="Search tab" data-content="S̲earch"></button></li></ul></div><div class="h-tools sidebar"><ul><li class="sidebar"><button title="Hide or show the sidebar" data-translate aria-label="title">&#926;</button></li></ul></div><div class="h-tools online"><ul><li class="home"><a href="{0}" title="Go to the homepage" data-translate aria-label="title">&#916;</a></li><li class="edit"><a href="#" title="Edit this document on GitHub" data-translate=2 aria-label="title" data-content="E"></a></li></ul></div><div class="h-tools chm"><ul><li class="back"><button title="Go back" data-translate=2 aria-label="title">&#9668;</button></li><li class="forward"><button title="Go forward" data-translate=2 aria-label="title">&#9658;</button></li><li class="zoom"><button title="Change the font size" data-translate=2 aria-label="title" data-content="Z"></button></li><li class="print"><button title="Print this document" data-translate=2 aria-label="title" data-content="P"></button></li><li class="browser"><a href="#" target="_blank" title="Open this document in the default browser (requires internet connection). Middle-click to copy the link address." data-translate aria-label="title">¬</a></li></ul></div><div class="h-tools main visible"><ul><li class="color"><button title="Use the dark or light scheme" data-translate=2 aria-label="title" data-content="C"></button></li><li class="settings"><button title="Open the help settings" data-translate=2 aria-label="title">&#1029;</button></li></ul></div></div></div><div id="main"><div id="left" role="navigation"><div class="tab toc"></div><div class="tab index"><div class="input"><input type="search" placeholder="Search" data-translate=2 /></div><div class="select"><select size="1" class="empty"><option value="-1" class="empty" selected data-translate>Filter</option><option value="0" data-translate>Directives</option><option value="1" data-translate>Built-in Variables</option><option value="2" data-translate>Built-in Functions</option><option value="3" data-translate>Control Flow Statements</option><option value="4" data-translate>Operators</option><option value="5" data-translate>Declarations</option><option value="6" data-translate>Built-in Classes</option><option value="7" data-translate>Built-in Methods/Properties</option></select></div><div class="list"></div></div><div class="tab search"><div class="input"><input type="search" placeholder="Search" data-translate=2 /></div><div class="checkbox"><input type="checkbox" id="highlightWords"><label for="highlightWords" data-translate>Highlight keywords</label><div class="updown" title="Go to previous/next occurrence" data-translate aria-label="title"><div class="up"><div class="triangle-up"></div></div><div class="down"><div class="triangle-down"></div></div></div></div><div class="list"></div></div><div class="load"><div class="lds-dual-ring"></div></div><div class="quick"><button class="header" title="Collapse or uncollapse the quick reference" data-translate aria-label="title"><div class="chevron"></div><span data-translate data-content="Quick reference"></span></button><div class="main"></div></div></div><div class="dragbar"></div><div id="right" tabIndex="-1"><div class="load"><div class="lds-dual-ring"></div></div><iframe class="hidden" frameBorder="0" id="frame" src="" role="main">';
   self.build = function() { // Write HTML before DOM is loaded to prevent flickering.
     var template = self.template;
-    template = template.format(location.protocol + '//' + location.host);
+    template = template.format(scriptDir + '/..');
     if (isIE)
     {
       template = template.replace('<div id="right" tabIndex="-1"><div class="load"><div class="lds-dual-ring"></div></div>', '<div id="right" tabIndex="-1">');
@@ -1012,58 +1012,11 @@ function ctor_structure()
     // --- Online tools (only visible if help is not CHM) ---
 
     var $online = $('#head .h-tools.online');
-    // Set language code and version:
-    var lang = T("en"), ver = T("v1");
-    // language links. Keys are based on ISO 639-1 language name standard:
-    var link = { 'v1': { 'en': 'https://www.autohotkey.com/docs/v1/',
-                         'de': 'https://ahkde.github.io/docs/v1/',
-                         'ko': 'https://ahkscript.github.io/ko/docs/',
-                         'pt': 'https://ahkscript.github.io/pt/docs/',
-                         'zh': 'https://wyagd001.github.io/zh-cn/docs/' },
-                 'v2': { 'en': 'https://www.autohotkey.com/docs/v2/',
-                         'de': 'https://ahkde.github.io/docs/v2/',
-                         'ja': 'https://ahkscript.github.io/ja/docs/v2/',
-                         'zh': 'https://wyagd001.github.io/v2/docs/' } }
-
-    var $langList = $online.find('ul.languages')
-    var $verList = $online.find('ul.versions')
-
+    var onlineDocsRoot = 'https://key-sharp.github.io/KeysharpDocs/docs/';
     self.modifyTools = function(relPath, equivPath) {
-      // Bug - IE/Edge doesn't turn off list-style if element is hidden:
-      $langList.add($verList).css("list-style", "none");
-      // Hide currently selected language and version in the selection lists:
-      $(isIE8 ? 'a:contains(' + lang + ')' : 'a[data-content=' + lang + ']', $langList).parent().hide();
-      $(isIE8 ? 'a:contains(' + ver + ')' : 'a[data-content=' + ver + ']', $verList).parent().hide();
-      // Add the language links:
-      $langList.find('li').each( function() {
-        var a = $(this).find('a');
-        var thisLink = link[ver][isIE8 ? a.text() : a.attr('data-content')];
-        if (thisLink == null)
-          $(this).hide(); // Hide language button
-        else
-          a.attr('href', thisLink + relPath);
-      });
-      // Add the version links:
-      $verList.find('li').each( function() {
-        var a = $(this).find('a');
-        var ver = isIE8 ? a.text() : a.attr('data-content');
-        var thisLink = link[ver][lang];
-        // Fallback to default docs:
-        thisLink = (thisLink == null) ? link[ver]['en'] : thisLink;
-        a.attr('href', thisLink + (equivPath || relPath));
-      });
-      // Hide dropdown list on click with left or middle mouse button:
-      registerEvent($langList.add($verList), 'mouseup', '', function(e) {
-        if (e.which == 1 || e.which == 2) {
-          setTimeout(function() {
-            $dropdown.animate({height: 'hide'}, 100);
-            $this.removeClass('selected');
-          }, 200);
-        }
-      });
       // 'Edit page on GitHub' button:
       $("li.edit > a").attr({
-        href: T("https://github.com/Lexikos/AutoHotkey_L-Docs/edit/v1/docs/") + relPath,
+        href: "https://github.com/Key-sharp/KeysharpDocs/edit/alpha/docs/" + relPath,
         target: "_blank"
       });
 
@@ -1084,7 +1037,7 @@ function ctor_structure()
       // 'Print' button:
       registerEvent($chm.find('li.print'), 'click', '', function() { window.parent.document.getElementById('frame').contentWindow.document.execCommand('print', false, null); });
       // 'Open in default browser' button:
-      btn = $chm.find('li.browser > a').attr('href', link[ver][lang] + relPath);
+      btn = $chm.find('li.browser > a').attr('href', onlineDocsRoot + relPath);
       registerEvent(btn, 'mouseup', '', function(e) {
         if (e.which == 2) {
           window.clipboardData.setData('Text', this.href);
@@ -1563,6 +1516,7 @@ function ctor_features()
     $.queueFunc.add(self.modifyDeprecatedLinks);
     $.queueFunc.add(self.modifyVersions);
     $.queueFunc.add(self.modifyCodeBoxes);
+    self.addCompatibilityNotice();
     self.addFooter();
     $.queueFunc.add(self.addBackButton);
     self.scrollToPos();
@@ -1829,7 +1783,7 @@ function ctor_features()
     }
   };
 
-  // --- Add syntax highlighting for AutoHotkey code ---
+  // --- Add syntax highlighting for AutoHotkey-compatible code ---
 
   self.addSyntaxColors = function(pres) {
     var docs_path = scriptDir + '/../';
@@ -1843,12 +1797,23 @@ function ctor_features()
       highlighter.addSyntaxColors(pres, cache.index_data, docs_path, false);
   };
 
+  // --- Add Keysharp compatibility and provenance notices ---
+
+  self.addCompatibilityNotice = function() {
+    if (!self.content || /(?:^|\/)(?:Keysharp|license)\.htm$/i.test(location.pathname))
+      return;
+    var div = document.createElement('div');
+    div.className = 'ks-compat-notice';
+    div.innerHTML = '<strong>Keysharp compatibility target: AutoHotkey v2.1-alpha.30.</strong> This inherited reference is being verified against Keysharp. Platform coverage and implementation status can differ. <a href="' + scriptDir + '/../Keysharp.htm" class="no-ext">Read the compatibility notice</a>.';
+    self.content.insertBefore(div, self.content.firstChild);
+  };
+
   // --- Add footer at the bottom of the site ---
 
   self.addFooter = function() {
     var div = document.createElement('div');
     div.className = 'footer';
-    div.innerHTML = 'Copyright &copy; 2003-' + new Date().getFullYear() + ' ' + location.host + ' - LIC: <a href="' + scriptDir + '/../license.htm" class="no-ext">GNU GPLv2</a>';
+    div.innerHTML = '<strong>KeysharpDocs</strong> &middot; Independent Keysharp project &middot; Based on AutoHotkeyDocs with permission &middot; <a href="' + scriptDir + '/../license.htm" class="no-ext">Provenance and licensing</a>';
     self.content.appendChild(div);
   };
 
