@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>FileDirName and FileFullPath | Keysharp</title>
+<meta name="description" content="Functions for resolving a file path or retrieving its directory." />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../static/theme.css" rel="stylesheet" type="text/css" />
+<link href="../static/dark.css" rel="stylesheet" type="text/css" media="(prefers-color-scheme: dark)" id="dark_css" />
+<script src="../static/content.js" type="text/javascript"></script>
+</head>
+<body>
+
+<h1>File Path Functions</h1>
+<p>Resolve a file path or retrieve the directory portion of a file name.</p>
+<p>These functions are exported by the <a href="../Modules.htm#KS">KS module</a>.</p>
+
+<h2 id="FileDirName">FileDirName</h2>
+<pre class="Syntax">Directory := <span class="func">FileDirName</span>(Filename)</pre>
+<p>Returns the full path to <em>Filename</em> without the file name or trailing directory separator.</p>
+
+<h2 id="FileFullPath">FileFullPath</h2>
+<pre class="Syntax">FullPath := <span class="func">FileFullPath</span>(Filename)</pre>
+<p>Returns the full path to <em>Filename</em>.</p>
+
+<h2 id="Examples">Examples</h2>
+<pre>#Import "Ks" { FileDirName, FileFullPath }
+Full := FileFullPath("data\items.txt")
+Parent := FileDirName(Full)</pre>
+
+<h2 id="Related">Related</h2>
+<p><a href="SplitPath.htm">SplitPath</a>, <a href="SetWorkingDir.htm">SetWorkingDir</a></p>
+
+</body>
+</html>

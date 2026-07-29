@@ -13,7 +13,8 @@
 
 <h1>ComObjConnect</h1>
 <p>Connects a COM object's event source to the script, enabling events to be handled.</p>
-<pre class="Syntax"><span class="func">ComObjConnect</span> ComObj <span class="optional">, PrefixOrSink</span></pre>
+<p class="note"><strong>Notice:</strong> COM APIs are available only on Windows.</p>
+<pre class="Syntax"><span class="func">ComObjConnect</span> ComObj <span class="optional">, PrefixOrSink, Debug</span></pre>
 
 <h2 id="Parameters">Parameters</h2>
 <dl>
@@ -32,6 +33,11 @@
       <p>If omitted, the object is "disconnected"; that is, the script will no longer receive notification of its events. Otherwise, specify a string to prefix to the event name to determine which global function to call when an event occurs, or an <a href="#event-sink">event sink object</a> defining a static method for each event to be handled.</p>
       <p class="warning"><strong>Note:</strong> Nested functions are not supported in this mode, as names may be resolved after the current function returns. To use nested functions or closures, attach them to an object and pass the object as described below.</p>
     </dd>
+  <dt>Debug</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#boolean">Boolean</a></p>
+    <p>If omitted, it defaults to false. If true, additional information about received COM events is written to the debug output.</p>
+  </dd>
 
 </dl>
 

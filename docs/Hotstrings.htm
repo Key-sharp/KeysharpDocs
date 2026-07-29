@@ -119,6 +119,7 @@ By default, the hard carriage return (Enter) between the previous line and this 
 <p>Author: <a href="http://www.biancolo.com/blog/autocorrect/">Jim Biancolo</a> and <a href="https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings">Wikipedia's Lists of Common Misspellings</a></p>
 
 <h2 id="remarks">Remarks</h2>
+<p>Hotstring abbreviations have no fixed maximum length.</p>
 <p><a href="Variables.htm#Expressions">Expressions</a> are not currently supported within the replacement text. To work around this, don't make such hotstrings <a href="#auto">auto-replace</a>. Instead, use the <a href="lib/Send.htm">Send</a> function in the body of the hotstring or in combination with the <a href="#X">X (execute) option</a>.</p>
 <p>To send an extra space or tab after a replacement, include the <a href="misc/EscapeChar.htm">escape sequence</a> <code class="no-highlight">`s</code> or <code class="no-highlight">`t</code> at the end of the replacement, e.g. <code>:*:btw::by the way`s</code>.</p>
 <p id="ReplaceBrace">For an auto-replace hotstring which doesn't use the <a href="#T">Text</a> or <a href="#raw">Raw</a> mode, sending a <code>{</code> alone, or one preceded only by white-space, requires it being enclosed in a pair of brackets, for example <code>:*:brace::{{}</code> and <code>:*:space_brace:: {{}</code>. Otherwise it is interpreted as the opening brace for the hotstring's function to support the <a href="lib/Block.htm#otb">OTB (One True Brace) style</a>.</p>

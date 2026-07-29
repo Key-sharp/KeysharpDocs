@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Cryptography and Checksum Functions | Keysharp</title>
+<meta name="description" content="AES encryption, cryptographic hashes, CRC32 and secure random values." />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../static/theme.css" rel="stylesheet" type="text/css" />
+<link href="../static/dark.css" rel="stylesheet" type="text/css" media="(prefers-color-scheme: dark)" id="dark_css" />
+<script src="../static/content.js" type="text/javascript"></script>
+</head>
+<body>
+
+<h1>Cryptography and Checksum Functions</h1>
+<p>These functions are exported by the <a href="../Modules.htm#KS">KS module</a>.</p>
+
+<h2 id="AES">AES</h2>
+<pre class="Syntax">Data := <span class="func">AES</span>(Value, Key <span class="optional">, Decrypt := false</span>)</pre>
+<p>Encrypts <em>Value</em> with the AES algorithm and returns a <a href="Buffer.htm">Buffer</a>. If <em>Decrypt</em> is non-zero, decrypts the supplied data instead.</p>
+
+<h2 id="Hashes">Hash Functions</h2>
+<pre class="Syntax">Digest := <span class="func">MD5</span>(Value)
+Digest := <span class="func">SHA1</span>(Value)
+Digest := <span class="func">SHA256</span>(Value)
+Digest := <span class="func">SHA384</span>(Value)
+Digest := <span class="func">SHA512</span>(Value)</pre>
+<p>Returns a hexadecimal digest. The result lengths are 32, 40, 64, 96 and 128 characters respectively.</p>
+<p class="warning"><strong>Security warning:</strong> MD5 and SHA-1 are unsuitable for collision-resistant security uses. Use SHA-256 or stronger unless compatibility requires an older digest.</p>
+
+<h2 id="CRC32">CRC32</h2>
+<pre class="Syntax">Checksum := <span class="func">CRC32</span>(Value)</pre>
+<p>Returns the CRC32 polynomial of <em>Value</em> as an integer. CRC32 detects accidental corruption; it is not a cryptographic integrity check.</p>
+
+<h2 id="SecureRandom">SecureRandom</h2>
+<pre class="Syntax">Value := <span class="func">SecureRandom</span>(<span class="optional">Min, Max</span>)</pre>
+<p>Returns a cryptographically secure random number. If both bounds are integers, the result is an integer; if either is floating-point, the result uses floating-point bounds. Omit both to use the implementation's full default numeric range.</p>
+<p>For non-security uses where speed is preferred, use <a href="Random.htm">Random</a>.</p>
+
+</body>
+</html>

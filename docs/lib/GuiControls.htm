@@ -109,7 +109,7 @@ MyBtn.OnEvent("Click", MyBtn_Click)  <em>; Call MyBtn_Click when clicked.</em></
 
 <h3 id="Button_Remarks">Button Remarks</h3>
 <p>Whenever the user clicks the button or presses <kbd>Space</kbd> or <kbd>Enter</kbd> while it has the focus, the <a href="GuiOnEvent.htm#Click">Click</a> event is raised.</p>
-<p>The <a href="GuiOnEvent.htm#DoubleClick">DoubleClick</a>, <a href="GuiOnEvent.htm#Focus">Focus</a> and <a href="GuiOnEvent.htm#LoseFocus">LoseFocus</a> events are also supported. As these events are only raised if the control has the BS_NOTIFY (0x4000) style, it is added automatically by <a href="GuiControl.htm#OnEvent">GuiControl.OnEvent</a>.</p>
+<p>The <a href="GuiOnEvent.htm#Focus">Focus</a> and <a href="GuiOnEvent.htm#LoseFocus">LoseFocus</a> events are also supported. Button controls do not support the DoubleClick event.</p>
 <p>Use <a href="GuiControl.htm#Opt">GuiControl.Opt</a> to change the default button later on. For example, <code>OtherBtn.<a href="GuiControl.htm#Opt">Opt</a>("+Default")</code> would change the default button to another button, while <code>MyBtn.Opt("-Default")</code> would make the window no longer have a default button.</p>
 <p>Known limitation: Certain desktop themes might not display a button's text properly. If this occurs, try including <code class="no-highlight">-Wrap</code> (minus Wrap) in <em>Options</em>. However, this also prevents having more than one line of text.</p>
 
@@ -394,6 +394,19 @@ MyGui.Show("h70")</pre>
 <pre>MyEdit := MyGui.Add("Edit", "r20")
 MyEdit.Value := FileRead("C:\My File.txt")</pre>
 
+<h2 id="RichEdit">RichEdit</h2>
+<p>A rich-text editor is created by passing <code>"RichEdit"</code> to <a href="Gui.htm#Add">Gui.Add</a>. It supports the same general options as <a href="#Edit">Edit</a>, with the following differences:</p>
+<ul>
+  <li>Multi-line mode is enabled by default.</li>
+  <li><code>WantReturn</code> and <code>Password</code> are not supported.</li>
+  <li><code>Uppercase</code> and <code>Lowercase</code> affect typed characters but not pasted text.</li>
+  <li><code>GuiCtrl.Value</code> reads or writes only the displayed plain text.</li>
+  <li><code>GuiCtrl.RichText</code> reads or writes the raw rich-text content. Accessing RichText on any other control type throws an exception.</li>
+  <li><code>Gui.Submit()</code> returns plain text, or raw rich text when the control has <code>AltSubmit</code>.</li>
+</ul>
+<pre>Rich := MyGui.Add("RichEdit", "w400 h200")
+Rich.RichText := "{\rtf1\ansi\b Bold text\b0}"</pre>
+
 <h2 id="GroupBox">GroupBox</h2>
 <p>A rectangular border/frame, often used around other controls to indicate they are related.</p>
 <p>Syntax:</p>
@@ -533,6 +546,7 @@ MyLink2 := MyGui.Add("Link",, 'Links may be used anywhere in the text like &lt;a
 <p id="LBRedraw">When adding a large number of items to a ListBox, performance may be improved by using <code>MyLB.Opt("-Redraw")</code> prior to the operation, and <code>MyLB.Opt("+Redraw")</code> afterward. See <a href="GuiControl.htm#Redraw">Redraw</a> for more details.</p>
 
 <h2 id="ListView">ListView</h2>
+<p class="note"><strong>Notice:</strong> The <code>Count</code> option is accepted but ignored because the managed ListView does not use a script-configurable preallocated capacity.</p>
 <p>A ListView is one of the most elaborate controls provided by the operating system. In its most recognizable form, it displays a tabular view of rows and columns, the most common example of which is Explorer's list of files and folders (detail view).</p>
 <p>Syntax:</p>
 <pre class="Syntax Indent"><a href="GuiControl.htm">GuiCtrl</a> := MyGui.<span class="func">Add</span>("ListView", Options, ColumnTitles)
@@ -756,7 +770,7 @@ MyProgress.Value := 50  <em>; Set the current position to 50.</em></pre>
 
 <h3 id="Slider_Remarks">Slider Remarks</h3>
 <p><a href="GuiControl.htm#Value">GuiControl.Value</a> returns the current numeric position of the slider. <a href="Gui.htm#Submit">Gui.Submit</a> stores the same value.</p>
-<p id="slider-change">Whenever the user has stopped moving the slider (such as by releasing the mouse button after having dragged it), the <a href="GuiOnEvent.htm#Change">Change</a> event is raised. If the control has the <a href="Gui.htm#AltSubmit">AltSubmit</a> option, the Change event is also raised (very frequently) after each visible movement of the bar while the user is dragging it with the mouse. The callback receives a number indicating how the slider was moved. For details, see the <a href="GuiOnEvent.htm#Change">Change</a> event.</p>
+<p id="slider-change">Whenever the user has stopped moving the slider (such as by releasing the mouse button after having dragged it), the <a href="GuiOnEvent.htm#Change">Change</a> event is raised. If the control has the <a href="Gui.htm#AltSubmit">AltSubmit</a> option, the Change event is also raised after each visible movement while dragging. The callback's Info parameter is always 0 because the managed backend does not expose how the slider was moved.</p>
 <p>The user may slide the control by the following means: 1) dragging the bar with the mouse; 2) clicking inside the bar's track area with the mouse; 3) turning the mouse wheel while the control has focus; or 4) pressing the following keys while the control has focus: <kbd>&uarr;</kbd>, <kbd>&rarr;</kbd>, <kbd>&darr;</kbd>, <kbd>&larr;</kbd>, <kbd>PgUp</kbd>, <kbd>PgDn</kbd>, <kbd>Home</kbd>, and <kbd>End</kbd>.</p>
 
 <h2 id="StatusBar">StatusBar</h2>
@@ -871,6 +885,7 @@ MySB.SetText("There are " RowCount " rows selected.")</pre>
 <p><a href="TreeView.htm#ExAdvanced">TreeView example #1</a> demonstrates a multipart status bar.</p>
 
 <h2 id="Tab">Tab</h2>
+<p class="note"><strong>Notice:</strong> All tab controls use the modern Tab3-style containment model. The older Tab and Tab2 behaviors are not implemented.</p>
 <p>A large control containing multiple pages, each of which contains other controls. From this point forward, these pages are referred to as "tabs".</p>
 <p>Syntax:</p>
 <pre class="Syntax Indent"><a href="GuiControl.htm">GuiCtrl</a> := MyGui.<span class="func">Add</span>("Tab", Options, TabNames)
@@ -986,6 +1001,7 @@ MyTab.UseTab("Name", true)  <em>; Same as above but requires exact match (not ca
 </ul>
 
 <h2 id="Text">Text</h2>
+<p class="note"><strong>Notice:</strong> Static text controls do not send <code>WM_CTLCOLORSTATIC (0x0138)</code> to their parent.</p>
 <p>A region containing borderless text that the user cannot edit. Often used to label other controls.</p>
 <p>Syntax:</p>
 <pre class="Syntax Indent"><a href="GuiControl.htm">GuiCtrl</a> := MyGui.<span class="func">Add</span>("Text", Options, String)
@@ -1042,11 +1058,13 @@ MyUD := MyGui.Add("UpDown", "Range1-10", 5)</pre>
   <dd>
     <p>Type: <a href="../Concepts.htm#strings">String</a></p>
     <p>In addition to the <a href="Gui.htm#Add_Options">general options and styles</a>, the following are supported or noteworthy:</p>
-    <p id="Horz"><strong>Horz:</strong> Makes the control's buttons point left/right rather than up/down. By default, Horz also makes the control isolated (no buddy). This can be overridden by specifying <code class="no-highlight">Horz 16</code>.</p>
+    <p id="Horz"><strong>Horz:</strong> Accepted for compatibility but has no effect.</p>
+    <p><strong>Increment</strong><em>N</em>: Sets the amount added or subtracted for each step, such as <code>Increment10</code>.</p>
+    <p><strong>Hex:</strong> Displays the numeric value in hexadecimal.</p>
     <p><strong>Left:</strong> Puts the UpDown on the left side of its buddy rather than the right.</p>
-    <p><strong>Range</strong><em>MinMax</em>: Sets the range to be something other than 0 to 100. Specify for <em>MinMax</em> the minimum, a dash, and maximum. For example, <code class="no-highlight">Range1-1000</code> would allow a number between 1 and 1000 to be selected; <code class="no-highlight">Range-50-50</code> would allow a number between -50 and 50; and <code class="no-highlight">Range-10--5</code> would allow a number between -10 and -5. The minimum and maximum may be swapped to cause the arrows to move in the opposite of their normal direction. The broadest allowable range is -2147483648-2147483647. Finally, if the buddy control is a <a href="#ListBox">ListBox</a>, the range defaults to 32767-0 for verticals and the inverse for <a href="#Horz">horizontals</a>.</p>
-    <p><strong>Wrap:</strong> Causes the control to wrap around to the other end of its range when the user attempts to go beyond the minimum or maximum. If omitted, the control stops when the minimum or maximum is reached.</p>
-    <p><strong>16:</strong> Specify -16 (minus 16) to cause a vertical UpDown to be isolated; that is, it will have no buddy. This also causes the control to obey any specified width, height, and position rather than conforming to the size of its buddy control. In addition, an isolated UpDown tracks its own position internally. This position can be retrieved normally by means such as <a href="GuiControl.htm#Value">GuiControl.Value</a>.</p>
+    <p><strong>Range</strong><em>MinMax</em>: Sets the range to be something other than 0 to 100. Specify the minimum, a dash and maximum. The minimum must not be greater than the maximum.</p>
+    <p><strong>Wrap:</strong> Accepted for compatibility but has no effect.</p>
+    <p><strong>16:</strong> Accepted for compatibility but has no effect. UpDown buddy-control behavior is not supported; the control uses the backend's standalone numeric control.</p>
     <p id="UpDownSep"><strong>0x80:</strong> Omits the thousands separator that is normally present between every three decimal digits in the buddy control. However, this style is normally not used because the separators are omitted from the number whenever the script retrieves it from the UpDown control itself (rather than its buddy control).</p>
     <p><strong>W</strong><em>n</em>: Sets the width of an isolated UpDown. For example, specifying <code class="no-highlight">w400</code> would make the control 400 pixels wide. If omitted, vertical UpDowns default to 2 times the current font size, while <a href="#Horz">horizontal</a> UpDowns default to 15 times the current font size.</p>
     <p><strong>R</strong><em>n</em> or <strong>H</strong><em>n</em>: Sets the height of an isolated UpDown. For example, specifying <code class="no-highlight">r7</code> would make the control 7 rows tall, while <code class="no-highlight">h400</code> would set its height to 400 pixels. If both R and H are omitted, vertical UpDowns default to 5 rows, while <a href="#Horz">horizontal</a> UpDowns default to 2 times the current font size.</p>
@@ -1060,14 +1078,10 @@ MyUD := MyGui.Add("UpDown", "Range1-10", 5)</pre>
 </dl>
 
 <h3 id="UpDown_Remarks">UpDown Remarks</h3>
-<p>The most common example is a "spinner", which is an UpDown attached to an <a href="#Edit">Edit</a> control. Whenever the user presses one of the arrow buttons, the number in the Edit control is automatically increased or decreased.</p>
-<p>An UpDown's buddy control can also be a <a href="#Text">Text</a> or <a href="#ListBox">ListBox</a> control. However, due to OS limitations, controls other than these (such as <a href="#ComboBox">ComboBox</a> and <a href="#DropDownList">DropDownList</a>) might not work properly with the <a href="GuiOnEvent.htm#Change">Change</a> event and other features.</p>
+<p>The control is a standalone managed numeric input; pairing it with a previously added buddy control is not supported.</p>
 <p><a href="GuiControl.htm#Value">GuiControl.Value</a> returns the current numeric position of the UpDown. <a href="Gui.htm#Submit">Gui.Submit</a> stores the same value. If the UpDown is attached to an <a href="#Edit">Edit</a> control, and you do not wish to validate the user's input, it is best to use the UpDown's value rather than the Edit's. This is because the UpDown will always yield an in-range number, even when the user has typed something non-numeric or out-of-range in the Edit control. On a related note, numbers with more than three digits get a <a href="../misc/Styles.htm#UpDownSep">thousands separator</a> (such as a comma) by default. These separators are returned by the Edit control but not by the UpDown control.</p>
 <p>Whenever the user clicks one of the arrow buttons or presses an arrow key on the keyboard, the <a href="GuiOnEvent.htm#Change">Change</a> event is raised.</p>
-<p>To change an UpDown's increment to a value other than 1 (such as 5 or 0.1), see <a href="../scripts/index.htm#Custom_Increments_for_UpDown_Controls">this script</a>.</p>
-<p>The number format displayed inside the buddy control may be changed from decimal to hexadecimal by following this example:</p>
-<pre>SendMessage 0x046D, 16, 0, MyUD <em>; 0x046D is UDM_SETBASE.</em></pre>
-<p>However, this affects only the buddy control, not the UpDown's reported position.</p>
+<p>Use the <code>Increment</code> and <code>Hex</code> options above instead of native messages.</p>
 
 <h2 id="Related">Related</h2>
 <p><a href="ListView.htm">ListView</a>, <a href="TreeView.htm">TreeView</a>, <a href="Gui.htm#Call">Gui()</a>, <a href="Gui.htm">Gui object</a>, <a href="GuiControl.htm">GuiControl object</a>, <a href="Menu.htm">Menu object</a></p>

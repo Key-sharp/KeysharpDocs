@@ -37,9 +37,12 @@
       <li><a href="#Delete">Delete</a>: Deletes one or all menu items.</li>
       <li><a href="#Disable">Disable</a>: Grays out a menu item to indicate that the user cannot select it.</li>
       <li><a href="#Enable">Enable</a>: Allows the user to once again select a menu item if it was previously disabled (grayed out).</li>
+      <li><a href="#Visibility">HideItem, ShowItem, ToggleItemVis</a>: Changes a menu item's visibility.</li>
       <li><a href="#Insert">Insert</a>: Inserts a new item before the specified item.</li>
+      <li><a href="#GetMenuItemName">MenuItemName</a>: Retrieves a menu item's name.</li>
       <li><a href="#Rename">Rename</a>: Renames a menu item.</li>
       <li><a href="#SetColor">SetColor</a>: Changes the background color of the menu.</li>
+      <li><a href="#SetForeColor">SetForeColor</a>: Changes the menu's text color.</li>
       <li><a href="#SetIcon">SetIcon</a>: Sets the icon to be displayed next to a menu item.</li>
       <li><a href="#Show">Show</a>: Displays the menu.</li>
       <li><a href="#ToggleCheck">ToggleCheck</a>: Toggles the checkmark next to a menu item.</li>
@@ -52,6 +55,7 @@
       <li><a href="#ClickCount">ClickCount</a>: Gets or sets how many times the tray icon must be clicked to select its default menu item.</li>
       <li><a href="#Default">Default</a>: Gets or sets the default menu item.</li>
       <li><a href="#Handle">Handle</a>: Gets the menu's Win32 handle.</li>
+      <li><a href="#MenuItemCount">MenuItemCount</a>: Gets the number of items in the menu.</li>
     </ul>
   </li>
   <li>General:
@@ -163,7 +167,7 @@ MyMenuBar := MenuBar.<span class="func">Call</span>()
   <tr><td>E&amp;xit</td><td>10</td><td>3</td></tr>
 </table>
 <p>Compiled scripts include only the last three by default. <code class="no-highlight">&amp;Open</code> is included only if <a href="../Variables.htm#AllowMainWindow">A_AllowMainWindow</a> is 1 when AddStandard is called (in that case, add 1 to the positions shown in the third column). If the tray menu contains standard items, <code class="no-highlight">&amp;Open</code> is inserted or removed whenever <a href="../Variables.htm#AllowMainWindow">A_AllowMainWindow</a> is changed. For other menus, <code class="no-highlight">&amp;Open</code> has no effect if <a href="../Variables.htm#AllowMainWindow">A_AllowMainWindow</a> is 0.</p>
-<p>Each standard item has an internal menu item ID corresponding to the function it performs, but can otherwise be modified or deleted like any other menu item. AddStandard detects existing items by ID, not by name. If the <a href="#Add">Add</a> method is used to change the callback function associated with a standard menu item, it is assigned a new unique ID and is no longer considered to be a standard item.</p>
+<p>Standard items can be modified or deleted like custom menu items. AddStandard detects existing standard items by their displayed names because the managed menu backend does not expose the native IDs used by the original implementation.</p>
 <p>Adding the <code class="no-highlight">&amp;Open</code> item to the tray menu causes it to become the default item if there wasn't one already.</p>
 </div>
 
@@ -319,8 +323,8 @@ MyMenuBar := MenuBar.<span class="func">Call</span>()
   </dd>
   <dt>IconNumber</dt>
   <dd>
-    <p>Type: <a href="../Concepts.htm#numbers">Integer</a></p>
-    <p>If omitted, it defaults to 1 (the first icon group). Otherwise, specify the number of the icon group to be used in the file. For example, <code>MyMenu.SetIcon(MenuItemName, "Shell32.dll", 2)</code> would use the default icon from the second icon group. If negative, its absolute value is assumed to be the resource ID of an icon within an executable file.</p>
+    <p>Type: <a href="../Concepts.htm#numbers">Integer</a> or <a href="../Concepts.htm#strings">String</a></p>
+    <p>If omitted, it defaults to 1 (the first icon group). Otherwise, specify the number of the icon group to be used in the file. For example, <code>MyMenu.SetIcon(MenuItemName, "Shell32.dll", 2)</code> would use the default icon from the second icon group. If negative, its absolute value is assumed to be the resource ID of an icon within an executable file. For a managed .NET DLL, specify an embedded icon resource name such as <code>"Keysharp_s.ico"</code>.</p>
   </dd>
   <dt>IconWidth</dt>
   <dd>
@@ -405,7 +409,35 @@ MyMenuBar := MenuBar.<span class="func">Call</span>()
 </dl>
 </div>
 
+<div class="methodShort" id="Visibility">
+<h3>HideItem / ShowItem / ToggleItemVis</h3>
+<p>Hides, shows or toggles the visibility of a menu item.</p>
+<pre class="Syntax">IsVisible := MyMenu.<span class="func">HideItem</span>(MenuItemName)
+IsVisible := MyMenu.<span class="func">ShowItem</span>(MenuItemName)
+IsVisible := MyMenu.<span class="func">ToggleItemVis</span>(MenuItemName)</pre>
+<p><em>MenuItemName</em> is the name or position of an item as described under <a href="#MenuItemName">MenuItemName</a>. The return value is 1 if the item is visible after the operation, otherwise 0.</p>
+</div>
+
+<div class="methodShort" id="GetMenuItemName">
+<h3>MenuItemName</h3>
+<p>Returns the stored name of a menu item.</p>
+<pre class="Syntax">Name := MyMenu.<span class="func">MenuItemName</span>(MenuItemName)</pre>
+<p>This avoids using platform-specific menu handles to retrieve an item's name. An empty string is returned if the specified item is not a named menu item.</p>
+</div>
+
+<div class="methodShort" id="SetForeColor">
+<h3>SetForeColor</h3>
+<p>Changes the text color of this menu.</p>
+<pre class="Syntax">MyMenu.<span class="func">SetForeColor</span>(<span class="optional">ColorValue, ApplyToSubmenus</span>)</pre>
+<p><em>ColorValue</em> is a color name or RGB value; omit it or pass blank to restore the default. If <em>ApplyToSubmenus</em> is omitted, it defaults to true.</p>
+</div>
+
 <h2 id="Properties">Properties</h2>
+<div class="methodShort" id="MenuItemCount">
+<h3>MenuItemCount</h3>
+<p>Gets the number of items contained by the menu, including submenus and separator items at this level.</p>
+<pre class="Syntax">Count := MyMenu.<span class="func">MenuItemCount</span></pre>
+</div>
 <div class="methodShort" id="ClickCount">
 <h3>ClickCount</h3>
 <p>Gets or sets how many times the <a href="../Program.htm#tray-icon">tray icon</a> must be clicked to select its default menu item.</p>
@@ -443,12 +475,13 @@ MyMenuBar := MenuBar.<span class="func">Call</span>()
 
 <h2 id="Win32_Menus">Win32 Menus</h2>
 <p>Windows provides a <a href="https://learn.microsoft.com/windows/win32/menurc/menus">set of functions and notifications</a> for creating, modifying and displaying menus with standard appearance and behavior. We refer to a menu created by one of these functions as a <em>Win32 menu</em>.</p>
-<p>As items are added to a menu or modified, the name and other properties of each item are stored in the Menu object. A Win32 menu is constructed the first time the menu or its parent menu is attached to a GUI or shown. It is destroyed automatically when the menu object is deleted (which occurs when its reference count reaches zero).</p>
+<p>As items are added to a menu or modified, the name and other properties of each item are stored in the Menu object. On Windows, a native menu is constructed the first time the menu or its parent is attached to a GUI or shown. Its cleanup follows the <a href="../Objects.htm#Lifetime">managed lifetime</a> of the Menu object and is not based on a script-visible reference count.</p>
 <p><a href="#Handle">Menu.Handle</a> returns a handle to a Win32 menu (a handle of type <code class="no-highlight">HMENU</code>), constructing it if necessary.</p>
 <p>Any modifications which are made to the menu directly by Win32 functions are not reflected by the script's Menu object, so may be lost if an item is modified by one of the built-in methods.</p>
 <p>Each menu item is assigned an ID when it is first added to the menu. Scripts cannot rely on an item receiving a particular ID, but can retrieve the ID of an item by using GetMenuItemID as shown in <a href="#ExDllCall">example #5</a>. This ID cannot be used with the Menu object, but can be used with various <a href="https://learn.microsoft.com/windows/win32/menurc/menus">Win32 functions</a>.</p>
 
 <h2 id="Remarks">Remarks</h2>
+<p>Showing a menu does not pause timers or otherwise change script threading.</p>
 <p>A menu usually looks like this:</p>
 <img src="../static/ctrl_menu.png" alt="Menu" style="border: 1px solid silver;" />
 <p>If a menu ever becomes completely empty -- such as by using <code>MyMenu.Delete()</code> -- it cannot be shown. If the tray menu becomes empty, right-clicking and double-clicking the <a href="../Program.htm#tray-icon">tray icon</a> will have no effect (in such cases it is usually better to use <a href="_NoTrayIcon.htm">#NoTrayIcon</a>).</p>

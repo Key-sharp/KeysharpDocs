@@ -91,6 +91,7 @@ MyGui.Show()  <em>; Show the window and its TreeView.</em></pre>
   <li><a href="#GetNext">GetNext</a>: Returns the ID number of the next item below the specified item.</li>
   <li><a href="#GetText">GetText</a>: Retrieves the text/name of the specified item.</li>
   <li><a href="#Get">Get</a>: Returns the ID number of the specified item if it has the specified attribute.</li>
+  <li><a href="#GetNode">GetNode</a>: Returns the backend TreeNode for the specified item.</li>
 </ul>
 <p>Other methods:</p>
 <ul>
@@ -322,6 +323,13 @@ Loop
 <p>If the specified item has the specified attribute, its own ID is returned. Otherwise, 0 is returned.</p>
 <h4 id="Get_Remarks">Remarks</h4>
 <p>Since an IF-statement sees any non-zero value as "true", the following two lines are functionally identical: <code>if TV.Get(ItemID, "Checked") = ItemID</code> and <code>if TV.Get(ItemID, "Checked")</code>.</p>
+</div>
+
+<div class="methodShort" id="GetNode">
+<h3>GetNode</h3>
+<p>Returns the backend TreeNode object corresponding to an item ID.</p>
+<pre class="Syntax">TreeNode := TV.<span class="func">GetNode</span>(ItemID)</pre>
+<p>This is intended for advanced backend-specific integration. Ordinary scripts should use the portable TreeView methods on this page.</p>
 </div>
 
 <div class="methodShort" id="SetImageList">

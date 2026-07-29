@@ -1,6 +1,51 @@
 tocData = [
   ["Quick Reference","index.htm"],
   ["About Keysharp","Keysharp.htm"],
+  ["Platform Support","Platforms.htm"],
+  ["Compatibility Differences","KeysharpDifferences.htm"],
+  ["Keysharp Extensions","",
+  [
+    ["Built-in Variables","lib/KeysharpVariables.htm"],
+    ["Conditional Compilation","lib/Preprocessor.htm"],
+    ["Build Directives","lib/KeysharpDirectives.htm"],
+    ["Capabilities and Permissions","",
+    [
+      ["#Requires capability","lib/_Requires.htm#CapabilityNames"],
+      ["RequestCapabilities","lib/RequestCapabilities.htm"]
+    ]],
+    ["Strings and Collections","",
+    [
+      ["StringBuffer","lib/StringBuffer.htm"],
+      ["String and Base64 Functions","lib/StringFunctions.htm"],
+      ["C# Regular Expressions","lib/RegExCs.htm"],
+      ["C# String Formatting","lib/FormatCs.htm"],
+      ["HashMap","lib/HashMap.htm"]
+    ]],
+    ["Files and Processes","",
+    [
+      ["File Path Functions","lib/FilePath.htm"],
+      ["RunScript / ProcessInfo","lib/RunScript.htm"],
+      ["Mail","lib/Mail.htm"]
+    ]],
+    ["Desktop and Graphics","",
+    [
+      ["Image","lib/Image.htm"],
+      ["Overlay","lib/Overlay.htm"],
+      ["WinEvent","lib/WinEvent.htm"],
+      ["WinFromPoint","lib/WinFromPoint.htm"],
+      ["WinMaximizeAll","lib/WinMaximizeAll.htm"],
+      ["Clipboard Image Functions","lib/ClipboardFunctions.htm"]
+    ]],
+    ["Runtime and Interop","",
+    [
+      ["RealThread","lib/RealThread.htm"],
+      ["LockRun","lib/LockRun.htm"],
+      ["Collect","lib/Collect.htm"],
+      ["ObjFree","lib/ObjFree.htm"],
+      ["Clr Interop","lib/Clr.htm"]
+    ]],
+    ["Cryptography","lib/Crypto.htm"]
+  ]],
   ["Using Keysharp","",
   [
     ["Using Keysharp","Program.htm"],
@@ -64,6 +109,7 @@ tocData = [
     ["DPI Scaling","misc/DPIScaling.htm"],
     ["EnvGet","lib/EnvGet.htm"],
     ["EnvSet","lib/EnvSet.htm"],
+    ["EnvUpdate","lib/EnvUpdate.htm"],
     ["OnClipboardChange","lib/OnClipboardChange.htm"],
     ["SysGet","lib/SysGet.htm"],
     ["SysGetIPAddresses","lib/SysGetIPAddresses.htm"]

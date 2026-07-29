@@ -88,6 +88,7 @@ MsgBox(1.00)  <em>; Shows 1.0</em></pre>
       <p>If there are any adjoining <em>%Expr%</em> sequences and partial <a href="Concepts.htm#names">names</a> (without any spaces or other characters between them), they are combined to form a single name.</p>
       <p>An <a href="lib/Error.htm">Error</a> is typically thrown if the variable does not already exist, or if it is uninitialized and its value is being read. The <a href="#or-maybe">or-maybe operator (??)</a> can be used to avoid that case by providing a default value. For example: <code>%'novar'% ?? 42</code>.</p>
       <p>Although this is historically known as a "double-deref", this term is inaccurate when <em>Expr</em> does not contain a variable (first deref), and also when the resulting variable is the target of an assignment, not being dereferenced (second deref).</p>
+      <p>Within a function, dynamic dereferencing causes a capture object containing the function's local variables to be created for each call. Avoid it in performance-sensitive functions when a Map, object property or direct variable reference can express the same operation.</p>
     </td>
   </tr>
   <tr id="objdot">
@@ -114,6 +115,7 @@ MsgBox(1.00)  <em>; Shows 1.0</em></pre>
     <td>
       <p><strong>Pre- and post-increment/decrement</strong>. Adds or subtracts 1 from a variable. The operator may appear either before or after the variable's name. If it appears <em>before</em> the name, the operation is performed and its result is used by the next operation (the result is a variable reference in this case). For example, <code>Var := ++X</code> increments X and then assigns its value to <em>Var</em>. Conversely, if the operator appears <em>after</em> the variable's name, the result is the value of X prior to performing the operation. For example, <code>Var := X++</code> increments X but <em>Var</em> receives the value X had before it was incremented.</p>
       <p>These operators can also be used with a property of an object, such as <code>myArray.Length++</code> or <code>--myArray[i]</code>. In these cases, the result of the sub-expression is always a number, not a variable reference.</p>
+      <p>If the target variable is unset, it is initialized to zero before the operation. Therefore, a statement consisting only of <code class="no-highlight">x++</code> leaves <em>x</em> set to 1.</p>
     </td>
   </tr>
   <tr id="pow">
@@ -135,9 +137,11 @@ MsgBox(1.00)  <em>; Shows 1.0</em></pre>
       <p><strong>Logical-not (!):</strong> If the operand is blank or 0, the result of applying logical-not is 1, which means "true". Otherwise, the result is 0 (false). For example: <code>!x or !(y and z)</code>. Note: The word NOT is synonymous with <strong>!</strong> except that <strong>!</strong> has a higher precedence. Consecutive unary operators such as <code>!!Var</code> are allowed because they are evaluated in right-to-left order.</p>
       <p><strong>Bitwise-not (~):</strong> This inverts each bit of its operand. As 64-bit signed integers are used, a positive input value will always give a negative result and vice versa. For example, <code>~0xf0f</code> evaluates to -0xf10 (-3856), which is binary equivalent to 0xfffffffffffff0f0. If an unsigned 32-bit value is intended, the result can be truncated with <code><i>result</i> &amp; 0xffffffff</code>. If the operand is a floating point value, a <a href="lib/Error.htm#TypeError">TypeError</a> is thrown.</p>
       <p id="ref"><strong>Reference (&amp;):</strong> Retrieves a value representing a reference to a variable or property. This is usually a <a href="Concepts.htm#variable-references">VarRef</a> or more generally a <a href="Functions.htm#virtual-reference">virtual reference</a>, which can be used to indirectly get or set the target's value. For example, <code>ref := &amp;target</code> followed by <code>%ref% := 1</code> would assign the value 1 to <em>target</em>. The reference would typically be passed to a function, but could be stored in an array or property. See also: <a href="#deref">Dereference</a>, <a href="Functions.htm#ByRef">ByRef</a>.</p>
+      <p>The operator returns a VarRef or virtual reference, not a raw memory address.</p>
       <p>Taking a reference to a built-in variable such as <a href="lib/A_Clipboard.htm">A_Clipboard</a> is supported only when it is being passed directly to an <em>OutputVar</em> parameter of a built-in function.</p>
       <p><span class="ver">[v2.1-alpha.10]</span>: Built-in variables which allow assignment are fully supported.</p>
-      <p><span class="ver">[v2.1-alpha.10]</span>: Applying the operator to a property causes the __Ref method to be called with the property name as a parameter. For example, <code>&amp;x.y</code> is equivalent to <code>x.__Ref('y')</code>. This typically corresponds to <a href="lib/Object.htm#__Ref">__Ref (Object)</a>, which returns a nested struct or virtual reference to the property. Property parameters and indexing (array/map elements) are not supported.</p>
+      <p><span class="ver">[v2.1-alpha.10]</span>: Applying the operator to a property causes the __Ref method to be called with the property name as a parameter. For example, <code>&amp;x.y</code> is equivalent to <code>x.__Ref('y')</code>. This typically corresponds to <a href="lib/Object.htm#__Ref">__Ref (Object)</a>, which returns a nested struct or virtual reference to the property.</p>
+      <p>Class members, Array elements and Map values can be passed by reference, such as <code class="no-highlight">&amp;obj.Prop</code>, <code class="no-highlight">&amp;arr[5]</code> or <code class="no-highlight">&amp;map["key"]</code>.</p>
     </td>
   </tr>
   <tr id="MulDiv">
@@ -306,6 +310,7 @@ MsgBox(A || B || C) <em>; Shows "0" (C).</em></pre>
     <p>Assigning <code>unset</code> may have <a href="Language.htm#unset-assign">special meaning</a>, such as deleting a property or map element, or other effects if the target is a dynamic property. If the target is a variable, its value is removed. For example: <code>Var := unset</code>, <code>Var1 := (Var2?)</code>.</p>
     <p>An assignment can also target a property of an object, such as <code>myArray.Length += n</code> or <code>myArray[i] .= t</code>. When assigning to a property, the result of the sub-expression is the value being assigned, not a variable reference.</p>
     <p id="maybe-assign"><span class="ver">[v2.1-alpha.2+]</span>: <code>x ??= y</code> is shorthand for <code>x := x ?? y</code>. <em>y</em> is evaluated and assigned to <em>x</em> only if <em>x</em> is <a href="Concepts.htm#unset">unset</a>. This provides a succinct way to initialize a variable, property or array/map element only if it didn't already have a value.</p>
+    <p>The <code class="no-highlight">.=</code> operator creates a new string rather than modifying the left operand in place. For many concatenations, especially in a loop, use <a href="lib/StringBuffer.htm">StringBuffer</a>.</p>
     </td>
   </tr>
   <tr id="fat-arrow">
@@ -466,8 +471,7 @@ sumfn := Sum</pre>
   </tr>
   <tr id="LineNumber">
     <td>A_LineNumber</td>
-    <td><p>The number of the currently executing line within the script (or one of its <a href="lib/_Include.htm">#Include files</a>). This line number will match the one shown by <a href="lib/ListLines.htm">ListLines</a>; it can be useful for error reporting such as this example: <code>MsgBox "Could not write to log file (line number " A_LineNumber ")"</code>.</p>
-    <p>Since a <a href="Scripts.htm#ahk2exe">compiled script</a> has merged all its <a href="lib/_Include.htm">#Include files</a> into one big script, its line numbering may be different than when it is run in non-compiled mode.</p></td>
+    <td><p>The approximate number of the currently executing source line. Preprocessing condenses source before parsing and compilation, so this value is not a reliable exact line number.</p></td>
   </tr>
   <tr id="LineFile">
     <td>A_LineFile</td>
@@ -980,7 +984,8 @@ VirtualHeight := <a href="lib/SysGet.htm">SysGet</a>(79)
         <li><a href="misc/RegExCallout.htm">Regular Expression Callouts</a></li>
       </ul>
       <p>Note: Unlike variables such as A_ThisHotkey, each <a href="misc/Threads.htm">thread</a> retains its own value for A_EventInfo. Therefore, if a thread is interrupted by another, upon being resumed it will still see its original/correct values in these variables.</p>
-      <p>A_EventInfo can also be set by the script, but can only accept unsigned integers within the range available to pointers (32-bit or 64-bit depending on the version of AutoHotkey).</p></td>
+      <p>Mouse-wheel events use a positive value for upward scrolling and a negative value for downward scrolling. Timer callbacks set A_EventInfo to the timer's function object.</p>
+      <p>A_EventInfo can also be set by the script.</p></td>
   </tr>
   <tr id="LastError">
     <td>A_LastError</td>

@@ -144,5 +144,10 @@ FuncObj.<span class="func">Call</span>(Param1, Param2, ...)</pre>
 <pre class="Syntax">ParamCount := FuncObj.<span class="func">MaxParams</span></pre>
 <p>If the function is <a href="../Functions.htm#Variadic">variadic</a>, <em>ParamCount</em> indicates the maximum number of parameters which can be accepted by the function without overflowing into the "variadic*" parameter.</p></div>
 
+<h2 id="Implementation">Implementation Remarks</h2>
+<p>The underlying managed class is named <code class="no-highlight">FuncObj</code> because .NET already defines a type named Func. Compatibility type checks recognize both <code class="no-highlight">Value is Func</code> and <code class="no-highlight">Value is FuncObj</code>.</p>
+<p>Function objects can be obtained from a direct function reference or by passing a function name to <code class="no-highlight">Func()</code>. Most built-in functions can also be used as function objects.</p>
+<p id="Performance">Calling a function object uses reflection and is slower than a direct function call. Prefer direct calls in performance-sensitive loops.</p>
+
 </body>
 </html>

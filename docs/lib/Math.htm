@@ -36,6 +36,9 @@
       <li><a href="#Sin">Sin</a>: Returns the trigonometric sine of a number.</li>
       <li><a href="#Cos">Cos</a>: Returns the trigonometric cosine of a number.</li>
       <li><a href="#Tan">Tan</a>: Returns the trigonometric tangent of a number.</li>
+      <li><a href="#Sinh">Sinh</a>: Returns the hyperbolic sine of a number.</li>
+      <li><a href="#Cosh">Cosh</a>: Returns the hyperbolic cosine of a number.</li>
+      <li><a href="#Tanh">Tanh</a>: Returns the hyperbolic tangent of a number.</li>
       <li><a href="#ASin">ASin</a>: Returns the arcsine of a number in radians.</li>
       <li><a href="#ACos">ACos</a>: Returns the arccosine of a number in radians.</li>
       <li><a href="#ATan">ATan</a>: Returns the arctangent of a number in radians.</li>
@@ -72,8 +75,8 @@ MsgBox Ceil(-1.2) <em>; Returns -1</em></pre>
 MsgBox Floor(-1.2) <em>; Returns -2</em></pre>
 
 <h3 id="Log">Log</h3>
-<p>Returns the logarithm (base 10) of the specified number.</p>
-<pre class="Syntax">Value := <span class="func">Log</span>(Number)</pre>
+<p>Returns the logarithm of the specified number, using base 10 by default.</p>
+<pre class="Syntax">Value := <span class="func">Log</span>(Number <span class="optional">, Base := 10</span>)</pre>
 <p>The result is a floating-point number. If <em>Number</em> is negative, a <a href="Error.htm#ValueError">ValueError</a> is thrown.</p>
 <pre class="NoIndent">MsgBox Log(1.2) <em>; Returns 0.079181</em></pre>
 
@@ -144,6 +147,18 @@ MsgBox Round(345, -2) <em>; Returns 300</em></pre>
 <pre class="Syntax">Value := <span class="func">Tan</span>(Number)</pre>
 <p><em>Number</em> must be expressed in radians.</p>
 <pre class="NoIndent">MsgBox Tan(1.2) <em>; Returns 2.572152</em></pre>
+
+<h3 id="Sinh">Sinh</h3>
+<p>Returns the hyperbolic sine of the specified number.</p>
+<pre class="Syntax">Value := <span class="func">Sinh</span>(Number)</pre>
+
+<h3 id="Cosh">Cosh</h3>
+<p>Returns the hyperbolic cosine of the specified number.</p>
+<pre class="Syntax">Value := <span class="func">Cosh</span>(Number)</pre>
+
+<h3 id="Tanh">Tanh</h3>
+<p>Returns the hyperbolic tangent of the specified number.</p>
+<pre class="Syntax">Value := <span class="func">Tanh</span>(Number)</pre>
 
 <h3 id="ASin">ASin</h3>
 <p>Returns the arcsine (the number whose sine is the specified number) in radians.</p>

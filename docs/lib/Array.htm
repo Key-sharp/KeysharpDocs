@@ -39,14 +39,22 @@ MsgBox users[1]</pre>
   </li>
   <li><a href="#Methods">Methods</a>:
     <ul>
+      <li><a href="#Add">Add</a>: Appends one value and returns the new length.</li>
       <li><a href="#Clone">Clone</a>: Returns a shallow copy of an array.</li>
       <li><a href="#Delete">Delete</a>: Removes the value of an array element, leaving the index without a value.</li>
+      <li><a href="#Filter">Filter</a>: Returns elements accepted by a callback.</li>
+      <li><a href="#FindIndex">FindIndex</a>: Finds an element with a callback.</li>
       <li><a href="#Get">Get</a>: Returns the value at a given index, or a default value.</li>
       <li><a href="#Has">Has</a>: Returns a non-zero number if the index is valid and there is a value at that position.</li>
+      <li><a href="#IndexOf">IndexOf</a>: Finds a value.</li>
       <li><a href="#InsertAt">InsertAt</a>: Inserts one or more values at a given position.</li>
+      <li><a href="#Join">Join</a>: Joins element text.</li>
+      <li><a href="#MapTo">MapTo</a>: Transforms elements into a new Array.</li>
+      <li><a href="#MaxIndex">MaxIndex/MinIndex</a>: Returns the highest or lowest index.</li>
       <li><a href="#Pop">Pop</a>: Removes and returns the last array element.</li>
       <li><a href="#Push">Push</a>: Appends values to the end of an array.</li>
       <li><a href="#RemoveAt">RemoveAt</a>: Removes items from an array.</li>
+      <li><a href="#Sort">Sort</a>: Sorts the Array in place.</li>
       <li><a href="#__New">__New</a>: Appends items. Equivalent to Push.</li>
       <li><a href="#__Enum">__Enum</a>: Enumerates array elements.</li>
     </ul>
@@ -71,6 +79,12 @@ ArrayObj := Array.<span class="func">Call</span>(<span class="optional">Value, V
 </div>
 
 <h2 id="Methods">Methods</h2>
+
+<div class="methodShort" id="Add"><h3>Add</h3>
+<p>Appends one value and returns the new length.</p>
+<pre class="Syntax">Length := ArrayObj.<span class="func">Add</span>(Value)</pre>
+<p>This avoids the variadic-call overhead of Push when only one value is added.</p>
+</div>
 
 <div class="methodShort" id="Clone"><h3>Clone</h3>
 <p>Returns a shallow copy of an array.</p>
@@ -206,6 +220,49 @@ MsgBox x[1]           <em>; B</em>
 x := ["A", , "C"]
 MsgBox x.RemoveAt(1, 2)  <em>; 1</em>
 MsgBox x[1]              <em>; C</em></pre>
+</div>
+
+<div class="methodShort" id="Filter"><h3>Filter</h3>
+<p>Returns a new Array containing each element for which a callback returned true.</p>
+<pre class="Syntax">Filtered := ArrayObj.<span class="func">Filter</span>(Callback)</pre>
+<p>The callback receives <code class="no-highlight">(Value, Index)</code>; it may declare only the parameters it needs.</p>
+</div>
+
+<div class="methodShort" id="FindIndex"><h3>FindIndex</h3>
+<p>Returns the index of the first element for which a callback returns true, or 0 if none does.</p>
+<pre class="Syntax">Index := ArrayObj.<span class="func">FindIndex</span>(Callback <span class="optional">, StartIndex := 1</span>)</pre>
+<p>A negative <em>StartIndex</em> begins at the corresponding position from the end and searches toward the beginning.</p>
+</div>
+
+<div class="methodShort" id="IndexOf"><h3>IndexOf</h3>
+<p>Returns the first index whose value equals <em>Value</em>, or 0 if it is absent.</p>
+<pre class="Syntax">Index := ArrayObj.<span class="func">IndexOf</span>(Value <span class="optional">, StartIndex := 1</span>)</pre>
+<p>A negative <em>StartIndex</em> searches toward the beginning.</p>
+</div>
+
+<div class="methodShort" id="Join"><h3>Join</h3>
+<p>Returns the string representation of every element separated by <em>Separator</em>.</p>
+<pre class="Syntax">Text := ArrayObj.<span class="func">Join</span>(<span class="optional">Separator := ","</span>)</pre>
+</div>
+
+<div class="methodShort" id="MapTo"><h3>MapTo</h3>
+<p>Returns a new Array containing the value returned by a callback for each source element from <em>StartIndex</em>.</p>
+<pre class="Syntax">Mapped := ArrayObj.<span class="func">MapTo</span>(Callback <span class="optional">, StartIndex := 1</span>)</pre>
+<p>The callback receives <code class="no-highlight">(Value, Index)</code>.</p>
+<pre>arr := [10, 20, 30]
+arr2 := arr.MapTo((x, i) =&gt; x * i)</pre>
+</div>
+
+<div class="methodShort" id="MaxIndex"><h3>MaxIndex / MinIndex</h3>
+<p>Returns the highest or lowest index. These compatibility methods are also available on Map.</p>
+<pre class="Syntax">Highest := ArrayObj.<span class="func">MaxIndex</span>()
+Lowest := ArrayObj.<span class="func">MinIndex</span>()</pre>
+</div>
+
+<div class="methodShort" id="Sort"><h3>Sort</h3>
+<p>Sorts the Array in place and returns the Array.</p>
+<pre class="Syntax">ArrayObj.<span class="func">Sort</span>(Callback)</pre>
+<p>The callback receives two values and should return a negative number when the first belongs before the second, zero when equal, or a positive number otherwise.</p>
 </div>
 
 <div class="methodShort" id="__New"><h3>__New</h3>

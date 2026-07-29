@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>RealThread Object | Keysharp</title>
+<meta name="description" content="Runs work on a real managed worker thread." />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../static/theme.css" rel="stylesheet" type="text/css" />
+<link href="../static/dark.css" rel="stylesheet" type="text/css" media="(prefers-color-scheme: dark)" id="dark_css" />
+<script src="../static/content.js" type="text/javascript"></script>
+</head>
+<body>
+
+<h1>RealThread Object</h1>
+<pre class="NoIndent">class RealThread extends Object</pre>
+<p>Runs callbacks on a real managed worker thread. This is distinct from the cooperative script <a href="../misc/Threads.htm">pseudo-threads</a>.</p>
+<p>This class is exported by the <a href="../Modules.htm#KS">KS module</a>.</p>
+
+<h2 id="Call">Call</h2>
+<pre class="Syntax">Worker := RealThread.<span class="func">Call</span>(Callback <span class="optional">, Params*</span>)</pre>
+<p>Starts <em>Callback</em> on a worker and returns its RealThread object.</p>
+
+<h2 id="ContinueWith">ContinueWith</h2>
+<pre class="Syntax">Continuation := Worker.<span class="func">ContinueWith</span>(Callback <span class="optional">, Params*</span>)</pre>
+<p>Starts <em>Callback</em> on a new worker after this worker finishes and returns the continuation's RealThread object.</p>
+
+<h2 id="Post">Post</h2>
+<pre class="Syntax">Worker.<span class="func">Post</span>(Callback <span class="optional">, Params*</span>)</pre>
+<p>Queues a callback on the worker and returns immediately.</p>
+
+<h2 id="Send">Send</h2>
+<pre class="Syntax">Result := Worker.<span class="func">Send</span>(Callback <span class="optional">, Params*</span>)</pre>
+<p>Runs a callback synchronously on the worker and returns its result.</p>
+
+<h2 id="Wait">Wait</h2>
+<pre class="Syntax">Result := Worker.<span class="func">Wait</span>(<span class="optional">Timeout</span>)</pre>
+<p>Waits for the worker to complete and returns its result. <em>Timeout</em> is milliseconds; omit it to wait indefinitely.</p>
+
+<h2 id="Properties">Properties</h2>
+<dl>
+  <dt><code>Id</code></dt><dd><p>The managed ID of the backing worker thread.</p></dd>
+  <dt><code>IsAlive</code></dt><dd><p>True while the worker can accept work.</p></dd>
+</dl>
+
+<h2 id="Remarks">Remarks</h2>
+<p>State shared between real threads requires synchronization. Use <a href="LockRun.htm">LockRun</a> or another appropriate design when callbacks mutate shared objects.</p>
+
+</body>
+</html>

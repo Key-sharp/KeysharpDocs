@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Clr Object | Keysharp</title>
+<meta name="description" content="Experimental access to .NET assemblies, namespaces, types and instances." />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../static/theme.css" rel="stylesheet" type="text/css" />
+<link href="../static/dark.css" rel="stylesheet" type="text/css" media="(prefers-color-scheme: dark)" id="dark_css" />
+<script src="../static/content.js" type="text/javascript"></script>
+</head>
+<body>
+
+<h1>Clr Object</h1>
+<p>Provides experimental access to .NET assemblies through ordinary script property, method, call and index syntax.</p>
+<p>This class is exported by the <a href="../Modules.htm#KS">KS module</a>.</p>
+<p class="note"><strong>Experimental:</strong> Basic values and function objects are marshalled, but complex .NET types might not convert correctly.</p>
+
+<h2 id="Load">Load</h2>
+<pre class="Syntax">Root := Clr.<span class="func">Load</span>(AssemblyOrPath)</pre>
+<p>Loads a DLL/executable path or assembly name and returns a ManagedAssembly or ManagedNamespace wrapper.</p>
+
+<h2 id="Navigation">Namespaces, Types and Instances</h2>
+<ul>
+  <li>Access a ManagedNamespace property to retrieve a child namespace or ManagedType.</li>
+  <li>Access static methods and properties through a ManagedType, or call it to construct a ManagedInstance.</li>
+  <li>Use ordinary property, method and index syntax with a ManagedInstance.</li>
+</ul>
+
+<h2 id="Names">Name Helpers</h2>
+<pre class="Syntax">Name := Clr.<span class="func">GetNamespaceName</span>(ManagedNamespace)
+Name := Clr.<span class="func">GetTypeName</span>(ManagedType)</pre>
+<p>Returns the underlying full namespace or type name.</p>
+
+<h2 id="Examples">Examples</h2>
+<pre>#Import "Ks" { Clr }
+System := Clr.Load("System")
+Linq := System.Linq.Enumerable
+Odds := Linq.Where([1, 2, 3, 4], n =&gt; Mod(n, 2))</pre>
+
+</body>
+</html>

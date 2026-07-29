@@ -44,6 +44,7 @@
 <h3 id="Interrupt">Interrupt</h3>
 <p>Changes the duration of interruptibility for newly launched threads.</p>
 <pre class="Syntax"><span class="func">Thread</span> "Interrupt" <span class="optional">, Duration, LineCount</span></pre>
+<p class="note"><strong>Notice:</strong> <em>LineCount</em> is accepted for compatibility but has no effect because compiled scripts do not track execution at script-line granularity. Interruption is controlled by <em>Duration</em>.</p>
 <p class="note"><strong>Note:</strong> This sub-function should be used sparingly because most scripts perform more consistently with settings close to the defaults.</p>
 <p>By default, every newly launched thread is uninterruptible for a <em>Duration</em> of 17 milliseconds or a <em>LineCount</em> of 1000 script lines, whichever comes first. This gives the thread a chance to finish rather than  being immediately interrupted by another thread that is waiting to launch (such as a buffered <a href="../Hotkeys.htm">hotkey</a> or a series of <a href="SetTimer.htm">timed subroutines</a> that are all due to be run).</p>
 <p class="note"><strong>Note:</strong> Any <em>Duration</em> less than 17 might result in a shorter actual duration or immediate interruption, since the system tick count has a minimum resolution of 10 to 16 milliseconds. However, at least one line will execute before the thread becomes interruptible, allowing the script to enable <a href="Critical.htm">Critical</a>, if needed.</p>

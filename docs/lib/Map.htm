@@ -42,6 +42,7 @@ for clr in Array("Blue", "Green")
       <li><a href="#Delete">Delete</a>: Removes a key-value pair from a map.</li>
       <li><a href="#Get">Get</a>: Returns the value associated with a key, or a default value.</li>
       <li><a href="#Has">Has</a>: Returns true if the specified key has an associated value within a map.</li>
+      <li><a href="#MaxIndex">MaxIndex/MinIndex</a>: Returns the highest or lowest numeric key.</li>
       <li><a href="#Set">Set</a>: Sets zero or more items.</li>
       <li><a href="#__Enum">__Enum</a>: Enumerates key-value pairs.</li>
       <li><a href="#__New">__New</a>: Sets items. Equivalent to Set.</li>
@@ -127,6 +128,12 @@ MapObj := Map.<span class="func">Call</span>(Key1, Value1, Key2, Value2, ...)</p
 <p>This method returns the Map.</p>
 </div>
 
+<div class="methodShort" id="MaxIndex"><h3>MaxIndex / MinIndex</h3>
+<p>Returns the highest or lowest numeric key. These v1 compatibility methods are also available on Array.</p>
+<pre class="Syntax">Highest := MapObj.<span class="func">MaxIndex</span>()
+Lowest := MapObj.<span class="func">MinIndex</span>()</pre>
+</div>
+
 <div class="methodShort" id="__Enum"><h3>__Enum</h3>
 <p>Enumerates key-value pairs.</p>
 <pre class="Syntax">For Key <span class="optional">, Value</span> in MapObj</pre>
@@ -143,6 +150,7 @@ MapObj := Map.<span class="func">Call</span>(Key1, Value1, Key2, Value2, ...)</p
     <p>The value.</p>
   </dd>
 </dl>
+<p>The underlying storage is a hash map. To preserve compatible enumeration order, the Map is copied and sorted before enumeration. Modifying it during enumeration therefore does not have the same effect as modifying an AutoHotkey Map during enumeration. Use <a href="HashMap.htm">HashMap</a> when sorted enumeration is unnecessary.</p>
 </div>
 
 <div class="methodShort" id="__New"><h3>__New</h3>

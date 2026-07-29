@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Keysharp Build Directives | Keysharp</title>
+<meta name="description" content="Directives for hook isolation and compiled assembly metadata." />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../static/theme.css" rel="stylesheet" type="text/css" />
+<link href="../static/dark.css" rel="stylesheet" type="text/css" media="(prefers-color-scheme: dark)" id="dark_css" />
+<script src="../static/content.js" type="text/javascript"></script>
+</head>
+<body>
+
+<h1>Keysharp Build Directives</h1>
+
+<h2 id="HookMutexName">#HookMutexName</h2>
+<pre class="Syntax"><span class="func">#HookMutexName</span> Name</pre>
+<p>Changes the name of mutex objects used to detect keyboard and mouse hooks in other scripts. The default is <code class="no-highlight">Keysharp</code>.</p>
+
+<h2 id="Assembly">Assembly Metadata</h2>
+<pre class="Syntax"><span class="func">#AssemblyTitle</span> Value
+<span class="func">#AssemblyDescription</span> Value
+<span class="func">#AssemblyConfiguration</span> Value
+<span class="func">#AssemblyCompany</span> Value
+<span class="func">#AssemblyProduct</span> Value
+<span class="func">#AssemblyCopyright</span> Value
+<span class="func">#AssemblyTrademark</span> Value
+<span class="func">#AssemblyVersion</span> Value</pre>
+<p>Sets the corresponding .NET assembly attribute on compiled output. <code>#AssemblyVersion</code> sets both the assembly and file version.</p>
+<p class="note"><strong>Compatibility note:</strong> Older project notes referred to <code>#AssemblyName</code>. The current directive which sets the title metadata is <code>#AssemblyTitle</code>.</p>
+
+<h2 id="Related">Related</h2>
+<p><a href="../Program.htm#compile">Compiling a Script</a>, <a href="KeysharpVariables.htm">assembly metadata variables</a></p>
+
+</body>
+</html>

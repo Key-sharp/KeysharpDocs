@@ -38,6 +38,12 @@
 <p>All numbers within the specified range have approximately the same probability of being generated.</p>
 <p>Although the specified maximum value is excluded by design when returning a floating point number, it may in theory be returned due to floating point rounding errors. This has not been confirmed, and might only be possible if the chosen bounds are larger than 2**53. Also note that since there may be up to 2**53 possible values (such as in the range 0.0 to 1.0), the probability of generating exactly the lower bound is generally very low.</p>
 
+<h2 id="RandomSeed">RandomSeed</h2>
+<p>Reinitializes the current thread's pseudo-random number generator with a chosen seed.</p>
+<p>This function is exported by the <a href="../Modules.htm#KS">KS module</a>.</p>
+<pre class="Syntax"><span class="func">RandomSeed</span>(Integer)</pre>
+<p>Repeatedly seeding with the same value produces a reproducible sequence for testing. Do not use Random or RandomSeed for security-sensitive values; use <a href="Crypto.htm#SecureRandom">SecureRandom</a>.</p>
+
 <h2 id="Examples">Examples</h2>
 <div class="ex" id="ExBasic">
 <p><a class="ex_number" href="#ExBasic"></a> Generates a random integer in the range 1 to 10 and stores it in <var>N</var>.</p>

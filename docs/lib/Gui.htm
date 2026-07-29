@@ -46,6 +46,7 @@
       <li><a href="#SetFont">SetFont</a>: Sets the font typeface, size, style, and/or color for subsequently created controls.</li>
       <li><a href="#Show">Show</a>: Displays the window. It can also minimize, maximize, or move the window.</li>
       <li><a href="#Submit">Submit</a>: Collects values from named controls into an object and optionally hides the window.</li>
+      <li><a href="#UseGroup">UseGroup</a>: Selects a GroupBox as the container for subsequently added controls.</li>
       <li><a href="#__Enum">__Enum</a>: Enumerates the window's controls.</li>
       <li><a href="#__New">__New</a>: Constructs a new Gui instance.</li>
     </ul>
@@ -60,6 +61,7 @@
       <li><a href="#MenuBar">MenuBar</a>: Gets or sets the window's menu bar.</li>
       <li><a href="#Name">Name</a>: Gets or sets a custom name for the window.</li>
       <li><a href="#Title">Title</a>: Gets or sets the window's title.</li>
+      <li><a href="#Visible">Visible</a>: Gets or sets whether the window is visible.</li>
       <li><a href="#__Item">__Item</a>: Gets the control associated with the specified name, text, ClassNN or HWND.</li>
     </ul>
   </li>
@@ -141,6 +143,7 @@ MyGui.Show()</pre>
     <p id="H"><strong>H</strong><em>n</em>: Height (where <em>n</em> is any number in pixels). If both the H and R options are absent, <a href="GuiControls.htm#DropDownList">DropDownList</a>, <a href="GuiControls.htm#ComboBox">ComboBox</a>, <a href="GuiControls.htm#ListBox">ListBox</a>, and <a href="GuiControls.htm#Edit">Edit</a> (empty and multi-line) default to 3 rows; <a href="GuiControls.htm#GroupBox">GroupBox</a> defaults to 2 rows; <a href="GuiControls.htm#Slider">Slider</a> (vertical), <a href="GuiControls.htm#Progress">Progress</a> (vertical), <a href="GuiControls.htm#UpDown">UpDown</a> (vertical and isolated), <a href="GuiControls.htm#ListView">ListView</a>, <a href="GuiControls.htm#TreeView">TreeView</a>, and <a href="GuiControls.htm#Custom">Custom</a> default to 5 rows; <a href="GuiControls.htm#Slider">Slider</a> (horizontal) defaults to 30 pixels (except if a thickness has been specified); <a href="GuiControls.htm#Progress">Progress</a> (horizontal) and <a href="GuiControls.htm#UpDown">UpDown</a> (horizontal and isolated) default to 2 times the current font size; <a href="GuiControls.htm#Edit">Edit</a> (single-line), <a href="GuiControls.htm#DateTime">DateTime</a>, and <a href="GuiControls.htm#Hotkey">Hotkey</a> default to 1 row; and <a href="GuiControls.htm#Tab">Tab</a> defaults to 10 rows. For the other control types, the height is calculated automatically based on their contents. Note that for <a href="GuiControls.htm#DropDownList">DropDownList</a> and <a href="GuiControls.htm#ComboBox">ComboBox</a>, H is the combined height of the control's always-visible portion and its list portion (but even if the height is set too low, at least one item will always be visible in the list). Also, for all types of controls, specifying the number of rows via the R option is usually preferable to using H because it prevents a control from showing partial/incomplete rows of text.</p>
     <p><strong>WP</strong><em>&#177;n</em> and <strong>HP</strong><em>&#177;n</em> (where <em>n</em> is any number in pixels) can be used to set the width and/or height of a control equal to the previously added control's width or height, with an optional plus or minus adjustment. For example, <code class="no-highlight">wp</code> would set a control's width to that of the previous control, and <code class="no-highlight">wp-50</code> would set it equal to 50 less than that of the previous control.</p>
     <p id="XY"><strong>X</strong><em>n</em>, <strong>Y</strong><em>n</em>: X-position, Y-position (where <em>n</em> is any number in pixels). For example, specifying <code class="no-highlight">x0 y0</code> would position the control in the upper left corner of the window's client area, which is the area beneath the title bar and menu bar (if any).</p>
+    <p id="ContainerXY"><strong>XC</strong><em>&#177;n</em>, <strong>YC</strong><em>&#177;n</em>: Positions the control relative to its current container. For example, inside a GroupBox selected by <a href="#UseGroup">UseGroup</a>, <code class="no-highlight">xc+10</code> places the control 10 pixels from the container's left edge.</p>
     <p id="PosPlus"><strong>X+</strong><em>n</em>, <strong>Y+</strong><em>n</em> (where <em>n</em> is any number in pixels): An optional plus sign can be included to position a control relative to the right or bottom edge (respectively) of the control that was previously added. For example, specifying <code class="no-highlight">y+10</code> would position the control 10 pixels beneath the bottom of the previous control rather than using the standard padding distance. Similarly, specifying <code class="no-highlight">x+10</code> would position the control 10 pixels to the right of the previous control's right edge. Since negative numbers such as <code class="no-highlight">x-10</code> are reserved for absolute positioning, to use a negative offset, include a plus sign in front of it. For example: <code class="no-highlight">x+-10</code>.</p>
     <p id="PosPlusMargin">For X+ and Y+, the letter <strong>M</strong> can be used as a substitute for the window's current <a href="#MarginX">margin</a>. For example, <code class="no-highlight">x+m</code> uses the right edge of the previous control plus the standard padding distance. <code class="no-highlight">xp y+m</code> positions a control below the previous control, whereas specifying a relative X coordinate on its own (with XP or X+) would normally imply <code class="no-highlight">yp</code> by default.</p>
     <p id="xp"><strong>XP</strong><em>&#177;n</em> and <strong>YP</strong><em>&#177;n</em> (where <em>n</em> is any number in pixels) can be used to position controls relative to the previous control's upper left corner, which is often useful for enclosing controls in a <a href="GuiControls.htm#GroupBox">GroupBox</a>.</p>
@@ -210,6 +213,7 @@ MyGui.Show()</pre>
     <p><strong>C:</strong> Color of text (has no effect on <a href="GuiControls.htm#Button">Button</a>, <a href="GuiControls.htm#DateTime">DateTime</a>, and <a href="GuiControls.htm#StatusBar">StatusBar</a>). Specify the letter C followed immediately by a color name (see <a href="../misc/Colors.htm">color chart</a>) or RGB value (the 0x prefix is optional). Examples: <code class="no-highlight">cRed</code>, <code class="no-highlight">cFF2211</code>, <code class="no-highlight">c0xFF2211</code>, <code class="no-highlight">cDefault</code>.</p>
     <p id="Disabled"><strong>Disabled:</strong> Makes an input-capable control appear in a disabled state, which prevents the user from focusing or modifying its contents. Use <a href="GuiControl.htm#Enabled">GuiControl.Enabled</a> to enable it later. Note: To make an <a href="GuiControls.htm#Edit">Edit</a> control read-only, specify the string <code class="no-highlight">ReadOnly</code> instead. Also, the word Disabled may optionally be followed immediately by a 0 or 1 to indicate the starting state (0 for enabled and 1 for disabled). In other words, <code class="no-highlight">Disabled</code> and <code>"Disabled" VarContainingOne</code> are the same.</p>
     <p id="Hidden"><strong>Hidden:</strong> The control is initially invisible. Use <a href="GuiControl.htm#Visible">GuiControl.Visible</a> to show it later. The word Hidden may optionally be followed immediately by a 0 or 1 to indicate the starting state (0 for visible and 1 for hidden). In other words, <code class="no-highlight">Hidden</code> and <code>"Hidden" VarContainingOne</code> are the same.</p>
+    <p id="ControlAutoSize"><strong>AutoSize:</strong> Enables the control toolkit's preferred-size behavior for the control. This is disabled by default.</p>
     <p><strong>Left:</strong> Left-justifies the control's text within its available width. This option affects the following controls: <a href="GuiControls.htm#Text">Text</a>, <a href="GuiControls.htm#Edit">Edit</a>, <a href="GuiControls.htm#Button">Button</a>, <a href="GuiControls.htm#CheckBox">CheckBox</a>, <a href="GuiControls.htm#Radio">Radio</a>, <a href="GuiControls.htm#UpDown">UpDown</a>, <a href="GuiControls.htm#Slider">Slider</a>, <a href="GuiControls.htm#Tab">Tab</a>, <a href="GuiControls.htm#GroupBox">GroupBox</a>, <a href="GuiControls.htm#DateTime">DateTime</a>.</p>
     <p><strong>Right:</strong> Right-justifies the control's text within its available width. For <a href="GuiControls.htm#CheckBox">CheckBox</a> and <a href="GuiControls.htm#Radio">Radio</a> controls, this also puts the box itself on the right side of the control rather than the left. This option affects the following controls: <a href="GuiControls.htm#Text">Text</a>, <a href="GuiControls.htm#Edit">Edit</a>, <a href="GuiControls.htm#Button">Button</a>, <a href="GuiControls.htm#CheckBox">CheckBox</a>, <a href="GuiControls.htm#Radio">Radio</a>, <a href="GuiControls.htm#UpDown">UpDown</a>, <a href="GuiControls.htm#Slider">Slider</a>, <a href="GuiControls.htm#Tab">Tab</a>, <a href="GuiControls.htm#GroupBox">GroupBox</a>, <a href="GuiControls.htm#DateTime">DateTime</a>, <a href="GuiControls.htm#Link">Link</a>.</p>
     <p><strong>Center:</strong> Centers the control's text within its available width. This option affects the following controls: <a href="GuiControls.htm#Text">Text</a>, <a href="GuiControls.htm#Edit">Edit</a>, <a href="GuiControls.htm#Button">Button</a>, <a href="GuiControls.htm#CheckBox">CheckBox</a>, <a href="GuiControls.htm#Radio">Radio</a>, <a href="GuiControls.htm#Slider">Slider</a>, <a href="GuiControls.htm#GroupBox">GroupBox</a>.</p>
@@ -393,6 +397,8 @@ MyGui.Move(x-10,, w+20)</pre>
     <p>The effect of this parameter is cumulative; that is, it alters only those settings that are explicitly specified, leaving all the others unchanged.</p>
     <p>Specify a plus sign to add the option and a minus sign to remove it. For example: <code>MyGui.Opt("+Resize -MaximizeBox")</code>.</p>
     <p><strong>AlwaysOnTop:</strong> Makes the window stay on top of all other windows, which is the same effect as <a href="WinSetAlwaysOnTop.htm">WinSetAlwaysOnTop</a>.</p>
+    <p id="AppMenu"><strong>AppMenu</strong> (present by default): On macOS, supplies the application and standard Edit menus needed for Command-C, Command-X, Command-V, Command-A and undo/redo in text controls. Use <code class="no-highlight">-AppMenu</code> for a window which should contribute no application menu. The option has no effect on Windows or Linux.</p>
+    <p id="AutoScroll"><strong>AutoScroll:</strong> Shows scrollbars when the window's controls extend beyond its client area.</p>
     <p><strong>Border:</strong> Provides a thin-line border around the window. This is not common.</p>
     <p><strong>Caption</strong> (present by default): Provides a title bar and a thick window border/edge. When removing the caption from a window that will use <a href="WinSetTransColor.htm">WinSetTransColor</a>, remove it only after setting the TransColor.</p>
     <p><strong>Disabled:</strong> Disables the window, which prevents the user from interacting with its controls. This is often used on a window that owns other windows (see <a href="#Owner">Owner</a>).</p>
@@ -565,6 +571,14 @@ MyGui.SetFont(, "Verdana")  <em>; Preferred font.</em></pre>
 <p>Also excluded: <a href="ListView.htm">ListView</a>, <a href="TreeView.htm">TreeView</a>, <a href="GuiControls.htm#ActiveX">ActiveX</a>, <a href="GuiControls.htm#Custom">Custom</a>.</p>
 </div>
 
+<div class="methodShort" id="UseGroup">
+<h3>UseGroup</h3>
+<p>Selects a GroupBox as the container for subsequently added controls, or returns to the window itself.</p>
+<pre class="Syntax">MyGui.<span class="func">UseGroup</span>(<span class="optional">GroupBox</span>)</pre>
+<p><em>GroupBox</em> is a <a href="GuiControl.htm">GuiControl object</a> for a GroupBox. Omit it to end the group and add subsequent controls directly to the window.</p>
+<p>Within the group, <a href="#ContainerXY"><code>xc</code> and <code>yc</code></a> position a control relative to the container.</p>
+</div>
+
 <div class="methodShort" id="__Enum">
 <h3>__Enum</h3>
 <p>Enumerates the window's controls.</p>
@@ -604,7 +618,7 @@ MyGui.SetFont(, "Verdana")  <em>; Preferred font.</em></pre>
 <pre class="Syntax">CurrentColor := MyGui.<span class="func">BackColor</span></pre>
 <pre class="Syntax">MyGui.<span class="func">BackColor</span> := NewColor</pre>
 <p><em>CurrentColor</em> is a 6-digit RGB value of the current color previously set by this property, or an empty string if the default color is being used.</p>
-<p><em>NewColor</em> is one of the 16 primary <a href="../misc/Colors.htm">HTML color names</a>, a hexadecimal RGB color value (the 0x prefix is optional), a pure numeric RGB color value, or the word Default (or an empty string) for its default color. Example values: <code>"Silver"</code>, <code>"FFFFAA"</code>, <code>0xFFFFAA</code>, <code>"Default"</code>, <code>""</code>.</p>
+<p><em>NewColor</em> is a <a href="https://learn.microsoft.com/dotnet/api/system.drawing.knowncolor">.NET known color name</a>, a hexadecimal RGB color value (the 0x prefix is optional), a pure numeric RGB value, or the word Default (or an empty string) for its default color. Example values: <code>"Silver"</code>, <code>"FFFFAA"</code>, <code>0xFFFFAA</code>, <code>"Default"</code>, <code>""</code>.</p>
 <p>By default, the window's background color is the system's color for the face of buttons.</p>
 <p>The color of the <a href="#MenuBar">menu bar</a> and its submenus can be changed as in this example: <code>MyMenuBar.<a href="Menu.htm#SetColor">SetColor</a>("White")</code>.</p>
 <p>To make the background transparent, use <a href="WinSetTransColor.htm">WinSetTransColor</a>. However, if you do this without first having assigned a custom window via <a href="#BackColor">Gui.BackColor</a>, buttons will also become transparent. To prevent this, first assign a custom color and then make that color transparent. For example:</p>
@@ -688,6 +702,14 @@ MyGui.Show("w300 h200")</pre>
 <pre class="Syntax">MyGui.<span class="func">Title</span> := NewTitle</pre>
 </div>
 
+<div class="methodShort" id="Visible">
+<h3>Visible</h3>
+<p>Gets or sets whether the window is visible.</p>
+<pre class="Syntax">IsVisible := MyGui.<span class="func">Visible</span>
+MyGui.<span class="func">Visible</span> := NewState</pre>
+<p><em>IsVisible</em> is 1 (true) if the window is visible, or 0 (false) otherwise. Assign a non-zero value to show the window or zero to hide it.</p>
+</div>
+
 <div class="methodShort" id="__Item">
 <h3>__Item</h3>
 <p>Gets the control associated with the specified <a href="GuiControl.htm#Name">name</a>, <a href="../misc/ControlID.htm#Text">text</a>, <a href="../misc/ControlID.htm#ClassNN">ClassNN</a> or <a href="../misc/ControlID.htm#HWND">HWND</a>.</p>
@@ -716,9 +738,13 @@ MyGui.Show()</pre>
 <h2 id="GenRemarks">General Remarks</h2>
 <p>Use the <a href="GuiControl.htm">GuiControl object</a> to operate upon individual controls in a GUI window.</p>
 <p>Each GUI window may have up to 11,000 controls. However, use caution when creating more than 5000 controls because system instability may occur for certain control types.</p>
-<p id="deleted">The GUI window is automatically <a href="#Destroy">destroyed</a> when the Gui object is deleted, which occurs when its <a href="../Objects.htm#Reference_Counting">reference count</a> reaches zero. However, this does not typically occur while the window is visible, as <a href="#Show">Show</a> automatically increments the reference count. While the window is visible, the user can interact with it and raise events which are handled by the script. When the user closes the window or it is hidden by <a href="#Hide">Hide</a>, <a href="#Show">Show</a> or <a href="#Submit">Submit</a>, this extra reference is released.</p>
-<p>To keep a GUI window "alive" without calling <a href="#Show">Show</a> or retaining a reference to its Gui object, the script can increment the object's reference count with <a href="ObjAddRef.htm">ObjAddRef</a> (in which case <a href="ObjAddRef.htm">ObjRelease</a> must be called when the window is no longer needed). For example, this might be done when using a hidden GUI window to <a href="OnMessage.htm">receive messages</a>, or if the window is shown by "external" means such as <a href="WinShow.htm">WinShow</a> (by this script or any other).</p>
+<p id="deleted">GUI objects follow <a href="../Objects.htm#Lifetime">managed object lifetime</a>, so garbage collection is not a deterministic way to close a window. Call <a href="#Destroy">Destroy</a> when a window and its resources must be released at a known time.</p>
+<p>Retain a normal script reference to a hidden GUI which must continue receiving messages. <a href="ObjAddRef.htm">ObjAddRef</a> is for native COM pointers and must not be used to manage a GUI object's lifetime.</p>
 <p>If the script is not <a href="../Scripts.htm#persistent">persistent</a> for any other reason, it will exit after the last visible GUI is closed; either when the last thread completes or immediately if no threads are running.</p>
+
+<h3 id="macOS">macOS</h3>
+<p>macOS implements standard text-editing shortcuts through an application's Edit menu rather than each text control. A GUI therefore receives a minimal application menu and Edit menu by default. If the script assigns <a href="#MenuBar">Gui.MenuBar</a>, the Edit menu is merged ahead of the script's menus and remains present when the menu bar changes at runtime.</p>
+<p>Use the <a href="#AppMenu"><code>-AppMenu</code></a> option for a borderless, kiosk or similar window which should have no application menu. Standard Command-key editing shortcuts do not work in that window's text controls while the menu is disabled.</p>
 
 <h2 id="Related">Related</h2>
 <p><a href="GuiControl.htm">GuiControl object</a>, <a href="GuiFromHwnd.htm">GuiFromHwnd</a>, <a href="GuiCtrlFromHwnd.htm">GuiCtrlFromHwnd</a>, <a href="GuiControls.htm">Control Types</a>, <a href="ListView.htm">ListView</a>, <a href="TreeView.htm">TreeView</a>, <a href="Menu.htm">Menu object</a>, <a href="Control.htm">Control functions</a>, <a href="MsgBox.htm">MsgBox</a>, <a href="FileSelect.htm">FileSelect</a>, <a href="DirSelect.htm">DirSelect</a></p>

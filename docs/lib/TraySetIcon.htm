@@ -29,8 +29,8 @@
   
   <dt>IconNumber</dt>
   <dd>
-    <p>Type: <a href="../Concepts.htm#numbers">Integer</a></p>
-    <p>If omitted, it defaults to 1 (the first icon group in the file). Otherwise, specify the number of the icon group to use. For example, <code>2</code> would load the default icon from the second icon group. If negative, the absolute value is assumed to be the resource ID of an icon within an executable file. If <em>FileName</em> is omitted, <em>IconNumber</em> is ignored.</p>
+    <p>Type: <a href="../Concepts.htm#numbers">Integer</a> or <a href="../Concepts.htm#strings">String</a></p>
+    <p>If omitted, it defaults to 1 (the first icon group in the file). Otherwise, specify the number of the icon group to use. For example, <code>2</code> would load the default icon from the second icon group. If negative, the absolute value is assumed to be the resource ID of an icon within an executable file. For a managed .NET DLL, specify an embedded icon resource name such as <code>"Keysharp_s.ico"</code>. If <em>FileName</em> is omitted, <em>IconNumber</em> is ignored.</p>
   </dd>
   
   <dt>Freeze</dt>

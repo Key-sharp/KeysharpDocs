@@ -253,6 +253,7 @@ Result := <span class="func">MsgBox</span>(<span class="optional">Text, Title, O
 <p>An <a href="Error.htm">Error</a> is thrown on failure, such as if the options are invalid, the <a href="#max">MsgBox limit</a> has been reached, or the message box could not be displayed for some other reason.</p>
 
 <h2 id="Remarks">Remarks</h2>
+<p class="note"><strong>Notice:</strong> Modality option values are ignored. The message box blocks the window which launched it; while <a href="Gui.htm#OwnDialogs">OwnDialogs</a> is active, it blocks all GUI windows in the script. System-modal message boxes are not supported on Windows, and the Help option (16384) is ignored.</p>
 <p>A message box usually looks like this:</p>
 <img src="../static/dlg_message.png" alt="MsgBox" />
 <p>To determine which button the user pressed, use the function's <a href="#Result">return value</a>. For example:</p>

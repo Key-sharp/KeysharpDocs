@@ -12,29 +12,121 @@
 <body>
 <h1>How to Install Keysharp</h1>
 
-<p>Download the package for your operating system from the <a href="https://github.com/Descolada/keysharp/releases">Keysharp releases page</a>. Keysharp targets .NET 10; check the selected release notes for its runtime and platform requirements.</p>
-<p class="note"><strong>Development status:</strong> Keysharp is under active development. Windows has the broadest feature coverage. Linux and macOS support are improving, but operating-system-specific functions may be unavailable. Check the <a href="https://github.com/Descolada/keysharp/blob/master/docs/capabilities.md">capability matrix</a> before relying on a feature.</p>
+<p>Download the package for your operating system from the <a href="https://github.com/Descolada/keysharp/releases">Keysharp releases page</a>. See <a href="../Platforms.htm">Platform Support</a> for desktop-backend and permission requirements.</p>
+
+<h2 id="Prerequisites">Prerequisites</h2>
+<p>Keysharp targets .NET 10. Install the appropriate .NET 10 runtime from the <a href="https://dotnet.microsoft.com/download/dotnet/10.0">.NET 10 download page</a> if it is not already installed. Building from source requires the .NET 10 SDK.</p>
 
 <h2 id="Windows">Windows</h2>
+<p>Download and run the Windows installer. It can add the install directory to <code class="no-highlight">PATH</code>; the entry is removed when Keysharp is uninstalled.</p>
+<p>The installer associates <code class="no-highlight">.ks</code> source files and <code class="no-highlight">.cks</code> compiled scripts with Keysharp. It also adds a right-click <strong>Compile</strong> action for <code class="no-highlight">.ahk</code> and <code class="no-highlight">.ks</code> files, which creates a <code class="no-highlight">.cks</code> file beside the source script.</p>
+
+<h3 id="Portable_Windows">Portable use</h3>
 <ol>
-  <li>Download the Windows installer from the releases page.</li>
-  <li>Run the installer and follow its prompts.</li>
-  <li>Create a plain-text script named <code class="no-highlight">hello.ks</code>.</li>
-  <li>Run it with <code class="no-highlight">Keysharp.exe hello.ks</code>, or use the file association installed with Keysharp.</li>
+  <li>Download and extract the Windows ZIP package.</li>
+  <li>Open a terminal in the extracted directory.</li>
+  <li>Run <code class="no-highlight">.\Keysharp.exe yourfilename.ahk</code>.</li>
 </ol>
-<p>Keysharp also includes <strong>Keyview</strong>, its script viewer and editor utility.</p>
+
+<h3 id="Build_Windows">Building from source</h3>
+<ol>
+  <li>Install <a href="https://visualstudio.microsoft.com/vs/community/">Visual Studio 2022</a> and the .NET 10 SDK.</li>
+  <li>Open <code class="no-highlight">Keysharp.sln</code> and build the solution. Building the installer is not required to run scripts.</li>
+  <li>Change to <code class="no-highlight">bin\Release\net10.0-windows</code> (or the Debug equivalent).</li>
+  <li>Run <code class="no-highlight">.\Keysharp.exe yourtestfile.ahk</code>.</li>
+</ol>
+<p>To create the release MSI and portable ZIP, run <code class="no-highlight">Keysharp.Install\package-windows.ps1</code> from PowerShell. Output is written to <code class="no-highlight">dist\</code>. The MSI requires the Microsoft Visual Studio Installer Projects extension; the portable ZIP is produced without it.</p>
 
 <h2 id="Linux">Linux</h2>
+<p>Download and extract the Linux installer tarball. Install the Debian package if one is provided, or run:</p>
+<pre class="no-highlight">sudo bash ./install.sh</pre>
+<p>A system installation:</p>
+<ul>
+  <li>installs runtime dependencies and attempts to install the .NET 10 runtime;</li>
+  <li>associates <code class="no-highlight">.ks</code> and <code class="no-highlight">.cks</code> files;</li>
+  <li>creates <code class="no-highlight">/usr/local/bin/keysharp</code>;</li>
+  <li>installs the root-owned <code class="no-highlight">keysharp-inputd</code> daemon for evdev/uinput access, enabling reliable hooks, input synthesis, <code>BlockInput</code>, hotkeys and hotstrings;</li>
+  <li>installs the root-owned setuid <code class="no-highlight">keysharp-helper</code> screen-capture trust gate; and</li>
+  <li>installs GNOME and Cinnamon extensions for the invoking desktop user when applicable.</li>
+</ul>
+<p>On KWin, <code class="no-highlight">keysharp-helper</code> performs <code>ScreenShot2</code> capture. On GNOME and Cinnamon it is the only caller accepted by the shell extensions. On X11 and other Wayland compositors it records consent before Keysharp performs its own capture; capture cannot be technically enforced there. Without the helper, capture proceeds without this gate where the desktop backend permits it.</p>
+<p>The GNOME extension is required for screen capture, mouse-location queries and window automation, and takes effect after logout or reboot. The Cinnamon extension improves window inventory, events, actions and mouse synthesis; the installer asks a running Cinnamon session to load or reload it.</p>
+<p>For a user-local installation without privileged helpers, run:</p>
+<pre class="no-highlight">bash ./install.sh</pre>
+<p>This installs under <code class="no-highlight">$HOME/.local</code>. Input hooks/synthesis and Wayland screen capture which depend on the root-installed helpers remain unavailable.</p>
+
+<h3 id="Linux_Editor">VS Code compatibility shim</h3>
+<p>For thqby's AutoHotkey v2 Language Support extension, create the executable name it expects:</p>
+<pre class="no-highlight">mkdir -p ~/.local/bin
+ln -sf "$(command -v keysharp)" ~/.local/bin/AutoHotkey.exe</pre>
+<p>Set the extension's interpreter path to <code class="no-highlight">/home/YOUR_USERNAME/.local/bin/AutoHotkey.exe</code>. Static language support and running scripts are the most compatible features. Windows-specific debugging, help and compiler integration do not work on Linux.</p>
+
+<h3 id="Build_Linux">Building from source</h3>
 <ol>
-  <li>Download and extract the Linux archive for your architecture.</li>
-  <li>For a system-wide installation, run <code class="no-highlight">sudo bash ./install.sh</code>. Run the same command without <code class="no-highlight">sudo</code> for a user-local installation.</li>
-  <li>Start a script with <code class="no-highlight">keysharp hello.ks</code>.</li>
+  <li>Install the .NET 10 SDK.</li>
+  <li>Clone the Keysharp branch of <a href="https://github.com/Descolada/Eto/tree/Keysharp">Descolada's Eto fork</a> beside the Keysharp repository. For example, from their shared parent directory:<br><code class="no-highlight">git clone -b Keysharp https://github.com/Descolada/Eto.git</code></li>
+  <li>Run <code class="no-highlight">Keysharp.Install/package-linux.sh</code>.</li>
 </ol>
-<p>Some editor extensions expect an executable named <code class="no-highlight">AutoHotkey.exe</code>. The Linux package can install a compatibility shim for this purpose; the name does not indicate an AutoHotkey installation or affiliation.</p>
+<p>The script writes a portable directory and tarball to <code class="no-highlight">dist/keysharp-linux-x64</code> and <code class="no-highlight">dist/keysharp-linux-x64.tar.gz</code>. If <code class="no-highlight">dpkg-deb</code> is installed, it also creates a package such as <code class="no-highlight">dist/keysharp_&lt;version&gt;_amd64.deb</code>, which can be installed with:</p>
+<pre class="no-highlight">sudo apt install ./dist/keysharp_&lt;version&gt;_amd64.deb</pre>
+<p>Keysharp is also available as the community-maintained <a href="https://aur.archlinux.org/packages/keysharp-git">keysharp-git AUR package</a> on Arch-based systems.</p>
 
 <h2 id="macOS">macOS</h2>
-<p>Keysharp supports current Intel and Apple silicon macOS packages. Download the matching <code class="no-highlight">osx-x64</code> or <code class="no-highlight">osx-arm64</code> archive and follow the release instructions. If macOS quarantines the downloaded executable or Keyview application, use the quarantine-removal command documented in the release package only after verifying that the archive came from the official Keysharp release page.</p>
-<p>Keyboard, accessibility, and automation features can require permissions in <em>System Settings &rarr; Privacy &amp; Security</em>.</p>
+<p>macOS 15 or later is required. Download the <code class="no-highlight">osx-arm64</code> package for Apple silicon or <code class="no-highlight">osx-x64</code> for Intel.</p>
+
+<h3 id="macOS_DMG">DMG installation</h3>
+<p>The DMG contains <code class="no-highlight">Keysharp.app</code>, <code class="no-highlight">Keyview.app</code>, <code class="no-highlight">Install.command</code> and <code class="no-highlight">Uninstall.command</code>. Double-click <strong>Install.command</strong> to:</p>
+<ol>
+  <li>copy Keysharp and Keyview to <code class="no-highlight">/Applications</code>;</li>
+  <li>optionally install the <code class="no-highlight">keysharp</code> and <code class="no-highlight">keyview</code> terminal commands in <code class="no-highlight">/usr/local/bin</code>, which requires an administrator password; and</li>
+  <li>optionally install the VS Code compatibility shim at <code class="no-highlight">~/.local/bin/AutoHotkey.exe</code>.</li>
+</ol>
+<p>Alternatively, drag both applications to the Applications shortcut in the DMG or another directory such as <code class="no-highlight">~/Applications</code>. Keyview locates a sibling Keysharp binary automatically, including when both applications are run from a mounted DMG.</p>
+
+<h3 id="macOS_PKG">PKG installation</h3>
+<p>The PKG places both applications in <code class="no-highlight">/Applications</code>, then prompts the logged-in user about terminal commands and the VS Code compatibility shim. Double-click the package in Finder, or run:</p>
+<pre class="no-highlight">sudo installer -pkg Keysharp-osx-&lt;architecture&gt;.pkg -target /</pre>
+
+<h3 id="macOS_Gatekeeper">First launch and Gatekeeper</h3>
+<p class="note"><strong>Note:</strong> Current packages are not notarized. On first launch, Control-click each application, choose <strong>Open</strong>, then confirm <strong>Open</strong> in the prompt.</p>
+<p>After verifying that the package came from the official release page, quarantine attributes can alternatively be removed in Terminal:</p>
+<pre class="no-highlight">xattr -dr com.apple.quarantine /Applications/Keysharp.app
+xattr -dr com.apple.quarantine /Applications/Keyview.app</pre>
+<p>The terminal commands can be created manually:</p>
+<pre class="no-highlight">sudo ln -sf /Applications/Keysharp.app/Contents/MacOS/Keysharp /usr/local/bin/keysharp
+sudo ln -sf /Applications/Keyview.app/Contents/MacOS/Keyview /usr/local/bin/keyview</pre>
+
+<h3 id="macOS_Editor">VS Code compatibility shim</h3>
+<p>Answer Yes to the compatibility-shim prompt in <code class="no-highlight">Install.command</code>, then use <code class="no-highlight">/Users/YOUR_USERNAME/.local/bin/AutoHotkey.exe</code> as the interpreter path. Static language support and running scripts are the most compatible features. Windows-specific debugging, help and compiler integration do not work on macOS.</p>
+
+<h3 id="macOS_Permissions">Permissions</h3>
+<p>Input Monitoring, Accessibility and Screen Recording permissions are requested when needed. See <a href="../Platforms.htm#macOS_Permissions">macOS Permissions</a> for the features associated with each permission and how to request them at script startup.</p>
+
+<h3 id="Uninstall_macOS">Uninstalling</h3>
+<p>The bundled uninstaller removes the applications, terminal commands, PKG receipt where applicable, and stored settings/cache data.</p>
+<ul>
+  <li><strong>DMG installation:</strong> Open the DMG and double-click <strong>Uninstall.command</strong>. If the applications were dragged to the Trash manually, eject the DMG and empty the Trash.</li>
+  <li><strong>PKG installation:</strong> Run <code class="no-highlight">sudo keysharp-uninstall</code>.</li>
+</ul>
+<p>macOS Launch Services can continue to open applications from the Trash, so empty it if removed applications remain associated with <code class="no-highlight">.ks</code> or <code class="no-highlight">.ahk</code> files.</p>
+<p>The uninstaller cannot revoke privacy permissions. Remove Keysharp and Keyview in <em>System Settings &rarr; Privacy &amp; Security</em>. If permissions become stuck after changing between differently signed builds, reset all TCC entries for both bundle IDs:</p>
+<pre class="no-highlight">tccutil reset All org.keysharp.keysharp
+tccutil reset All org.keysharp.keyview</pre>
+<p>This clears Accessibility, Input Monitoring, Screen Recording and any other recorded permission for all builds sharing those bundle IDs. macOS prompts again when each permission is next required.</p>
+
+<h3 id="Build_macOS">Building from source</h3>
+<ol>
+  <li>Install the .NET 10 SDK.</li>
+  <li>Clone the Keysharp branch of <a href="https://github.com/Descolada/Eto/tree/Keysharp">Descolada's Eto fork</a> beside the Keysharp repository:<br><code class="no-highlight">git clone -b Keysharp https://github.com/Descolada/Eto.git</code></li>
+  <li>Run <code class="no-highlight">bash ./Keysharp.Install/package-macos.sh</code>.</li>
+</ol>
+<p>The script selects <code class="no-highlight">osx-arm64</code> or <code class="no-highlight">osx-x64</code> from the host. Set <code class="no-highlight">RID</code> to cross-publish, for example:</p>
+<pre class="no-highlight">RID=osx-x64 bash ./Keysharp.Install/package-macos.sh</pre>
+<p>Output in <code class="no-highlight">dist/</code> includes <code class="no-highlight">Keysharp-&lt;rid&gt;.dmg</code> and <code class="no-highlight">Keysharp-&lt;rid&gt;.pkg</code>. For a quick debug run:</p>
+<pre class="no-highlight">dotnet build Keyview/Keyview.csproj -c Debug
+open bin/Debug/net10.0/&lt;rid&gt;/Keyview.app</pre>
+<p>Signing and notarization are skipped by default. For an ad-hoc signed local build, run:</p>
+<pre class="no-highlight">ADHOC_SIGN=true bash ./Keysharp.Install/package-macos.sh</pre>
 
 <h2 id="Verify">Verify the Installation</h2>
 <p>Create <code class="no-highlight">hello.ks</code> with this content:</p>
@@ -47,6 +139,7 @@
 <h2 id="Next_Steps">Next Steps</h2>
 <ul>
   <li><a href="../Program.htm">Using Keysharp</a></li>
+  <li><a href="../Platforms.htm">Platform support and permissions</a></li>
   <li><a href="RunExamples.htm">How to run example code</a></li>
   <li><a href="../misc/Editors.htm">Editors for Keysharp scripts</a></li>
   <li><a href="../Tutorial.htm">Beginner tutorial</a></li>

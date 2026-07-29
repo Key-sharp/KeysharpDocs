@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>LockRun | Keysharp</title>
+<meta name="description" content="Calls a function while holding a lock on an object." />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../static/theme.css" rel="stylesheet" type="text/css" />
+<link href="../static/dark.css" rel="stylesheet" type="text/css" media="(prefers-color-scheme: dark)" id="dark_css" />
+<script src="../static/content.js" type="text/javascript"></script>
+</head>
+<body>
+<h1>LockRun</h1>
+<p>Calls a function while holding a lock on an object.</p>
+<p>This function is exported by the <a href="../Modules.htm#KS">KS module</a>.</p>
+<pre class="Syntax">Result := <span class="func">LockRun</span>(LockObject, Callback <span class="optional">, Params*</span>)</pre>
+<p><em>LockObject</em> must be initialized, for example to an empty object or string. Calls using the same lock object execute their callbacks one at a time. The return value is the callback's return value.</p>
+<h2 id="Related">Related</h2>
+<p><a href="RealThread.htm">RealThread</a></p>
+</body>
+</html>

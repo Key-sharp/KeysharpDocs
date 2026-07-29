@@ -29,6 +29,14 @@
 <p><a href="lib/_Warn.htm">#Warn</a> can enable or disable warnings within the current module without affecting other modules. For details, see the <a href="lib/_Warn.htm#Remarks">#Warn remarks</a>.</p>
 <p><a href="lib/_HotIf.htm">#HotIf</a> affects only the current module. #HotIf and <a href="lib/HotIf.htm">HotIf</a> expressions are module-scoped, as they may contain references to module-level variables. For instance, the effect of <code>#HotIf myToggle</code> depends on what value <em>myToggle</em> has in the current module.</p>
 
+<h2 id="KS">KS Module</h2>
+<p>The built-in <code class="no-highlight">KS</code> module exports Keysharp-specific classes, functions and variables, including <a href="lib/Image.htm">Image</a>, <a href="lib/HashMap.htm">HashMap</a>, <a href="lib/RequestCapabilities.htm">RequestCapabilities</a> and the <a href="lib/KeysharpVariables.htm">Keysharp built-in variables</a>.</p>
+<pre>#Import "Ks" { Image, A_DirSeparator }
+
+Capture := Image.FromDesktop()
+MsgBox A_DirSeparator</pre>
+<p>New methods or properties added to an existing built-in class, such as <a href="lib/Array.htm">Array</a> or <a href="lib/Buffer.htm">Buffer</a>, are available without importing KS.</p>
+
 <h2 id="Execution">Execution</h2>
 <p>The body of each module is executed at program startup, by the <a href="Scripts.htm#auto">auto-execute thread</a>. Execution begins with the module which was defined or loaded last. If the module has no imports, the second-last module is executed next, and so on, until all modules have executed.</p>
 <p><span class="ver">[v2.1-alpha.21+]</span>: If a module has not begun execution by the time one of its variables or constants is referenced, the module is executed immediately. The #Import directive itself has no effect on the order. For example:</p>

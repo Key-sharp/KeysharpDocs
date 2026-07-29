@@ -486,19 +486,9 @@ MyGui.Show()</pre>
 </ul>
 <h3 id="IL_Create">IL_Create</h3>
 <p>Creates a new ImageList that is initially empty.</p>
-<pre class="Syntax">ImageListID := <span class="func">IL_Create</span>(<span class="optional">InitialCount, GrowCount, LargeIcons</span>)</pre>
+<pre class="Syntax">ImageListID := <span class="func">IL_Create</span>(<span class="optional">LargeIcons</span>)</pre>
 <h4 class="func_section" id="IL_Create_Parameters">Parameters</h4>
 <dl>
-  <dt>InitialCount</dt>
-  <dd>
-    <p>Type: <a href="../Concepts.htm#numbers">Integer</a></p>
-    <p>If omitted, it defaults to 2. Otherwise, specify the number of icons you expect to put into the list immediately.</p>
-  </dd>
-  <dt>GrowCount</dt>
-  <dd>
-    <p>Type: <a href="../Concepts.htm#numbers">Integer</a></p>
-    <p>If omitted, it defaults to 5. Otherwise, specify the number of icons by which the list will grow each time it exceeds the current list capacity.</p>
-  </dd>
   <dt>LargeIcons</dt>
   <dd>
     <p>Type: <a href="../Concepts.htm#boolean">Boolean</a></p>
@@ -508,6 +498,7 @@ MyGui.Show()</pre>
     <p>Icons added to the list are scaled automatically to conform to the system's dimensions for small and large icons.</p>
   </dd>
 </dl>
+<p>Initial and growth capacities are managed automatically and therefore are not parameters.</p>
 <h4 class="func_section" id="IL_Create_Return_Value">Return Value</h4>
 <p>Type: <a href="../Concepts.htm#numbers">Integer</a></p>
 <p>On success, this function returns the unique ID of the newly created ImageList. On failure, it returns 0.</p>

@@ -15,7 +15,7 @@
 
 <p>Exits the <a href="../misc/Threads.htm">current thread</a>.</p>
 
-<pre class="Syntax"><span class="func">Exit</span> <span class="optional">ExitCode</span></pre>
+<pre class="Syntax"><span class="func">Exit</span> <span class="optional">ExitCode, ThreadId</span></pre>
 <h2 id="Parameters">Parameters</h2>
 <dl>
 
@@ -24,10 +24,16 @@
     <p>Type: <a href="../Concepts.htm#numbers">Integer</a></p>
     <p>If omitted, it defaults to 0 (zero is traditionally used to indicate success). Otherwise, specify an integer between -2147483648 and 2147483647 that is returned to its caller when the script exits. This code is accessible to any program that spawned the script, such as another script (via RunWait) or a batch (.bat) file.</p>
   </dd>
+  <dt>ThreadId</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#numbers">Integer</a></p>
+    <p>If omitted, the current pseudo-thread exits. Otherwise, specify an exact <a href="KeysharpVariables.htm#A_ThreadId">A_ThreadId</a> or a zero-based index in the current real thread's active pseudo-thread stack. Index 0 selects the oldest active pseudo-thread.</p>
+  </dd>
 
 </dl>
 
 <h2 id="Remarks">Remarks</h2>
+<p>Targeting an underlying pseudo-thread requests cooperative termination when that thread resumes and next processes events; it does not asynchronously abort managed code. A later request can replace its pending exit code. The function returns the target's exact thread ID, except when it exits the current thread immediately. An invalid target throws <a href="Error.htm#ValueError">ValueError</a>.</p>
 <p>The Exit function terminates only the <a href="../misc/Threads.htm">current thread</a>. In other words, the stack of functions called directly or indirectly by a <a href="Menu.htm">menu</a>, <a href="SetTimer.htm">timer</a>, or <a href="../Hotkeys.htm">hotkey</a> function will all be returned from as though a <a href="Return.htm">Return</a> were immediately encountered in each. If used directly inside such a function -- or in <a href="../Language.htm#global-code">global code</a> -- Exit is equivalent to <a href="Return.htm">Return</a>.</p>
 <p>If the script is not <a href="../Scripts.htm#persistent">persistent</a> and this is the last thread, the script will terminate after the thread exits.</p>
 

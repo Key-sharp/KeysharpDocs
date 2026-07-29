@@ -71,6 +71,7 @@
 <p>An <a href="Error.htm#OSError">OSError</a> is thrown if the message could not be sent. For example, if the target window is running at a higher integrity level than the script (i.e. it is running as admin while the script is not), messages may be blocked.</p>
 
 <h2 id="Remarks">Remarks</h2>
+<p id="WM_COPYDATA"><strong>WM_COPYDATA strings:</strong> When <em>MsgNumber</em> is <code>WM_COPYDATA (0x4A)</code> and <em>lParam</em> is a string, the required COPYDATA structure is created automatically and the string is sent as UTF-16 Unicode. Create the structure manually only when the receiver expects a different encoding such as ASCII.</p>
 <p>This function should be used with caution because sending a message to the wrong window (or sending an invalid message) might cause unexpected behavior or even crash the target application. This is because most applications are not designed to expect certain types of messages from external sources.</p>
 <p>SendMessage waits for the target window to process the message, up until the timeout period expires. By contrast, <a href="PostMessage.htm">PostMessage</a> places the message in the message queue associated with the target window without waiting for acknowledgement or reply.</p>
 <p>String parameters must be passed by <a href="StrPtr.htm">address</a>. For example:</p>

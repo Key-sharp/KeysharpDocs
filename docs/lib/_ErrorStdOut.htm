@@ -28,6 +28,7 @@
 </dl>
 
 <h2 id="Remarks">Remarks</h2>
+<p class="note"><strong>Notice:</strong> Console output is visible only when standard error or standard output is captured by a pipe or redirection. For example, <code>Keysharp.exe test.ahk 2&gt;&amp;1 | more</code> displays it, and appending <code>&gt; out.txt</code> writes it to a file.</p>
 <p>If this directive is unspecified in the script, any syntax error is displayed in a dialog.</p>
 <p>Errors are written to stderr instead of stdout. The command prompt and fancy editors usually display both.</p>
 <p>This allows fancy editors such as TextPad, SciTE, Crimson, and EditPlus to jump to the offending line when a syntax error occurs. Since the #ErrorStdOut directive would have to be added to every script, it is usually better to set up your editor to use the <a href="../Scripts.htm#cmd">command line switch</a> <strong>/ErrorStdOut</strong> when launching any AutoHotkey script (see further below for setup instructions).</p>

@@ -52,6 +52,7 @@
 
 
 <h2 id="Remarks">Remarks</h2>
+<p>Coordinates are relative to the control's immediate parent. If the control is inside a tab, group or other container, that parent might not be the main window.</p>
 <p>This function is intended for use with controls in a non-GUI window, i.e. a window that is not created with the <a href="Gui.htm#Call">Gui</a> function. It works best with common or predefined Microsoft controls; some applications use custom or modified controls, in which case the function might not work as expected. For <a href="GuiControls.htm">GUI controls</a>, it is usually more convenient to use <a href="GuiControl.htm#Move">GuiControl.Move</a>.</p>
 <p>To improve reliability, a delay is done automatically after each use of this function. That delay can be changed via <a href="SetControlDelay.htm">SetControlDelay</a> or by assigning a value to <a href="../Variables.htm#ControlDelay">A_ControlDelay</a>. For details, see <a href="SetControlDelay.htm#Remarks">SetControlDelay remarks</a>.</p>
 

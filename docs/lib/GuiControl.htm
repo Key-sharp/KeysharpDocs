@@ -39,11 +39,13 @@
       <li><a href="#Redraw">Redraw</a>: Redraws the region of the GUI window occupied by a control.</li>
       <li><a href="#SetCue">SetCue</a> <span class="ver">[v2.1-alpha.7+]</span>: Sets the cue banner text of an Edit or ComboBox control.</li>
       <li><a href="#SetFont">SetFont</a>: Changes a control's font typeface, size, color, and/or style.</li>
+      <li><a href="#SetTabIcon">SetTabIcon</a>: Changes the icon of a tab.</li>
     </ul>
   </li>
   <li><a href="#Properties">Properties</a>:
     <ul>
       <li><a href="#ClassNN">ClassNN</a>: Gets the ClassNN (class name and sequence number) of a control.</li>
+      <li><a href="#NetClassNN">NetClassNN</a>: Gets a stable class name and sequence number for a managed GUI control.</li>
       <li><a href="#Enabled">Enabled</a>: Gets or sets whether a control is enabled.</li>
       <li><a href="#Focused">Focused</a>: Gets whether a control has keyboard focus.</li>
       <li><a href="#Gui">Gui</a>: Gets the parent window of a control.</li>
@@ -116,7 +118,7 @@
   </dd>
 </dl>
 <h4 id="Delete_Remarks">Remarks</h4>
-<p>For <a href="GuiControls.htm#Tab">Tab</a> controls, a tab's sub-controls stay associated with their original tab number; that is, they are never associated with their tab's actual display-name. For this reason, renaming or removing a tab will not change the tab number to which the sub-controls belong. For example, if there are three tabs <code>["Red", "Green", "Blue"]</code> and the second tab is removed by means of <code>GuiCtrl.Delete(2)</code>, the sub-controls originally associated with Green will now be associated with Blue. Because of this behavior, only tabs at the end should generally be removed. Tabs that are removed in this way can be added back later, at which time they will reclaim their original set of controls.</p>
+<p>For <a href="GuiControls.htm#Tab">Tab</a> controls, deleting a tab also deletes every control contained by that tab. The controls are not reassociated with the next tab.</p>
 <p>To delete an item in a <a href="ListView.htm">ListView</a> or <a href="TreeView.htm">TreeView</a> control, use <a href="ListView.htm#Delete">LV.Delete</a> or <a href="TreeView.htm#Delete">TV.Delete</a>.</p>
 <p>See <a href="#ExReplaceList">example #1</a> for a demonstration.</p>
 </div>
@@ -260,11 +262,25 @@ EditCtrl.<span class="func">SetCue</span>(NewText <span class="optional">, ShowW
 <p>See <a href="#ExFont">example #7</a> for a demonstration.</p>
 </div>
 
+<div class="methodShort" id="SetTabIcon">
+<h3>SetTabIcon</h3>
+<p>Changes the icon displayed by a tab control page.</p>
+<pre class="Syntax">TabCtrl.<span class="func">SetTabIcon</span>(TabIndex, ImageIndex)</pre>
+<p><em>TabIndex</em> identifies the tab and <em>ImageIndex</em> identifies an image in the tab control's image list. This provides a direct alternative to sending a native tab-control message.</p>
+</div>
+
 <h2 id="Properties">Properties</h2>
 <div class="methodShort" id="ClassNN">
 <h3>ClassNN</h3>
 <p>Gets the <a href="../misc/ControlID.htm#ClassNN">ClassNN</a> (class name and sequence number) of a control.</p>
 <pre class="Syntax">ClassNN := GuiCtrl.<span class="func">ClassNN</span></pre>
+</div>
+
+<div class="methodShort" id="NetClassNN">
+<h3>NetClassNN</h3>
+<p>Gets a stable managed class name and sequence number for a GUI control.</p>
+<pre class="Syntax">NetClassNN := GuiCtrl.<span class="func">NetClassNN</span></pre>
+<p>Native ClassNN values for .NET controls contain long implementation-specific class names which can vary between machines or after a GUI is changed. NetClassNN instead returns a value such as <code>KeysharpButton6</code>. Its final sequence number matches the corresponding ClassNN. Prefer NetClassNN when identifying controls created by the current process.</p>
 </div>
 
 <div class="methodShort" id="Enabled">
@@ -360,7 +376,7 @@ EditCtrl.<span class="func">SetCue</span>(NewText <span class="optional">, ShowW
 <p><em>CurrentValue</em> and <em>NewValue</em> are strings composed of modifiers and a key name, representing the hotkey currently displayed and to be displayed in the control, respectively. For example, <code class="no-highlight">^!c</code>, <code class="no-highlight">^Numpad1</code>, or <code class="no-highlight">+Home</code>. <em>CurrentValue</em> is blank if there is no hotkey in the control. <em>NewValue</em> can be blank to clear the control. The only modifiers supported are ^ (Control), ! (Alt), and + (Shift). See the <a href="../KeyList.htm">key list</a> for available key names.</p>
 <h4 id="Value_Control_Group_7"><a href="GuiControls.htm#Picture">Picture</a></h4>
 <p><em>CurrentValue</em> is the picture's file name as it was originally specified when the control was created. This name does not change even if a new picture file name is specified.</p>
-<p><em>NewValue</em> is the filename or a <a href="../misc/ImageHandles.htm">handle</a> of the new image to load (see <a href="GuiControls.htm#Picture">Picture</a> for supported file types). Zero or more of the following options may be specified immediately in front of the filename: <code class="no-highlight">*wN</code> (width N), <code class="no-highlight">*hN</code> (height N), and <code class="no-highlight">*IconN</code> (icon group number N in a DLL or EXE file). For example, <code>"*icon2 *w100 *h-1 C:\My Application.exe"</code> loads the default icon from the second icon group with a width of 100 and an automatic height via "keep aspect ratio". Specify <code class="no-highlight">*w0 *h0</code> to use the image's actual width and height. If <code class="no-highlight">*w</code> and <code class="no-highlight">*h</code> are omitted, the image will be scaled to fit the current size of the control. When loading from a multi-icon .ICO file, specifying a width and height also determines which icon to load. Note: Use only one space or tab between the final option and the filename itself; any other spaces and tabs are treated as part of the filename.</p>
+<p><em>NewValue</em> is blank to clear the picture, or the filename or a <a href="../misc/ImageHandles.htm">handle</a> of the new image to load (see <a href="GuiControls.htm#Picture">Picture</a> for supported file types). Zero or more of the following options may be specified immediately in front of the filename: <code class="no-highlight">*wN</code> (width N), <code class="no-highlight">*hN</code> (height N), and <code class="no-highlight">*IconN</code> (icon group number N in a DLL or EXE file). For example, <code>"*icon2 *w100 *h-1 C:\My Application.exe"</code> loads the default icon from the second icon group with a width of 100 and an automatic height via "keep aspect ratio". Specify <code class="no-highlight">*w0 *h0</code> to use the image's actual width and height. If <code class="no-highlight">*w</code> and <code class="no-highlight">*h</code> are omitted, the image will be scaled to fit the current size of the control. When loading from a multi-icon .ICO file, specifying a width and height also determines which icon to load. Note: Use only one space or tab between the final option and the filename itself; any other spaces and tabs are treated as part of the filename.</p>
 <h4 id="Value_Control_Group_8"><a href="GuiControls.htm#Progress">Progress</a> / <a href="GuiControls.htm#Slider">Slider</a> / <a href="GuiControls.htm#UpDown">UpDown</a></h4>
 <p><em>CurrentValue</em> and <em>NewValue</em> are the current and new position of the control, respectively. If the new position would be outside the range of the control, the control is generally set to the nearest valid value.</p>
 <h4 id="Value_Control_Group_9"><a href="GuiControls.htm#Text">Text</a></h4>

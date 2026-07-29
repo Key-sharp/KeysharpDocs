@@ -14,6 +14,7 @@
 
 <h1>ComObject</h1>
 <p>Creates a COM object.</p>
+<p class="note"><strong>Notice:</strong> COM APIs are available only on Windows.</p>
 <pre class="Syntax">ComObj := <span class="func">ComObject</span>(CLSID <span class="optional">, IID</span>)</pre>
 <p><code>ComObject</code> itself is a <a href="Class.htm">class</a> derived from <code>ComValue</code>, but is used only to create or identify COM objects.</p>
 
@@ -55,6 +56,7 @@
 
 <h2 id="Error_Handling">Error Handling</h2>
 <p>An exception is thrown on failure, such as if a parameter is invalid or the object does not support the interface specified by <em>IID</em>.</p>
+<p>If a ComValue whose VarType is <code>VT_DISPATCH</code> and whose pointer is null is later assigned a non-null pointer, its type remains unchanged and its <code>Ptr</code> member remains available.</p>
 
 <h2 id="Related">Related</h2>
 <p><a href="ComValue.htm">ComValue</a>, <a href="ComObjGet.htm">ComObjGet</a>, <a href="ComObjActive.htm">ComObjActive</a>, <a href="ComObjConnect.htm">ComObjConnect</a>, <a href="ComObjArray.htm">ComObjArray</a>, <a href="ComObjQuery.htm">ComObjQuery</a>, <a href="ComCall.htm">ComCall</a>, <a href="https://learn.microsoft.com/previous-versions/dcw63t7z(v=vs.85)">CreateObject (Microsoft Docs)</a></p>

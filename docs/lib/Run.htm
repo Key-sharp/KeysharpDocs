@@ -19,8 +19,8 @@
 <p>Runs an external program. Unlike Run, RunWait will wait until the program finishes before continuing.</p>
 
 <pre class="Syntax">
-<span class="func">Run</span> Target <span class="optional">, WorkingDir, Options, &amp;OutputVarPID</span>
-ExitCode := <span class="func">RunWait</span>(Target <span class="optional">, WorkingDir, Options, &amp;OutputVarPID</span>)
+<span class="func">Run</span>(Target <span class="optional">, WorkingDir, Options, &amp;OutputVarPID, Args</span>)
+ExitCode := <span class="func">RunWait</span>(Target <span class="optional">, WorkingDir, Options, &amp;OutputVarPID, Args</span>)
 </pre>
 <h2 id="Parameters">Parameters</h2>
 <dl>
@@ -56,6 +56,12 @@ ExitCode := <span class="func">RunWait</span>(Target <span class="optional">, Wo
       <p>Type: <a href="../Concepts.htm#variable-references">VarRef</a></p>
       <p>If omitted, the corresponding value will not be stored. Otherwise, specify a reference to the output variable in which to store the newly launched program's unique <a href="../misc/WinTitle.htm#ahk_pid">Process ID (PID)</a>. The variable will be made blank if the PID could not be determined, which usually happens if a system verb, document, or shortcut is launched rather than a direct executable file. RunWait also supports this parameter, though its <em>OutputVarPID</em> must be checked in <a href="../misc/Threads.htm">another thread</a> (otherwise, the PID will be invalid because the process will have terminated by the time the line following RunWait executes).</p>
       <p>After the Run function retrieves a PID, any windows to be created by the process might not exist yet. To wait for at least one window to be created, use <code><a href="WinWait.htm">WinWait</a> "ahk_pid " OutputVarPID</code>.</p>
+  </dd>
+
+  <dt>Args</dt>
+  <dd>
+      <p>Type: <a href="../Concepts.htm#strings">String</a></p>
+      <p>If omitted, arguments can be appended to <em>Target</em> as usual. Otherwise, specify the command-line arguments separately from the executable or document path.</p>
   </dd>
 
 </dl>
