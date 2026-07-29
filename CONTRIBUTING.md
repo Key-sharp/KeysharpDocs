@@ -11,10 +11,13 @@ platform.
 
 For current implementation status, consult:
 
-- the [Keysharp capability matrix](https://github.com/Descolada/keysharp/blob/master/docs/capabilities.md);
 - the [Keysharp platform reference](https://github.com/Descolada/keysharp/blob/master/docs/reference.md);
 - the Keysharp source and tests; and
 - a reproducible script run against the current Keysharp build.
+
+The capability matrix is pending a thorough review. Do not use it as evidence
+for a documentation claim unless the relevant entry has been independently
+verified against the current runtime, source or tests.
 
 If support is partial or unverified, say so explicitly. Prefer a narrowly
 scoped qualification near the relevant behavior over a broad claim that the

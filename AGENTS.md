@@ -55,9 +55,13 @@ Use evidence in this order:
 1. A reproducible script run with the current Keysharp build on the named
    platform.
 2. Keysharp source and tests.
-3. `docs/capabilities.json` in the Keysharp repository. The rendered
-   `docs/capabilities.md` matrix is generated from this file.
-4. `docs/reference.md` in the Keysharp repository.
+3. `docs/reference.md` in the Keysharp repository. This is the maintained
+   source for current platform, implementation and compatibility notes while
+   its content is migrated into KeysharpDocs.
+4. `docs/capabilities.json` in the Keysharp repository, but only after the
+   relevant row has been independently reviewed. The rendered
+   `docs/capabilities.md` matrix is generated from this currently unreviewed
+   data and is not evidence by itself.
 5. AutoHotkeyDocs and AutoHotkey behavior, but only as the intended
    compatibility specification or a historical reference.
 
