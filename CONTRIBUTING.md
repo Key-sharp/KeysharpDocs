@@ -19,6 +19,10 @@ The capability matrix is pending a thorough review. Do not use it as evidence
 for a documentation claim unless the relevant entry has been independently
 verified against the current runtime, source or tests.
 
+See [`SOURCE_OF_TRUTH.md`](SOURCE_OF_TRUTH.md) for the evidence model and the
+generated source-to-documentation audit workflow. The audit establishes
+candidate script-visible names, not behavioral or platform support.
+
 If support is partial or unverified, say so explicitly. Prefer a narrowly
 scoped qualification near the relevant behavior over a broad claim that the
 whole page is cross-platform. Put each platform qualification in the section

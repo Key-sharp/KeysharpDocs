@@ -39,11 +39,18 @@ Retain the independence and provenance statements in the site.
 - `Project.hhp` and `compile_chm.ahk` define the optional Windows CHM build.
 - `scripts/Test-Docs.ps1` checks required files, local links, titles, and
   branding invariants.
+- `SOURCE_OF_TRUTH.md` defines how claims are evidenced and how generated API
+  inventories must be interpreted.
+- `audits/` contains generated, internal source-to-documentation review
+  queues. They are not public capability matrices.
+- `scripts/Update-SourceAudit.ps1` regenerates the host platform's initial
+  global API inventory from a compiled Keysharp runtime.
 - `AutoHotkeyChangeLog.htm` and `AutoHotkeyLicense.htm` are archived upstream
   pages. Do not present them as Keysharp release or license information.
 
 Also read `CONTRIBUTING.md` before semantic edits and `UPSTREAM.md` before
-porting an AutoHotkeyDocs change.
+porting an AutoHotkeyDocs change. Read `SOURCE_OF_TRUTH.md` before changing
+behavioral or platform claims.
 
 ## Source of truth
 
@@ -77,6 +84,12 @@ that a feature "works." State the verified boundary:
 
 If the evidence conflicts, prefer the tested current runtime and update or
 report the stale capability data separately.
+
+The generated source audit establishes discoverable API names only.
+`locator-found` means that a structural documentation locator was found; it
+does not establish that the locator fully documents the member, correct
+behavior, or platform support. Do not turn its review queue into a
+compatibility claim.
 
 ## Keysharp and AutoHotkey wording
 

@@ -4,3 +4,5 @@ Index.hhk
 Table of Contents.hhc
 _site/
 .lycheecache
+bin/
+obj/
