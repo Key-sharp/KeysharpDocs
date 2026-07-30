@@ -953,6 +953,7 @@ indexData = [
   ["ObjGetDataPtr","lib/Object.htm#GetDataPtr",2],
   ["ObjGetDataSize","lib/Object.htm#GetDataSize",2],
   ["ObjHasOwnProp","lib/Object.htm#HasOwnProp",2],
+  ["ObjHasProp","lib/Object.htm#ObjHasProp",2],
   ["ObjOwnPropCount","lib/Object.htm#OwnPropCount",2],
   ["ObjOwnProps","lib/Object.htm#OwnProps",2],
   ["ObjPtr","Objects.htm#ObjPtr",2],

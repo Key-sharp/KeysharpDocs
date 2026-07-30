@@ -48,6 +48,7 @@
       <li><a href="#SetBase">ObjSetBase</a>: Set an object's base object.</li>
       <li><a href="#GetCapacity">ObjGetCapacity</a>, <a href="#SetCapacity">ObjSetCapacity</a>: Retrieve or set an Object's capacity to contain properties.</li>
       <li><a href="#OwnPropCount">ObjOwnPropCount</a>: Retrieve the number of own properties contained by an object.</li>
+      <li><a href="#ObjHasProp">ObjHasProp</a>: Checks whether an object or one of its base objects has a property.</li>
       <li>ObjHasOwnProp, ObjOwnProps: Equivalent to the corresponding predefined method, but cannot be overridden.</li>
       <li><a href="#GetDataPtr">ObjGetDataPtr</a> <span class="ver">[v2.1-alpha.3+]</span>: Returns the address of the object's structured data (typed properties).</li>
       <li><a href="#GetDataSize">ObjGetDataSize</a> <span class="ver">[v2.1-alpha.3+]</span>: Returns the size of the object's structure (typed properties), in bytes.</li>
@@ -256,6 +257,12 @@ Obj := <span class="func">DefineProp</span>(Obj, Name, Descriptor) <em>; <span c
 <h3 id="OwnPropCount">ObjOwnPropCount</h3>
 <p>Returns the number of properties owned by an object.</p>
 <pre class="Syntax">Count := <span class="func">ObjOwnPropCount</span>(Obj)</pre>
+
+<h3 id="ObjHasProp">ObjHasProp</h3>
+<p>Returns 1 (true) if <em>Obj</em> or one of its base objects has a property by the specified name, otherwise 0 (false).</p>
+<pre class="Syntax">HasProp := <span class="func">ObjHasProp</span>(Obj, Name)</pre>
+<p><em>Name</em> is a property name. If <em>Obj</em> is not an object, this function returns 0 rather than checking the corresponding primitive prototype. It is not affected by overriding the object's <code>HasProp</code> method.</p>
+<p>See also: <a href="Any.htm#HasProp">HasProp method</a>, <a href="HasProp.htm">HasProp</a></p>
 
 <h3 id="SetCapacity">ObjSetCapacity</h3>
 <p>Sets the current capacity of the object's internal array of own properties.</p>
