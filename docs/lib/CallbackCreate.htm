@@ -48,8 +48,11 @@
 </dl>
 
 <h2 id="Return_Value">Return Value</h2>
-<p>Type: <a href="../Concepts.htm#numbers">Integer</a></p>
-<p>CallbackCreate returns a machine-code address. This address is typically passed to an external function via <a href="DllCall.htm">DllCall</a> or placed in a struct using <a href="NumPut.htm">NumPut</a>, but can also be called directly by DllCall. Passing the address to <a href="#CallbackFree">CallbackFree</a> will delete the callback.</p>
+<p>Type: <a href="#DelegateHolder">DelegateHolder</a></p>
+<p>CallbackCreate returns an object which holds the callback's machine-code address in its <code id="Ptr">Ptr</code> property. The object can be passed directly to an external function via <a href="DllCall.htm">DllCall</a> or placed in a struct using <a href="NumPut.htm">NumPut</a>, both of which use its <code>Ptr</code> value. Passing the object to <a href="#CallbackFree">CallbackFree</a> deletes the callback and sets <code>Ptr</code> to zero.</p>
+
+<h3 id="DelegateHolder">DelegateHolder Object</h3>
+<p>Callback objects are instances of <code>DelegateHolder</code>. This class is exposed so that scripts can extend <code>DelegateHolder.Prototype</code>; use <a href="CallbackCreate.htm">CallbackCreate</a> to create an instance.</p>
 
 <h2 id="Error_Handling">Error Handling</h2>
 <p>This function fails and throws an exception under any of the following conditions:</p>

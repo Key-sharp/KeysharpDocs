@@ -406,6 +406,7 @@ sumfn := Sum</pre>
   <li>Operating System and User Info: <a href="#OSVersion">A_OSVersion</a>, <a href="#Screen">A_ScreenWidth</a>, <a href="#Screen">A_ScreenHeight</a>, <a href="#os">(...more...)</a></li>
   <li>Misc: <a href="#Clipboard">A_Clipboard</a>, <a href="#Cursor">A_Cursor</a>, <a href="#EventInfo">A_EventInfo</a>, <a href="#misc">(...more...)</a></li>
   <li>Loop: <a href="#Index">A_Index</a>, <a href="#loop">(...more...)</a></li>
+  <li><a href="#additional">Additional Runtime and Compatibility Variables</a></li>
 </ul>
 <h3 id="Special_Characters">Special Characters</h3>
 <table class="info">
@@ -1034,6 +1035,99 @@ VirtualHeight := <a href="lib/SysGet.htm">SysGet</a>(79)
   <tr>
     <td>A_LoopField</td>
     <td>See <a href="lib/LoopParse.htm">parsing loop</a>.</td>
+  </tr>
+</table>
+
+<h3 id="additional">Additional Runtime and Compatibility Variables</h3>
+<p>The following global variables are additions or retained compatibility aliases. Variables exported only by the KS module are listed separately under <a href="lib/KeysharpVariables.htm">Keysharp Built-in Variables</a>.</p>
+<table class="info">
+  <tr>
+    <th abbr="Var">Variable</th>
+    <th abbr="Descr">Description</th>
+  </tr>
+  <tr id="A_AhkBuildVersion">
+    <td>A_AhkBuildVersion</td>
+    <td>The build version stamped onto the running script assembly by the script compiler, or blank if the assembly has no build-version attribute. This is distinct from the compatibility version reported by <a href="#AhkVersion">A_AhkVersion</a>.</td>
+  </tr>
+  <tr id="A_AsmCompany">
+    <td>A_AsmCompany</td>
+    <td>The assembly company set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyCompany</a>, or blank if unset.</td>
+  </tr>
+  <tr id="A_AsmConfiguration">
+    <td>A_AsmConfiguration</td>
+    <td>The assembly configuration set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyConfiguration</a>, or blank if unset.</td>
+  </tr>
+  <tr id="A_AsmCopyright">
+    <td>A_AsmCopyright</td>
+    <td>The assembly copyright set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyCopyright</a>, or blank if unset.</td>
+  </tr>
+  <tr id="A_AsmDescription">
+    <td>A_AsmDescription</td>
+    <td>The assembly description set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyDescription</a>, or blank if unset.</td>
+  </tr>
+  <tr id="A_AsmProduct">
+    <td>A_AsmProduct</td>
+    <td>The assembly product set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyProduct</a>, or blank if unset.</td>
+  </tr>
+  <tr id="A_AsmTitle">
+    <td>A_AsmTitle</td>
+    <td>The assembly title set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyTitle</a>, or blank if unset.</td>
+  </tr>
+  <tr id="A_AsmTrademark">
+    <td>A_AsmTrademark</td>
+    <td>The assembly trademark set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyTrademark</a>, or blank if unset.</td>
+  </tr>
+  <tr id="A_AsmVersion">
+    <td>A_AsmVersion</td>
+    <td>The assembly file version set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyVersion</a>, or blank if unset.</td>
+  </tr>
+  <tr id="A_HotIfTimeout">
+    <td>A_HotIfTimeout</td>
+    <td>Gets or sets the maximum time, in milliseconds, allowed for evaluating a <a href="lib/_HotIf.htm">#HotIf</a> criterion. <a href="lib/_HotIfTimeout.htm">#HotIfTimeout</a> sets this value.</td>
+  </tr>
+  <tr id="A_InputLevel">
+    <td>A_InputLevel</td>
+    <td>Gets or sets the default input level, from 0 through 100, for subsequently created hotkeys and hotstrings. <a href="lib/_InputLevel.htm">#InputLevel</a> sets this value.</td>
+  </tr>
+  <tr id="A_IsPersistent">
+    <td>A_IsPersistent</td>
+    <td>Gets or sets whether the script is persistent. Prefer <a href="lib/Persistent.htm">Persistent</a> when changing this state so normal lifetime handling occurs.</td>
+  </tr>
+  <tr id="A_IsUnicode">
+    <td>A_IsUnicode</td>
+    <td>Always true. This compatibility variable is retained even though scripts run on the Unicode .NET runtime.</td>
+  </tr>
+  <tr id="A_KeysharpPath">
+    <td>A_KeysharpPath</td>
+    <td>An alias of <a href="#AhkPath">A_AhkPath</a>, containing the full path of the running executable.</td>
+  </tr>
+  <tr id="A_LoopFileLongPath">
+    <td>A_LoopFileLongPath</td>
+    <td>A compatibility alias of <a href="lib/LoopFiles.htm#LoopFileFullPath">A_LoopFileFullPath</a>.</td>
+  </tr>
+  <tr id="A_LoopKey">
+    <td>A_LoopKey</td>
+    <td>The key or index of the current item in the innermost active <a href="lib/For.htm">for-loop</a>, or blank when no such loop is active.</td>
+  </tr>
+  <tr id="A_MaxThreadsBuffer">
+    <td>A_MaxThreadsBuffer</td>
+    <td>Gets or sets whether eligible hotkey presses are buffered after their per-hotkey thread limit is reached. <a href="lib/_MaxThreadsBuffer.htm">#MaxThreadsBuffer</a> sets this value.</td>
+  </tr>
+  <tr id="A_MaxThreadsPerHotkey">
+    <td>A_MaxThreadsPerHotkey</td>
+    <td>Gets or sets the default maximum number of simultaneous threads per hotkey or hotstring. <a href="lib/_MaxThreadsPerHotkey.htm">#MaxThreadsPerHotkey</a> sets this value.</td>
+  </tr>
+  <tr id="A_NewLine">
+    <td>A_NewLine</td>
+    <td>The platform-native newline sequence: <code class="no-highlight">`r`n</code> on Windows and <code class="no-highlight">`n</code> on Linux and macOS.</td>
+  </tr>
+  <tr id="A_OSType">
+    <td>A_OSType</td>
+    <td>The current platform symbol: <code>WINDOWS</code>, <code>LINUX</code> or <code>OSX</code>. These values match the corresponding <a href="lib/Preprocessor.htm">conditional-compilation symbols</a>.</td>
+  </tr>
+  <tr id="A_Priority">
+    <td>A_Priority</td>
+    <td>Gets or sets the default priority copied into newly created script threads. See <a href="lib/Thread.htm">Thread</a>.</td>
   </tr>
 </table>
 

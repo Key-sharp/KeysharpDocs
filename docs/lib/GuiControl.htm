@@ -29,6 +29,7 @@
       <li><a href="#Choose">Choose</a>: Selects an item in a multi-item control.</li>
       <li><a href="#Delete">Delete</a>: Deletes one or all items from a multi-item control.</li>
       <li><a href="#Focus">Focus</a>: Sets keyboard focus to a control.</li>
+      <li><a href="#GetClientPos">GetClientPos</a>: Retrieves the screen position and size of a control's client area.</li>
       <li><a href="#GetPos">GetPos</a>: Retrieves the position and size of a control.</li>
       <li><a href="#Move">Move</a>: Moves and/or resizes a control.</li>
       <li><a href="#OnCommand">OnCommand</a>: Registers a function or method to be called on WM_COMMAND.</li>
@@ -44,13 +45,17 @@
   </li>
   <li><a href="#Properties">Properties</a>:
     <ul>
+      <li><a href="#BackColor">BackColor</a>: Gets or sets the control's background color.</li>
       <li><a href="#ClassNN">ClassNN</a>: Gets the ClassNN (class name and sequence number) of a control.</li>
       <li><a href="#NetClassNN">NetClassNN</a>: Gets a stable class name and sequence number for a managed GUI control.</li>
       <li><a href="#Enabled">Enabled</a>: Gets or sets whether a control is enabled.</li>
       <li><a href="#Focused">Focused</a>: Gets whether a control has keyboard focus.</li>
       <li><a href="#Gui">Gui</a>: Gets the parent window of a control.</li>
+      <li><a href="#AltSubmit">AltSubmit</a>: Gets whether the control was created with the AltSubmit option.</li>
       <li><a href="#Hwnd">Hwnd</a>: Gets the window handle (HWND) of a control.</li>
+      <li><a href="#Parent">Parent</a>: Gets or sets the container a control is placed in.</li>
       <li><a href="#Name">Name</a>: Gets or sets the explicit name of a control.</li>
+      <li><a href="#RichText">RichText</a>: Accesses the rich-text content of a RichEdit control.</li>
       <li><a href="#Text">Text</a>: Gets or sets the text/caption of a control.</li>
       <li><a href="#Type">Type</a>: Gets the type of a control.</li>
       <li><a href="#Value">Value</a>: Gets or sets the contents of a value-capable control.</li>
@@ -131,6 +136,29 @@
 <p>To get the currently focused control in a GUI window, use <a href="Gui.htm#FocusedCtrl">Gui.FocusedCtrl</a>.</p>
 <p>To get whether a control has keyboard focus, use <a href="#Focused">GuiControl.Focused</a>.</p>
 <p>See <a href="#ExFocus">example #6</a> for a demonstration.</p>
+</div>
+
+<div class="methodShort" id="GetClientPos">
+<h3>GetClientPos</h3>
+<p>Retrieves the screen position and size of a control's client area.</p>
+<pre class="Syntax">GuiCtrl.<span class="func">GetClientPos</span>(<span class="optional">&amp;X, &amp;Y, &amp;Width, &amp;Height</span>)</pre>
+<h4 id="GetClientPos_Parameters">Parameters</h4>
+<dl>
+  <dt>&amp;X, &amp;Y</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#variable-references">VarRef</a></p>
+    <p>If omitted, the corresponding value will not be stored. Otherwise, specify references to the output variables in which to store the screen coordinates of the client area's upper-left corner.</p>
+  </dd>
+  <dt>&amp;Width, &amp;Height</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#variable-references">VarRef</a></p>
+    <p>If omitted, the corresponding value will not be stored. Otherwise, specify references to the output variables in which to store the client area's width and height.</p>
+  </dd>
+</dl>
+<h4 id="GetClientPos_Remarks">Remarks</h4>
+<p>This method differs from <a href="#GetPos">GetPos</a> in two ways: the coordinates are relative to the screen rather than to the GUI's client area, and the reported area is the control's client area rather than its full bounds. The client area excludes any border, scrollbar or other non-client element supplied by the platform, so for a control drawn without such elements the size matches <a href="#GetPos">GetPos</a>.</p>
+<p>Screen coordinates are what most positioning tasks need: showing a <a href="Menu.htm#Show">menu</a>, tooltip or second GUI aligned with a control, or restricting <a href="ImageSearch.htm">ImageSearch</a> or <a href="PixelSearch.htm">PixelSearch</a> to a control's contents. This method is the control-level counterpart of <a href="WinGetClientPos.htm">WinGetClientPos</a>.</p>
+<p><em>Width</em> and <em>Height</em> are adjusted for <a href="Gui.htm#DPIScale">DPI scaling</a> unless the <code class="no-highlight">-DPIScale</code> option was used; <em>X</em> and <em>Y</em> are always in screen pixels.</p>
 </div>
 
 <div class="methodShort" id="GetPos">
@@ -270,6 +298,15 @@ EditCtrl.<span class="func">SetCue</span>(NewText <span class="optional">, ShowW
 </div>
 
 <h2 id="Properties">Properties</h2>
+<div class="methodShort" id="BackColor">
+<h3>BackColor</h3>
+<p>Gets or sets the control's background color.</p>
+<pre class="Syntax">CurrentColor := GuiCtrl.<span class="func">BackColor</span></pre>
+<pre class="Syntax">GuiCtrl.<span class="func">BackColor</span> := NewColor</pre>
+<p><em>CurrentColor</em> is a six-digit RGB hexadecimal string.</p>
+<p><em>NewColor</em> can be a color name, an RGB hexadecimal value such as <code>"FF8000"</code> or <code>"0xFF8000"</code>, or an integer RGB value.</p>
+</div>
+
 <div class="methodShort" id="ClassNN">
 <h3>ClassNN</h3>
 <p>Gets the <a href="../misc/ControlID.htm#ClassNN">ClassNN</a> (class name and sequence number) of a control.</p>
@@ -316,6 +353,24 @@ EditCtrl.<span class="func">SetCue</span>(NewText <span class="optional">, ShowW
 <pre class="Syntax">HWND := GuiCtrl.<span class="func">Hwnd</span></pre>
 </div>
 
+<div class="methodShort" id="Parent">
+<h3>Parent</h3>
+<p>Gets or sets the container a control is placed in.</p>
+<pre class="Syntax">Container := GuiCtrl.<span class="func">Parent</span></pre>
+<pre class="Syntax">GuiCtrl.<span class="func">Parent</span> := Container</pre>
+<p><em>Container</em> is the <a href="#Gui">GuiControl</a> holding the control &mdash; a <a href="GuiControls.htm#GroupBox">GroupBox</a> or <a href="GuiControls.htm#Tab">Tab</a> page, for example &mdash; or the control's <a href="Gui.htm">Gui</a> when it sits directly on the window.</p>
+<p>The value read from this property can be assigned back to it, so a control can be moved from one container to another. Assigning a Gui returns the control to the window itself.</p>
+<p>Use <a href="#Gui">GuiCtrl.Gui</a> to reach the owning window regardless of nesting; Parent reports only the immediate container.</p>
+</div>
+
+<div class="methodShort" id="AltSubmit">
+<h3>AltSubmit</h3>
+<p>Gets whether the control was created with the <code class="no-highlight">AltSubmit</code> option.</p>
+<pre class="Syntax">Boolean := GuiCtrl.<span class="func">AltSubmit</span></pre>
+<p>Returns 1 if the option is in effect and 0 otherwise. The option changes what <a href="Gui.htm#Submit">Gui.Submit</a> and <a href="#Value">Value</a> report for the affected control types; see <a href="GuiControls.htm">GUI Control Types</a> for its meaning per control.</p>
+<p>This property is read-only. Set the option when adding the control, or through <a href="#Opt">Opt</a>.</p>
+</div>
+
 <div class="methodShort" id="Name">
 <h3>Name</h3>
 <p>Gets or sets the explicit name of a control.</p>
@@ -324,6 +379,16 @@ EditCtrl.<span class="func">SetCue</span>(NewText <span class="optional">, ShowW
 <p><em>CurrentName</em> is the control's current name, or an empty string if it has no name. The <a href="Gui.htm#var">V option</a> affects the initial setting.</p>
 <p><em>NewName</em> is the control's new name.</p>
 <p>This name can be used with <a href="Gui.htm#__Item">Gui.__Item</a> to retrieve the corresponding GuiControl object. For most input-capable controls, the name is also used by <a href="Gui.htm#Submit">Gui.Submit</a>.</p>
+</div>
+
+<div class="methodShort" id="RichText">
+<h3>RichText</h3>
+<p>Accesses the rich-text content of a <a href="GuiControls.htm#RichEdit">RichEdit</a> control.</p>
+<pre class="Syntax">CurrentText := GuiCtrl.<span class="func">RichText</span></pre>
+<pre class="Syntax">GuiCtrl.<span class="func">RichText</span> := NewRTF</pre>
+<p class="note"><strong>Note:</strong> Reading this property currently returns the displayed plain text, while assigning it expects Rich Text Format (RTF) data. Returning raw RTF on read is intended but not yet implemented.</p>
+<p>Use <a href="#Value">Value</a> to get or set the displayed plain text.</p>
+<p>Using this property with any control other than RichEdit throws an exception. If a RichEdit control has the <a href="Gui.htm#AltSubmit">AltSubmit option</a>, <a href="Gui.htm#Submit">Gui.Submit</a> retrieves its raw rich text.</p>
 </div>
 
 <div class="methodShort" id="Text">

@@ -32,17 +32,17 @@
 <p>Type: ProcessInfo</p>
 <p>Returns an object which encapsulates the child process and its I/O. Compilation and assembly data are cached, making repeated calls faster than manually starting processes and writing source to standard input.</p>
 
-<h2 id="ProcessInfo">ProcessInfo</h2>
-<table class="info">
-  <tr><th>Member</th><th>Description</th></tr>
-  <tr><td><code>HasExited</code></td><td>Whether the process has exited.</td></tr>
-  <tr><td><code>ExitCode</code></td><td>The process exit code.</td></tr>
-  <tr><td><code>ExitTime</code></td><td>The exit time in YYYYMMDDHH24MISS form.</td></tr>
-  <tr><td><code>StdOut</code></td><td>Standard output.</td></tr>
-  <tr><td><code>StdErr</code></td><td>Standard error.</td></tr>
-  <tr><td><code>StdIn</code></td><td>Standard input as a KeysharpFile object.</td></tr>
-  <tr><td><code>Kill()</code></td><td>Terminates the process.</td></tr>
-</table>
+<h2 id="ProcessInfo">Process Object (ProcessInfo)</h2>
+<p>The object returned by RunScript encapsulates the child process and its redirected I/O. This object has the following methods and properties:</p>
+<p id="HasExited"><strong>Process.HasExited:</strong> Returns 1 if the process has exited and 0 while it is still running.</p>
+<p id="ExitCode"><strong>Process.ExitCode:</strong> Returns the process exit code. This is meaningful only once the process has exited.</p>
+<p id="ExitTime"><strong>Process.ExitTime:</strong> Returns the time the process exited, in <a href="../Variables.htm#YYYY">YYYYMMDDHH24MISS</a> form.</p>
+<p id="StdOut"><strong>Process.StdOut:</strong> Returns the process's standard output as a <a href="File.htm">File</a> object, for reading.</p>
+<p id="StdErr"><strong>Process.StdErr:</strong> Returns the process's standard error as a <a href="File.htm">File</a> object, for reading.</p>
+<p id="StdIn"><strong>Process.StdIn:</strong> Returns the process's standard input as a <a href="File.htm">File</a> object, for writing.</p>
+<p id="Kill"><strong>Process.Kill():</strong> Terminates the process.</p>
+<p id="Close"><strong>Process.Close():</strong> Closes the redirected streams and releases the process's resources. It does not terminate a running process; use <a href="#Kill">Kill</a> for that.</p>
+<p>The three stream properties are created on first access and are the same object on every subsequent access, so a partially consumed stream keeps its position.</p>
 
 <h2 id="Examples">Examples</h2>
 <pre>#Import "Ks" { RunScript }

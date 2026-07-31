@@ -2,7 +2,6 @@ tocData = [
   ["Quick Reference","index.htm"],
   ["About Keysharp","Keysharp.htm"],
   ["Platform Support","Platforms.htm"],
-  ["Compatibility Differences","KeysharpDifferences.htm"],
   ["Keysharp Extensions","",
   [
     ["Built-in Variables","lib/KeysharpVariables.htm"],
@@ -19,7 +18,8 @@ tocData = [
       ["String and Base64 Functions","lib/StringFunctions.htm"],
       ["C# Regular Expressions","lib/RegExCs.htm"],
       ["C# String Formatting","lib/FormatCs.htm"],
-      ["HashMap","lib/HashMap.htm"]
+      ["HashMap","lib/HashMap.htm"],
+      ["Json","lib/Json.htm"]
     ]],
     ["Files and Processes","",
     [
@@ -42,8 +42,10 @@ tocData = [
       ["LockRun","lib/LockRun.htm"],
       ["Collect","lib/Collect.htm"],
       ["ObjFree","lib/ObjFree.htm"],
+      ["ParseScript","lib/ParseScript.htm"],
       ["Clr Interop","lib/Clr.htm"]
     ]],
+    ["Keyboard Layout Functions","lib/KeyboardLayout.htm"],
     ["Cryptography","lib/Crypto.htm"]
   ]],
   ["Using Keysharp","",
@@ -76,9 +78,10 @@ tocData = [
     ["Manage Windows","howto/ManageWindows.htm"],
     ["Tutorial by tidbit","Tutorial.htm"]
   ]],
-  ["Keysharp Releases and Changes","ChangeLog.htm"],
+  ["Recent Changes","ChangeLog.htm"],
   ["AutoHotkey Compatibility Reference","",
   [
+    ["Changes from AutoHotkey to Keysharp","KeysharpDifferences.htm"],
     ["Changes from v2.0 to v2.1","v2.1-changes.htm"],
     ["Changes from v1.1 to v2.0","v2-changes.htm"],
     ["Archived AutoHotkey Change Log","AutoHotkeyChangeLog.htm"]

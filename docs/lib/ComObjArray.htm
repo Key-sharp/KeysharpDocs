@@ -44,11 +44,24 @@
 <h2 id="Methods">Methods</h2>
 <p>ComObjArray objects support the following methods:</p>
 <ul>
-    <li><code>.MaxIndex(n)</code>: Returns the upper bound of the <i>n</i>th dimension. If <i>n</i> is omitted, it defaults to 1.</li>
-    <li><code>.MinIndex(n)</code>: Returns the lower bound of the <i>n</i>th dimension. If <i>n</i> is omitted, it defaults to 1.</li>
-    <li><code>.Clone()</code>: Returns a copy of the array.</li>
-    <li><code>.__Enum()</code>: Not typically called by script; allows <a href="For.htm">for-loops</a> to be used with SafeArrays.</li>
+    <li><code id="MaxIndex">.MaxIndex(n)</code>: Returns the upper bound of the <i>n</i>th dimension. If <i>n</i> is omitted, it defaults to 1.</li>
+    <li><code id="MinIndex">.MinIndex(n)</code>: Returns the lower bound of the <i>n</i>th dimension. If <i>n</i> is omitted, it defaults to 1.</li>
+    <li><code id="Clone">.Clone()</code>: Returns a copy of the array.</li>
+    <li><code id="__Enum">.__Enum()</code>: Not typically called by script; allows <a href="For.htm">for-loops</a> to be used with SafeArrays.</li>
 </ul>
+
+<h2 id="Properties">Properties</h2>
+<div class="methodShort" id="Dimensions"><h3>Dimensions</h3>
+<p>Gets the number of dimensions in the SafeArray.</p>
+<pre class="Syntax">Count := ArrayObj.<span class="func">Dimensions</span></pre>
+</div>
+
+<div class="methodShort" id="__Item"><h3>__Item</h3>
+<p>Gets or sets an element of the SafeArray.</p>
+<pre class="Syntax">Value := ArrayObj[Index1 <span class="optional">, Index2, ...</span>]
+ArrayObj[Index1 <span class="optional">, Index2, ...</span>] := Value</pre>
+<p>Supply one index for each dimension. Indices are zero-based; a negative index counts backward from the end of its dimension, so -1 selects the last element.</p>
+</div>
 
 <h2 id="Remarks">Remarks</h2>
 <p>ComObjArray objects may also be returned by COM methods and <a href="ComValue.htm">ComValue</a>. Scripts may determine if a value is a ComObjArray as follows:</p>

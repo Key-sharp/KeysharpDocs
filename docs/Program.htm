@@ -39,7 +39,7 @@
 <p>On Windows, extract the portable ZIP and run <code class="no-highlight">Keysharp.exe</code> directly. See the <a href="howto/Install.htm#Portable_Windows">portable Windows instructions</a>. Linux source builds and macOS source archives can likewise run from their build or extracted directories after their platform prerequisites are installed.</p>
 
 <h3 id="update">Updates</h3>
-<p>Install a newer release using the same method as the original installation. Check the <a href="https://github.com/Descolada/keysharp/releases">Keysharp releases</a> and read <a href="ChangeLog.htm">Keysharp Releases and Changes</a> before replacing an existing installation.</p>
+<p>Install a newer release using the same method as the original installation. Check the <a href="https://github.com/Descolada/keysharp/releases">Keysharp releases</a> and read <a href="ChangeLog.htm">Recent Changes</a> before replacing an existing installation.</p>
 
 <h3 id="Installer_uiAccess">UI Access on Windows</h3>
 <p>Keysharp executables do not use a Windows <code class="no-highlight">uiAccess</code> manifest. AutoHotkey instructions which rely on an installed UI-access executable therefore do not apply. To automate an elevated target, run the script at a sufficient integrity level and consider the security implications before doing so.</p>
@@ -55,6 +55,10 @@
   <li>The runtime loads the assembly and invokes its entry point.</li>
 </ol>
 <p>This differs from a traditional interpreter: script code executes as a compiled .NET program. Use <code class="no-highlight">--transpile</code> to write the generated C# without running the script, or a <code class="no-highlight">--compile</code> mode to write a reusable assembly or executable.</p>
+
+<h3 id="internal-names">Internal Type Names</h3>
+<p>Some built-in classes carry a different name in the compiled assembly, because the documented name collides with a .NET framework type: <a href="lib/Object.htm">Object</a> is implemented as <code>KeysharpObject</code>, <a href="lib/File.htm">File</a> as <code>KeysharpFile</code> and <a href="lib/Func.htm">Func</a> as <code>KeysharpFunc</code>. The <a href="Structs.htm#numeric-types">numeric struct types</a> are similarly implemented as <code>StructInt32</code> and so on.</p>
+<p>Only the documented names are valid in script code; the internal names are not class names a script can use, and <a href="lib/Type.htm">Type</a> reports the documented name. The internal names can still appear in diagnostic output that reports managed types directly, such as the call frames of <a href="lib/Error.htm#Stack">Error.Stack</a> or the type shown for a variable by <a href="lib/ListVars.htm">ListVars</a>. Read them as the documented class of the same name.</p>
 
 <h2 id="run">Run a Script</h2>
 <p>Pass the script path to the Keysharp executable:</p>

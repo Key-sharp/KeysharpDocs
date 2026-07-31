@@ -25,6 +25,16 @@
   <dd><p>Type: Integer</p><p>The writable capacity. When explicitly specified, the effective capacity is at least 16. If omitted, it is 256.</p></dd>
 </dl>
 
+<h2 id="Properties">Properties</h2>
+<table class="info">
+  <tr><th>Property</th><th>Type</th><th>Description</th></tr>
+  <tr id="Ptr"><td><code>Ptr</code></td><td>Integer</td><td>The address of the buffer's memory. Read-only.</td></tr>
+  <tr id="Pos"><td><code>Pos</code></td><td>Integer</td><td>The current read/write position, in characters. Assigning a negative value moves the position to the end of the current string by scanning for its null terminator; any other value is clamped to <a href="#Capacity">Capacity</a>.</td></tr>
+  <tr id="Capacity"><td><code>Capacity</code></td><td>Integer</td><td>The writable capacity, in characters, excluding the null terminator. Assigning to it reallocates the buffer, preserving existing content up to the new capacity.</td></tr>
+  <tr id="Size"><td><code>Size</code></td><td>Integer</td><td>The capacity in <em>bytes</em>, excluding the null terminator: <a href="#Capacity">Capacity</a> multiplied by the size of one character in the buffer's encoding. Read-only.</td></tr>
+</table>
+<p><code>Capacity</code> counts characters while <code>Size</code> counts bytes, so for the default Unicode encoding <code>Size</code> is twice <code>Capacity</code>. The functions which transfer raw memory &mdash; <a href="File.htm#RawRead">File.RawRead</a>, <a href="File.htm#RawWrite">File.RawWrite</a> and a <a href="File.htm#Call">File opened over memory</a> &mdash; locate a target through its <code>Ptr</code> and <code>Size</code>, so they measure in bytes.</p>
+
 <h2 id="Remarks">Remarks</h2>
 <p>StringBuffer uses the managed <code class="no-highlight">StringBuilder</code> representation used by .NET platform invocation for writable string pointers. Prefer it over <a href="StrPtr.htm">StrPtr</a> when native code writes into a string.</p>
 <pre>sb := StringBuffer("hello")

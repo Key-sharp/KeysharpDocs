@@ -42,6 +42,27 @@
     </tr>
 </table>
 
+<h2 id="KS">Keysharp Monitor Extensions</h2>
+<p>These functions are Keysharp-specific and are reached through the <a href="../Modules.htm#KS">KS module</a>:</p>
+<pre>#Import "Ks" { MonitorFromPoint, MonitorGetScale }</pre>
+
+<div class="methodShort" id="MonitorFromPoint">
+<h3>MonitorFromPoint</h3>
+<p>Returns the number of the monitor containing a point.</p>
+<pre class="Syntax">MonitorNumber := <span class="func">MonitorFromPoint</span>(X, Y)</pre>
+<p><em>X</em> and <em>Y</em> are a point in native virtual-desktop coordinates. When the point lies in a gap between displays, the nearest monitor is returned.</p>
+</div>
+
+<div class="methodShort" id="MonitorGetScale">
+<h3>MonitorGetScale</h3>
+<p>Returns one monitor's authored-size scale.</p>
+<pre class="Syntax">Scale := <span class="func">MonitorGetScale</span>(<span class="optional">N</span>)</pre>
+<p><em>N</em> is the monitor number. If omitted, the primary monitor is used.</p>
+<p>A scale of 1.0 is 100% and 1.5 is 150%. The value maps deliberately authored UI sizes into native screen units.</p>
+<p class="warning"><strong>Note:</strong> This is not a screen-coordinate conversion factor and must never be applied to absolute positions.</p>
+<p><a href="KeysharpVariables.htm#A_ScreenScale">A_ScreenScale</a> returns the same value for the primary monitor. Code which spans monitors of differing scale should call this function for the monitor it is working with.</p>
+</div>
+
 <h2 id="Remarks">Remarks</h2>
 <p>The built-in variables <a href="../Variables.htm#Screen">A_ScreenWidth</a> and <a href="../Variables.htm#Screen">A_ScreenHeight</a> contain the dimensions of the primary monitor, in pixels.</p>
 <p><a href="SysGet.htm">SysGet</a> can be used to retrieve the bounding rectangle of all display monitors. For example, this retrieves the width and height of the virtual screen:</p>

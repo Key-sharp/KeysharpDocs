@@ -43,8 +43,8 @@ Retain the independence and provenance statements in the site.
   inventories must be interpreted.
 - `audits/` contains generated, internal source-to-documentation review
   queues. They are not public capability matrices.
-- `scripts/Update-SourceAudit.ps1` regenerates the host platform's initial
-  global API inventory from a compiled Keysharp runtime.
+- `scripts/Update-SourceAudit.ps1` regenerates the host platform's global and
+  built-in class-member inventories from a compiled Keysharp runtime.
 - `AutoHotkeyChangeLog.htm` and `AutoHotkeyLicense.htm` are archived upstream
   pages. Do not present them as Keysharp release or license information.
 

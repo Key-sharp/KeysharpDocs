@@ -16,7 +16,7 @@
 
 <p>Creates a <a href="../Functions.htm#virtual-reference">virtual reference</a> to a property of an object.</p>
 
-<pre class="Syntax">Ref := <span class="func">PropRef</span>(Obj, Name)</pre>
+<pre class="Syntax">Ref := <span class="func">PropRef</span>(Obj, Name <span class="optional">, Args*</span>)</pre>
 <p><code>PropRef</code> itself is a <a href="Class.htm">class</a> derived from <code>Any</code>.</p>
 
 <h2 id="Parameters">Parameters</h2>
@@ -31,11 +31,24 @@
     <p>Type: <a href="../Concepts.htm#strings">String</a></p>
     <p>The property's name.</p>
   </dd>
+  <dt>Args</dt>
+  <dd>
+    <p>Zero or more arguments for an indexed property. For example, a reference to <code>Obj.Prop[A, B]</code> can be represented by <code>PropRef(Obj, "Prop", A, B)</code>.</p>
+  </dd>
 </dl>
 
 <h2 id="Return_Value">Return Value</h2>
 <p>Type: PropRef</p>
 <p>This function returns a <a href="../Functions.htm#virtual-reference">virtual reference</a> corresponding to the property; that is, an object with a __Value property which retrieves or sets the value of the target property. This can be passed to a ByRef parameter.</p>
+
+<h2 id="Properties">Properties</h2>
+<table class="info">
+  <tr><th>Property</th><th>Description</th></tr>
+  <tr><td><code id="Target">Target</code></td><td>The object containing the referenced property.</td></tr>
+  <tr><td><code id="Name">Name</code></td><td>The referenced property name. An item reference uses <code>__Item</code>.</td></tr>
+  <tr><td><code id="Args">Args</code></td><td>An Array containing the indexed-property arguments, or an empty Array for a non-indexed property.</td></tr>
+</table>
+<p>These properties are read-only.</p>
 
 <h2 id="Remarks">Remarks</h2>
 <p>In most cases, directly using this class is not recommended. Instead, use the <a href="../Variables.htm#ref">reference operator</a> to retrieve a reference to a property (via the <a href="Object.htm#__Ref">__Ref method</a>).</p>

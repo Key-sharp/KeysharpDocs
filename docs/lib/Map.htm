@@ -44,6 +44,7 @@ for clr in Array("Blue", "Green")
       <li><a href="#Has">Has</a>: Returns true if the specified key has an associated value within a map.</li>
       <li><a href="#MaxIndex">MaxIndex/MinIndex</a>: Returns the highest or lowest numeric key.</li>
       <li><a href="#Set">Set</a>: Sets zero or more items.</li>
+      <li><a href="#ToString">ToString</a>: Returns a string representation of the map.</li>
       <li><a href="#__Enum">__Enum</a>: Enumerates key-value pairs.</li>
       <li><a href="#__New">__New</a>: Sets items. Equivalent to Set.</li>
     </ul>
@@ -126,6 +127,12 @@ MapObj := Map.<span class="func">Call</span>(Key1, Value1, Key2, Value2, ...)</p
 <h4 id="Set_Return_Value">Return Value</h4>
 <p>Type: <a href="../Concepts.htm#objects">Object</a></p>
 <p>This method returns the Map.</p>
+</div>
+
+<div class="methodShort" id="ToString"><h3>ToString</h3>
+<p>Returns a string representation of the map.</p>
+<pre class="Syntax">Text := MapObj.<span class="func">ToString</span>()</pre>
+<p>The result encloses the key-value pairs in braces, separates pairs with a comma and space, and separates each key from its value with a colon. String keys and values are enclosed in double quotes. <code>String(MapObj)</code> returns the same result.</p>
 </div>
 
 <div class="methodShort" id="MaxIndex"><h3>MaxIndex / MinIndex</h3>

@@ -1,8 +1,8 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-<title>Releases and Changes | Keysharp</title>
-<meta name="description" content="Keysharp release history and AutoHotkey compatibility target." />
+<title>Recent Changes | Keysharp</title>
+<meta name="description" content="Notable script-visible changes in recent Keysharp releases, and the AutoHotkey version this documentation targets." />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <link href="static/theme.css" rel="stylesheet" type="text/css" />
@@ -10,21 +10,75 @@
 <script src="static/content.js" type="text/javascript"></script>
 </head>
 <body>
-<h1>Keysharp Releases and Changes</h1>
+<h1>Recent Changes</h1>
 
-<p>Keysharp's authoritative release history is maintained with the project:</p>
+<p>This page summarizes the script-visible changes in recent Keysharp releases, so that a script written against an earlier version can be brought up to date. The <a href="https://github.com/Descolada/keysharp/releases">release page</a> holds the authoritative notes and the downloads for each version.</p>
+<p class="warning"><strong>Note:</strong> Keysharp has not reached version 1.0. Behavior can change between releases, including in ways which require edits to existing scripts. Each release below lists its breaking changes first.</p>
+
+<h2 id="Documented_Version">Documented Version</h2>
+<table class="info">
+  <tr><th>Property</th><th>Value</th></tr>
+  <tr><td>Keysharp version described here</td><td>0.0.0.16</td></tr>
+  <tr><td>AutoHotkey compatibility target</td><td>v2.1-alpha.30</td></tr>
+</table>
+<p>A compatibility target states which AutoHotkey language and library reference these pages describe. It does not mean that every described feature is implemented identically, or that it behaves the same on every platform. See <a href="KeysharpDifferences.htm">Changes from AutoHotkey to Keysharp</a> for the differences, <a href="Platforms.htm">Platform Support</a> for per-platform availability, and the platform remarks on each affected reference page.</p>
+<p>The corresponding upstream language changes are described in <a href="v2.1-changes.htm">Changes from v2.0 to v2.1</a>.</p>
+
+<h2 id="v0.0.0.16">0.0.0.16</h2>
+<p>Released 19 July 2026.</p>
+
+<h3 id="v0.0.0.16-breaking">Breaking Changes</h3>
 <ul>
-  <li><a href="https://github.com/Descolada/keysharp/releases">Keysharp releases and downloads</a></li>
-  <li><a href="https://github.com/Descolada/keysharp/commits/master/">Keysharp source history</a></li>
-  <li><a href="https://github.com/Key-sharp/KeysharpDocs/commits/alpha/">KeysharpDocs history</a></li>
+  <li><code>ImageCapture()</code> was removed. Use the <a href="lib/Image.htm">Image</a> class instead.</li>
+  <li>Linux input requires the <code class="no-highlight">keysharp-inputd</code> daemon; the SharpHook and X11 fallbacks were removed. See <a href="Platforms.htm">Platform Support</a>.</li>
+  <li><code>A_ScaledScreenDPI</code> was renamed to <a href="lib/KeysharpVariables.htm#A_ScreenScale">A_ScreenScale</a>.</li>
+  <li><a href="Variables.htm#A_OSType">A_OSType</a> now returns <code>WINDOWS</code>, <code>OSX</code> or <code>LINUX</code>.</li>
+  <li><a href="Variables.htm#LineFile">A_LineFile</a> in the main file resolves to the main script's full path, as <a href="Variables.htm#ScriptFullPath">A_ScriptFullPath</a> does.</li>
+  <li><a href="lib/_Import.htm">#Import</a> inside a function or class body binds to that scope, and an unknown import throws.</li>
+  <li>Reserved words can no longer be used as variable names.</li>
+  <li>Invalid <a href="lib/Gui.htm">Gui</a> options now throw instead of being ignored.</li>
 </ul>
 
-<h2 id="Compatibility_Target">Documentation Compatibility Target</h2>
-<p>This documentation branch is based on the AutoHotkey v2.1-alpha.30 reference. The corresponding upstream language changes are preserved in <a href="v2.1-changes.htm">AutoHotkey v2.1 alpha changes</a>.</p>
-<p>A compatibility target does not mean that every described feature is implemented identically on every platform. Consult <a href="Platforms.htm">Platform Support</a>, <a href="KeysharpDifferences.htm">Compatibility Differences</a>, and the affected canonical reference page.</p>
+<h3 id="v0.0.0.16-new">New</h3>
+<ul>
+  <li><a href="lib/Image.htm">Image</a> captures, loads, creates, draws, transforms, searches and manipulates pixels before saving. It replaces <code>ImageCapture()</code>.</li>
+  <li><a href="lib/Overlay.htm">Overlay</a> is an always-on-top, click-through canvas using the same drawing primitives as Image. It now backs <code>Highlight</code> and <a href="lib/ToolTip.htm">ToolTip</a> on Linux and macOS.</li>
+  <li><a href="lib/WinEvent.htm">WinEvent</a> subscribes to window events across platforms: <code>Active</code>, <code>Exist</code>, <code>NotExist</code>, <code>Move</code>, <code>Minimize</code>, <code>Restore</code> and <code>TitleChange</code>.</li>
+  <li><a href="lib/KeysharpVariables.htm#A_ThreadId">A_ThreadId</a> and <a href="lib/Exit.htm">Exit</a> with a thread identifier.</li>
+  <li><a href="lib/InputHook.htm#OnMouseDown">OnMouseDown</a>, <a href="lib/InputHook.htm#OnMouseUp">OnMouseUp</a> and <a href="lib/InputHook.htm#OnMouseMove">OnMouseMove</a> on InputHook.</li>
+  <li>Fully cross-platform <a href="lib/Monitor.htm">monitor functions</a>, plus <a href="lib/Monitor.htm#MonitorGetScale">MonitorGetScale</a> and <a href="lib/Monitor.htm#MonitorFromPoint">MonitorFromPoint</a> in the KS module.</li>
+  <li>Gui <a href="lib/Gui.htm#ClickThrough">+ClickThrough</a> and <a href="lib/Gui.htm#AutoScroll">+AutoScroll</a> options.</li>
+  <li>An <code class="no-highlight">*Dir</code> scan-direction option for <a href="lib/ImageSearch.htm">ImageSearch</a>.</li>
+  <li>An OCR library (<code class="no-highlight">OCR.ks</code>) with a pluggable engine, and demo scripts including ClipboardHistory, InputHUD, OCRSnip, Shell, WindowGrab and WindowTiler.</li>
+</ul>
+
+<h3 id="v0.0.0.16-platform">Platform</h3>
+<ul>
+  <li><strong>Linux:</strong> all input channels now go through <code class="no-highlight">keysharp-inputd</code> (evdev and uinput), reworked for multi-user handling, per-script permissions, Unicode sending and mouse buttons.</li>
+  <li><strong>Wayland:</strong> overlays, clipboard and window manipulation through KWin scripting and Keysharp shell extensions for GNOME (including v48 and later) and Cinnamon.</li>
+  <li><strong>macOS:</strong> the hook and sender were revamped on CGEventTap and the key sender is now functional. Binaries are signed, and releases include DMG and PKG packages with SHA256 checksums.</li>
+</ul>
+
+<h3 id="v0.0.0.16-fixes">Fixes and Performance</h3>
+<p>Release-mode stack traces for C# exceptions, <a href="lib/OnExit.htm">OnExit</a> teardown, script exit when the last window closes, thread priority handling and DLL path normalization. Parser fixes for <a href="lib/_Include.htm">#Include</a>, static variables, dereferences and remap syntax. Regular-expression pattern caching, font caching, cheaper per-call thread setup and faster keyboard-layout queries.</p>
+
+<h2 id="v0.0.0.15">0.0.0.15</h2>
+<p>Released 22 June 2026. This release made Keysharp cross-platform across Windows, Linux and macOS.</p>
+<ul>
+  <li><strong>macOS support:</strong> window management, the keyboard and mouse hook and sender, sound and drive functions, App Switcher integration and native Command-key handling, plus AxSpy, an accessibility inspector.</li>
+  <li><strong>Linux:</strong> the <code class="no-highlight">inputd</code> input daemon, <code class="no-highlight">.deb</code> packaging with automatic .NET 10 installation, Unicode character sending and Keyview syntax highlighting.</li>
+  <li><strong>New parser:</strong> a hand-written parser replaced ANTLR4, which is faster and less ambiguous.</li>
+  <li><strong>AutoHotkey v2.1 features:</strong> the v2.0 and v2.1 <a href="lib/_Requires.htm#CompatMode">compatibility modes</a>, <a href="Structs.htm">structs</a> with <a href="lib/_StructPack.htm">#StructPack</a>, the <a href="lib/_Import.htm">#Import</a> directive, <a href="lib/PropRef.htm">PropRef</a>, the <a href="Variables.htm#regex">!~=</a> operator and <a href="misc/WinTitle.htm#ahk_opt">ahk_opt</a>.</li>
+  <li><strong>Scheduler:</strong> the timer and event scheduler was reworked, fixing timer livelock and timers not firing inside hotkey callbacks.</li>
+  <li><strong>Cross-platform GUI</strong> on Eto: DPI scaling, dialog theming, hyperlink labels and <code>A_GuiTheme</code>.</li>
+  <li>The hook and sender were brought current with AutoHotkey 2.0.26.</li>
+</ul>
+
+<h2 id="Earlier">Earlier Releases</h2>
+<p>Notes for 0.0.0.14 and earlier are on the <a href="https://github.com/Descolada/keysharp/releases">release page</a>. For changes which have not yet been released, see the <a href="https://github.com/Descolada/keysharp/commits/master/">source history</a>; documentation changes are tracked in the <a href="https://github.com/Key-sharp/KeysharpDocs/commits/alpha/">KeysharpDocs history</a>.</p>
 
 <h2 id="Upstream_History">Inherited Upstream History</h2>
-<p>The original AutoHotkey change log is retained as an <a href="AutoHotkeyChangeLog.htm">archived upstream reference</a>. Its releases describe AutoHotkey, not releases of Keysharp.</p>
+<p>The original AutoHotkey change log is retained as an <a href="AutoHotkeyChangeLog.htm">archived upstream reference</a>. Its entries describe releases of AutoHotkey, not of Keysharp.</p>
 
 </body>
 </html>

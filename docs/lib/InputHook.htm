@@ -71,8 +71,8 @@ if (ih.Input = CtrlC)
 <p>Multiple InputHooks can be used in combination with <a href="#MinSendLevel">MinSendLevel</a> to separately collect both sent keystrokes and real ones.</p>
 
 <h2 id="object">InputHook Object</h2>
-<p>The InputHook function returns an InputHook object, which has the following methods and properties.</p>
-"InputHookObj" is used below as a placeholder for any InputHook object, as "InputHook" is the class itself.
+<p>Calling the InputHook class creates an InputHook object, which has the following methods and properties. Scripts can extend <code>InputHook.Prototype</code> to add their own.</p>
+<p>"InputHookObj" is used below as a placeholder for any InputHook object.</p>
 <ul class="indent">
   <li><a href="#Methods">Methods</a>:
     <ul>
@@ -94,16 +94,24 @@ if (ih.Input = CtrlC)
       <li><a href="#OnChar">OnChar</a>: Gets or sets the function object which is called after a character is added to the input buffer.</li>
       <li><a href="#OnKeyDown">OnKeyDown</a>: Gets or sets the function object which is called when a notification-enabled key is pressed.</li>
       <li><a href="#OnKeyUp">OnKeyUp</a>: Gets or sets the function object which is called when a notification-enabled key is released.</li>
+      <li><a href="#OnMouseDown">OnMouseDown</a>: Gets or sets the function object which is called when a mouse button is pressed.</li>
+      <li><a href="#OnMouseMove">OnMouseMove</a>: Gets or sets the function object which is called when the mouse moves.</li>
+      <li><a href="#OnMouseUp">OnMouseUp</a>: Gets or sets the function object which is called when a mouse button is released.</li>
     </ul>
   </li>
   <li><a href="#Option_Properties">Option Properties</a>:
     <ul>
       <li><a href="#BackspaceIsUndo">BackspaceIsUndo</a>: Gets or sets whether the Backspace key removes the most recently pressed character from the end of the Input buffer.</li>
+      <li><a href="#BeforeHotkeys">BeforeHotkeys</a>: Gets or sets whether input is processed before hotkeys.</li>
+      <li><a href="#BufferLengthMax">BufferLengthMax</a>: Gets or sets the maximum length of the input buffer.</li>
       <li><a href="#CaseSensitive">CaseSensitive</a>: Gets or sets whether <em>MatchList</em> is case-sensitive.</li>
+      <li><a href="#EndCharMode">EndCharMode</a>: Gets or sets whether single-character end keys are handled by character code.</li>
       <li><a href="#FindAnywhere">FindAnywhere</a>: Gets or sets whether each match can be a substring of the input text.</li>
       <li><a href="#MinSendLevel">MinSendLevel</a>: Gets or sets the minimum send level of input to collect.</li>
       <li><a href="#NotifyNonText">NotifyNonText</a>: Gets or sets whether the OnKeyDown and OnKeyUp callbacks are called whenever a non-text key is pressed.</li>
       <li><a href="#Timeout">Timeout</a>: Gets or sets the timeout value in seconds.</li>
+      <li><a href="#TranscribeModifiedKeys">TranscribeModifiedKeys</a>: Gets or sets whether modified keypresses are transcribed to text.</li>
+      <li><a href="#VisibleMouseMove">VisibleMouseMove</a>: Gets or sets whether mouse movement is visible (not blocked).</li>
       <li><a href="#VisibleNonText">VisibleNonText</a>: Gets or sets whether keys or key combinations which do not produce text are visible (not blocked).</li>
       <li><a href="#VisibleText">VisibleText</a>: Gets or sets whether keys or key combinations which produce text are visible (not blocked).</li>
     </ul>
@@ -288,6 +296,36 @@ InputHookObj.KeyOpt("{vkE7}{sc000}", "-I")  <em>; except Unicode events.</em></p
 <p>The function is called as a new <a href="../misc/Threads.htm">thread</a>, so starts off fresh with the default values for settings such as <a href="SendMode.htm">SendMode</a> and <a href="DetectHiddenWindows.htm">DetectHiddenWindows</a>.</p>
 </div>
 
+<div class="methodShort" id="OnMouseDown"><h3>OnMouseDown</h3>
+<p>Gets or sets the <a href="../misc/Functor.htm">function object</a> which is called when a mouse button or wheel input is pressed.</p>
+<pre class="Syntax">MyCallback := InputHookObj.<span class="func">OnMouseDown</span></pre>
+<pre class="Syntax">InputHookObj.<span class="func">OnMouseDown</span> := MyCallback</pre>
+<p><em>MyCallback</em> is the function object to call (blank if none). Either <code>""</code> or <code>unset</code> can be assigned to remove the current callback.</p>
+<p>The callback accepts four parameters and can be defined as follows:</p>
+<pre class="NoIndent">MyCallback(InputHookObj, ButtonName, X, Y) { ...</pre>
+<p><em>ButtonName</em> is the normalized name of the mouse button or wheel input. <em>X</em> and <em>Y</em> are the coordinates reported for the event.</p>
+<p>Mouse-button visibility is controlled by <a href="#VisibleNonText">VisibleNonText</a> and the <a href="#KeyOpt-s">S</a> and <a href="#KeyOpt-v">V</a> key options.</p>
+</div>
+
+<div class="methodShort" id="OnMouseMove"><h3>OnMouseMove</h3>
+<p>Gets or sets the <a href="../misc/Functor.htm">function object</a> which is called for each mouse-movement report.</p>
+<pre class="Syntax">MyCallback := InputHookObj.<span class="func">OnMouseMove</span></pre>
+<pre class="Syntax">InputHookObj.<span class="func">OnMouseMove</span> := MyCallback</pre>
+<p><em>MyCallback</em> is the function object to call (blank if none). Either <code>""</code> or <code>unset</code> can be assigned to remove the current callback.</p>
+<p>The callback accepts three parameters and can be defined as follows:</p>
+<pre class="NoIndent">MyCallback(InputHookObj, DeltaX, DeltaY) { ...</pre>
+<p><em>DeltaX</em> and <em>DeltaY</em> are signed movement values. Each native movement report is queued separately, including reports where both values are zero. Additional event metadata, including absolute coordinates when supplied by the platform, is available through <a href="../Variables.htm#EventInfo">A_EventInfo</a> while the callback is running.</p>
+<p>Mouse-movement visibility is controlled by <a href="#VisibleMouseMove">VisibleMouseMove</a>.</p>
+</div>
+
+<div class="methodShort" id="OnMouseUp"><h3>OnMouseUp</h3>
+<p>Gets or sets the <a href="../misc/Functor.htm">function object</a> which is called when a mouse button or wheel input is released.</p>
+<pre class="Syntax">MyCallback := InputHookObj.<span class="func">OnMouseUp</span></pre>
+<pre class="Syntax">InputHookObj.<span class="func">OnMouseUp</span> := MyCallback</pre>
+<p><em>MyCallback</em> is the function object to call (blank if none). Either <code>""</code> or <code>unset</code> can be assigned to remove the current callback.</p>
+<p>The callback has the same parameters and visibility rules as <a href="#OnMouseDown">OnMouseDown</a>.</p>
+</div>
+
 <h3 id="Option_Properties">Option Properties</h3>
 <div class="methodShort" id="BackspaceIsUndo"><h3>BackspaceIsUndo</h3>
 <p>Gets or sets whether <kbd>Backspace</kbd> removes the most recently pressed character from the end of the Input buffer.</p>
@@ -300,12 +338,33 @@ InputHookObj.KeyOpt("{vkE7}{sc000}", "-I")  <em>; except Unicode events.</em></p
 <p class="warning"><strong>Note:</strong> If the input text is visible (such as in an editor) and the arrow keys or other means are used to navigate within it, <kbd>Backspace</kbd> will still remove the last character rather than the one behind the caret (insertion point).</p>
 </div>
 
+<div class="methodShort" id="BeforeHotkeys"><h3>BeforeHotkeys</h3>
+<p>Gets or sets whether input is processed before the hotkey recognizer.</p>
+<pre class="Syntax">CurrentSetting := InputHookObj.<span class="func">BeforeHotkeys</span></pre>
+<pre class="Syntax">InputHookObj.<span class="func">BeforeHotkeys</span> := NewSetting</pre>
+<p><em>CurrentSetting</em> is 0 (false) by default, or 1 (true) if the <a href="#option-h">H option</a> was used. When true, this InputHook can suppress an event before it reaches a hotkey.</p>
+</div>
+
+<div class="methodShort" id="BufferLengthMax"><h3>BufferLengthMax</h3>
+<p>Gets or sets the maximum length of the input buffer.</p>
+<pre class="Syntax">CurrentLength := InputHookObj.<span class="func">BufferLengthMax</span></pre>
+<pre class="Syntax">InputHookObj.<span class="func">BufferLengthMax</span> := NewLength</pre>
+<p><em>CurrentLength</em> is 1023 by default unless overwritten by the <a href="#option-l">L option</a>. A value of 0 disables text collection and the length limit.</p>
+</div>
+
 <div class="methodShort" id="CaseSensitive"><h3>CaseSensitive</h3>
 <p>Gets or sets whether <a href="#MatchList"><em>MatchList</em></a> is case-sensitive.</p>
 <pre class="Syntax">CurrentSetting := InputHookObj.<span class="func">CaseSensitive</span></pre>
 <pre class="Syntax">InputHookObj.<span class="func">CaseSensitive</span> := NewSetting</pre>
 <p><em>CurrentSetting</em> is <em>NewSetting</em> if assigned, otherwise 0 (false) by default unless overwritten by the <a href="#option-c">C option</a>.</p>
 <p><em>NewSetting</em> is a <a href="../Concepts.htm#boolean">boolean value</a> that enables or disables this setting.</p>
+</div>
+
+<div class="methodShort" id="EndCharMode"><h3>EndCharMode</h3>
+<p>Gets or sets whether single-character end keys are handled by character code instead of by keycode.</p>
+<pre class="Syntax">CurrentSetting := InputHookObj.<span class="func">EndCharMode</span></pre>
+<pre class="Syntax">InputHookObj.<span class="func">EndCharMode</span> := NewSetting</pre>
+<p><em>CurrentSetting</em> is 0 (false) by default, or 1 (true) if the <a href="#E">E option</a> was used. See that option for the effect on keyboard layouts, modifiers and case sensitivity.</p>
 </div>
 
 <div class="methodShort" id="FindAnywhere"><h3>FindAnywhere</h3>
@@ -342,6 +401,20 @@ InputHookObj.KeyOpt("{vkE7}{sc000}", "-I")  <em>; except Unicode events.</em></p
 <p><em>CurrentSeconds</em> is <em>NewSeconds</em> if assigned, otherwise 0 by default unless overwritten by the <a href="#option-t">T option</a>.</p>
 <p><em>NewSeconds</em> is a <a href="../Concepts.htm#numbers">floating-point number</a> representing the timeout. 0 means no timeout.</p>
 <p>The timeout period ordinarily starts when <a href="#Start">Start</a> is called, but will restart if this property is assigned a value while Input is in progress. If Input is still in progress when the timeout period elapses, it is terminated and <a href="#EndReason">EndReason</a> is set to the word Timeout.</p>
+</div>
+
+<div class="methodShort" id="TranscribeModifiedKeys"><h3>TranscribeModifiedKeys</h3>
+<p>Gets or sets whether a greater range of modified keypresses is transcribed to text.</p>
+<pre class="Syntax">CurrentSetting := InputHookObj.<span class="func">TranscribeModifiedKeys</span></pre>
+<pre class="Syntax">InputHookObj.<span class="func">TranscribeModifiedKeys</span> := NewSetting</pre>
+<p><em>CurrentSetting</em> is 0 (false) by default, or 1 (true) if the <a href="#option-m">M option</a> was used. See that option for which modifier combinations are affected.</p>
+</div>
+
+<div class="methodShort" id="VisibleMouseMove"><h3>VisibleMouseMove</h3>
+<p>Gets or sets whether mouse movement is visible (not blocked).</p>
+<pre class="Syntax">CurrentSetting := InputHookObj.<span class="func">VisibleMouseMove</span></pre>
+<pre class="Syntax">InputHookObj.<span class="func">VisibleMouseMove</span> := NewSetting</pre>
+<p><em>CurrentSetting</em> is 1 (true) by default. If <em>NewSetting</em> is false, mouse movement is blocked while this InputHook is in progress, but <a href="#OnMouseMove">OnMouseMove</a> continues to receive movement reports.</p>
 </div>
 
 <div class="methodShort" id="VisibleNonText"><h3>VisibleNonText</h3>

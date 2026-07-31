@@ -45,6 +45,8 @@ InspectFn(fn)
     <ul>
       <li><a href="#Name">Name</a>: Gets the function's name.</li>
       <li><a href="#IsBuiltIn">IsBuiltIn</a>: Gets 1 (true) if the function is built-in, otherwise 0 (false).</li>
+      <li><a href="#IsClosure">IsClosure</a>: Gets 1 (true) if the function is a closure, otherwise 0 (false).</li>
+      <li><a href="#IsMethod">IsMethod</a>: Gets 1 (true) if the function is a method, otherwise 0 (false).</li>
       <li><a href="#IsVariadic">IsVariadic</a>: Gets 1 (true) if the function is variadic, otherwise 0 (false).</li>
       <li><a href="#MinParams">MinParams</a>: Gets the number of required parameters.</li>
       <li><a href="#MaxParams">MaxParams</a>: Gets the number of formally-declared parameters for a user-defined function or maximum parameters for a built-in function.</li>
@@ -134,6 +136,18 @@ FuncObj.<span class="func">Call</span>(Param1, Param2, ...)</pre>
 <pre class="Syntax">Boolean := FuncObj.<span class="func">IsVariadic</span></pre>
 </div>
 
+<div class="methodShort" id="IsClosure"><h3>IsClosure</h3>
+<p>Gets 1 (true) if the function is a <a href="../Functions.htm#closures">closure</a>, otherwise 0 (false).</p>
+<pre class="Syntax">Boolean := FuncObj.<span class="func">IsClosure</span></pre>
+<p>A closure is a nested function which captured a variable from the scope that created it, so each evaluation of the enclosing function produces a distinct function object.</p>
+</div>
+
+<div class="methodShort" id="IsMethod"><h3>IsMethod</h3>
+<p>Gets 1 (true) if the function is a method, otherwise 0 (false).</p>
+<pre class="Syntax">Boolean := FuncObj.<span class="func">IsMethod</span></pre>
+<p>A method receives the target object as a hidden first parameter, <a href="../Objects.htm#Custom_Classes_method">this</a>, so calling it requires a target. This is the distinction between <code>obj.Method()</code> and a plain function retrieved from the same property.</p>
+</div>
+
 <div class="methodShort" id="MinParams"><h3>MinParams</h3>
 <p>Gets the number of required parameters.</p>
 <pre class="Syntax">ParamCount := FuncObj.<span class="func">MinParams</span></pre>
@@ -145,7 +159,7 @@ FuncObj.<span class="func">Call</span>(Param1, Param2, ...)</pre>
 <p>If the function is <a href="../Functions.htm#Variadic">variadic</a>, <em>ParamCount</em> indicates the maximum number of parameters which can be accepted by the function without overflowing into the "variadic*" parameter.</p></div>
 
 <h2 id="Implementation">Implementation Remarks</h2>
-<p>The underlying managed class is named <code class="no-highlight">FuncObj</code> because .NET already defines a type named Func. Compatibility type checks recognize both <code class="no-highlight">Value is Func</code> and <code class="no-highlight">Value is FuncObj</code>.</p>
+<p id="FuncObj">The underlying managed class is named <code class="no-highlight">FuncObj</code> because .NET already defines a type named Func. Compatibility type checks recognize both <code class="no-highlight">Value is Func</code> and <code class="no-highlight">Value is FuncObj</code>.</p>
 <p>Function objects can be obtained from a direct function reference or by passing a function name to <code class="no-highlight">Func()</code>. Most built-in functions can also be used as function objects.</p>
 <p id="Performance">Calling a function object uses reflection and is slower than a direct function call. Prefer direct calls in performance-sensitive loops.</p>
 

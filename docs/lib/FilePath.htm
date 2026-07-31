@@ -12,8 +12,13 @@
 <body>
 
 <h1>File Path Functions</h1>
-<p>Resolve a file path or retrieve the directory portion of a file name.</p>
+<p>Resolve a file path, retrieve the directory portion of a file name, or create a temporary file.</p>
 <p>These functions are exported by the <a href="../Modules.htm#KS">KS module</a>.</p>
+
+<h2 id="FileCreateTemp">FileCreateTemp</h2>
+<pre class="Syntax">Filename := <span class="func">FileCreateTemp</span>()</pre>
+<p>Creates an empty temporary file and returns its full path.</p>
+<p>The file is created in the system temporary directory, exists on return and is not removed automatically. Delete it with <a href="FileDelete.htm">FileDelete</a> when it is no longer needed.</p>
 
 <h2 id="FileDirName">FileDirName</h2>
 <pre class="Syntax">Directory := <span class="func">FileDirName</span>(Filename)</pre>
@@ -27,6 +32,16 @@
 <pre>#Import "Ks" { FileDirName, FileFullPath }
 Full := FileFullPath("data\items.txt")
 Parent := FileDirName(Full)</pre>
+
+<div class="ex" id="ExTemp">
+<p><a class="ex_number" href="#ExTemp"></a> Writes to a temporary file and removes it afterwards.</p>
+<pre>#Import "Ks" { FileCreateTemp }
+Temp := FileCreateTemp()
+try
+    FileAppend "scratch data", Temp
+finally
+    FileDelete Temp</pre>
+</div>
 
 <h2 id="Related">Related</h2>
 <p><a href="SplitPath.htm">SplitPath</a>, <a href="SetWorkingDir.htm">SetWorkingDir</a></p>

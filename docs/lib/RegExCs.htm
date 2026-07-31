@@ -17,7 +17,8 @@
 
 <pre class="Syntax">FoundPos := <span id="RegExMatchCs" class="func">RegExMatchCs</span>(Haystack, NeedleRegEx <span class="optional">, &amp;OutputVar, StartingPos := 1</span>)
 NewStr := <span id="RegExReplaceCs" class="func">RegExReplaceCs</span>(Haystack, NeedleRegEx <span class="optional">, Replacement := "", &amp;OutputVarCount, Limit := -1, StartingPos := 1</span>)</pre>
-<p>The general parameter and return conventions match <a href="RegExMatch.htm">RegExMatch</a> and <a href="RegExReplace.htm">RegExReplace</a>. RegExMatchCs writes a <code>RegExMatchInfoCs</code> object. Invalid patterns throw .NET regular-expression exceptions rather than PCRE exceptions.</p>
+<p id="RegExMatchInfoCs">The general parameter and return conventions match <a href="RegExMatch.htm">RegExMatch</a> and <a href="RegExReplace.htm">RegExReplace</a>. RegExMatchCs writes a <code>RegExMatchInfoCs</code> object, which provides the same match-information interface using .NET groups. Invalid patterns throw .NET regular-expression exceptions rather than PCRE exceptions.</p>
+<p>That interface includes <a href="RegExMatch.htm#MatchObject">every member of a PCRE match object</a>, among them <strong>Success</strong>, which is 1 when the pattern matched and 0 otherwise, and <strong>ToString()</strong>, which returns the position of the overall match.</p>
 
 <h2 id="Differences">Pattern and Option Differences</h2>
 <ul>

@@ -41,6 +41,7 @@ MsgBox users[1]</pre>
     <ul>
       <li><a href="#Add">Add</a>: Appends one value and returns the new length.</li>
       <li><a href="#Clone">Clone</a>: Returns a shallow copy of an array.</li>
+      <li><a href="#Contains">Contains</a>: Returns whether the array contains a value.</li>
       <li><a href="#Delete">Delete</a>: Removes the value of an array element, leaving the index without a value.</li>
       <li><a href="#Filter">Filter</a>: Returns elements accepted by a callback.</li>
       <li><a href="#FindIndex">FindIndex</a>: Finds an element with a callback.</li>
@@ -53,8 +54,10 @@ MsgBox users[1]</pre>
       <li><a href="#MaxIndex">MaxIndex/MinIndex</a>: Returns the highest or lowest index.</li>
       <li><a href="#Pop">Pop</a>: Removes and returns the last array element.</li>
       <li><a href="#Push">Push</a>: Appends values to the end of an array.</li>
+      <li><a href="#Remove">Remove</a>: Removes the first occurrence of a value.</li>
       <li><a href="#RemoveAt">RemoveAt</a>: Removes items from an array.</li>
       <li><a href="#Sort">Sort</a>: Sorts the Array in place.</li>
+      <li><a href="#ToString">ToString</a>: Returns a string representation of the array.</li>
       <li><a href="#__New">__New</a>: Appends items. Equivalent to Push.</li>
       <li><a href="#__Enum">__Enum</a>: Enumerates array elements.</li>
     </ul>
@@ -91,6 +94,12 @@ ArrayObj := Array.<span class="func">Call</span>(<span class="optional">Value, V
 <pre class="Syntax">Clone := ArrayObj.<span class="func">Clone</span>()</pre>
 <p>All array elements are copied to the new array. Object <em>references</em> are copied (like with a normal assignment), not the objects themselves.</p>
 <p>Own properties, own methods and base are copied as per <a href="Object.htm#Clone">Obj.Clone</a>.</p>
+</div>
+
+<div class="methodShort" id="Contains"><h3>Contains</h3>
+<p>Returns whether the array contains a value.</p>
+<pre class="Syntax">Boolean := ArrayObj.<span class="func">Contains</span>(Value)</pre>
+<p>The return value is 1 (true) if an element equal to <em>Value</em> is present, otherwise 0 (false).</p>
 </div>
 
 <div class="methodShort" id="Delete"><h3>Delete</h3>
@@ -222,6 +231,12 @@ MsgBox x.RemoveAt(1, 2)  <em>; 1</em>
 MsgBox x[1]              <em>; C</em></pre>
 </div>
 
+<div class="methodShort" id="Remove"><h3>Remove</h3>
+<p>Removes the first occurrence of a value.</p>
+<pre class="Syntax">ArrayObj.<span class="func">Remove</span>(Value)</pre>
+<p>Elements after the removed value are shifted to the left. If the value is not present, the array is unchanged.</p>
+</div>
+
 <div class="methodShort" id="Filter"><h3>Filter</h3>
 <p>Returns a new Array containing each element for which a callback returned true.</p>
 <pre class="Syntax">Filtered := ArrayObj.<span class="func">Filter</span>(Callback)</pre>
@@ -263,6 +278,12 @@ Lowest := ArrayObj.<span class="func">MinIndex</span>()</pre>
 <p>Sorts the Array in place and returns the Array.</p>
 <pre class="Syntax">ArrayObj.<span class="func">Sort</span>(Callback)</pre>
 <p>The callback receives two values and should return a negative number when the first belongs before the second, zero when equal, or a positive number otherwise.</p>
+</div>
+
+<div class="methodShort" id="ToString"><h3>ToString</h3>
+<p>Returns a string representation of the array.</p>
+<pre class="Syntax">Text := ArrayObj.<span class="func">ToString</span>()</pre>
+<p>The result encloses the elements in square brackets and separates them with a comma and space. String elements are enclosed in double quotes, and elements without a value are represented by <code>unset</code>. <code>String(ArrayObj)</code> returns the same result.</p>
 </div>
 
 <div class="methodShort" id="__New"><h3>__New</h3>
