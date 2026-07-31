@@ -427,76 +427,8 @@ ul.indent ul {
 list-style-type: disc;
 }
 
-/* ---- Download picker (howto/Install.htm, index.htm) ---- */
 
-.dl-grid {
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(15em,1fr));
-gap:1em;
-margin:1.2em 0
-}
-
-.dl-card {
-display:flex;
-flex-direction:column;
-border:1px solid #d3cbe4;
-border-radius:10px;
-padding:1.1em 1.2em;
-background:#faf8fd;
-text-decoration:none;
-color:inherit
-}
-
-.dl-card:hover, .dl-card:focus {
-border-color:#5B32A3;
-background:#f3eefb;
-text-decoration:none
-}
-
-.dl-card[aria-current="true"] {
-border-color:#5B32A3;
-border-width:2px;
-padding:calc(1.1em - 1px) calc(1.2em - 1px)
-}
-
-.dl-os {
-font-size:1.25em;
-font-weight:700;
-color:#5B32A3;
-margin-bottom:.15em
-}
-
-.dl-detected {
-font-size:.8em;
-font-weight:400;
-color:#5B32A3;
-margin-left:.5em;
-white-space:nowrap
-}
-
-.dl-file {
-font-family:Consolas,"Courier New",monospace;
-font-size:.85em;
-word-break:break-all;
-color:#333
-}
-
-.dl-note {
-font-size:.85em;
-color:#555;
-margin-top:.35em
-}
-
-.dl-alt {
-font-size:.85em;
-margin:.2em 0 0
-}
-
-.dl-status {
-font-size:.85em;
-color:#555;
-margin:.4em 0 1em
-}
+/* ---- Download button (index.htm) ---- */
 
 .ks-download {
 margin:1em 0 .8em
@@ -524,4 +456,125 @@ text-decoration:none
 font-size:.72em;
 font-weight:400;
 opacity:.9
+}
+
+/* ---- Download picker (howto/Install.htm) ---- */
+
+.dl-grid {
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(9em,1fr));
+gap:.8em;
+/* Without a cap the three cards stretch across the whole content column, which on a wide window
+   makes them far larger than the choice they represent. */
+max-width:32em;
+margin:1.3em 0 .6em;
+align-items:stretch
+}
+
+.dl-col {
+display:flex;
+flex-direction:column
+}
+
+.dl-card {
+display:flex;
+flex:1;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+position:relative; /* contains the visually hidden "your system" label */
+border:2px solid #ddd6ea;
+border-radius:10px;
+padding:1em .7em;
+background:#fff;
+color:inherit;
+text-decoration:none;
+transition:border-color .15s, box-shadow .15s, transform .15s
+}
+
+/* Stated on the children too, so the card keeps its stacked, centred layout even where the flex
+   rules are not honoured. */
+.dl-card, .dl-card > span, .dl-card .dl-os {
+text-align:center
+}
+
+.dl-card > span {
+display:block;
+width:100%
+}
+
+.dl-card:hover, .dl-card:focus {
+border-color:#5B32A3;
+box-shadow:0 4px 14px rgba(91,50,163,.18);
+transform:translateY(-2px);
+text-decoration:none;
+color:inherit
+}
+
+.dl-icon {
+display:block;
+width:32px;
+height:32px;
+margin:0 auto .35em;
+color:#5B32A3
+}
+
+.dl-os {
+font-size:1.05em;
+font-weight:700;
+line-height:1.2;
+color:#5B32A3
+}
+
+/* The filled card conveys "this is your system" visually, which a screen reader cannot perceive, so
+   the wording is kept and hidden rather than dropped. */
+.dl-card .dl-detected {
+position:absolute;
+width:1px;
+height:1px;
+overflow:hidden;
+clip:rect(0 0 0 0);
+clip-path:inset(50%);
+white-space:nowrap
+}
+
+.dl-card[aria-current="true"] {
+border-color:#5B32A3;
+background:#5B32A3
+}
+
+.dl-card[aria-current="true"] .dl-icon, .dl-card[aria-current="true"] .dl-os {
+color:#fff
+}
+
+.dl-card[aria-current="true"]:hover, .dl-card[aria-current="true"]:focus {
+background:#4a2887;
+border-color:#4a2887
+}
+
+.dl-alt {
+text-align:center;
+font-size:.82em;
+margin:.5em 0 0
+}
+
+.dl-alt a {
+display:inline-block;
+border:1px solid #d3cbe4;
+border-radius:999px;
+padding:.2em .85em;
+margin:.15em .1em;
+text-decoration:none
+}
+
+.dl-alt a:hover, .dl-alt a:focus {
+border-color:#5B32A3;
+background:#f3eefb;
+text-decoration:none
+}
+
+.dl-status {
+font-size:.85em;
+color:#555;
+margin:.2em 0 1.2em
 }

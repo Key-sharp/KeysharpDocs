@@ -1637,7 +1637,9 @@ function ctor_features()
     for(var i = 0; i < as.length; i++) {
       var a = as[i];
       if (!a.querySelector('img') && a.className.indexOf('no-ext') == -1) {
-        a.className = "extLink";
+        // Append rather than assign: overwriting discards the classes the page author put on the
+        // link, silently disabling any styling that depends on them.
+        a.className = a.className ? a.className + " extLink" : "extLink";
         a.target = "_blank";
       }
     }

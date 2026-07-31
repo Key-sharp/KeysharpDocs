@@ -333,33 +333,8 @@ pre.origin em, code em {
   color: #ece7f3;
 }
 
-/* ---- Download picker ---- */
 
-.dl-card {
-  background: #26262b;
-  border-color: #44454b;
-}
-
-.dl-card:hover, .dl-card:focus {
-  background: #2c2438;
-  border-color: #a77bf3;
-}
-
-.dl-card[aria-current="true"] {
-  border-color: #a77bf3;
-}
-
-.dl-os, .dl-detected {
-  color: #a77bf3;
-}
-
-.dl-file {
-  color: #d5d5d5;
-}
-
-.dl-note, .dl-status {
-  color: #b6b6b6;
-}
+/* ---- Download button (index.htm) ---- */
 
 .ks-download-btn {
   background: #7b4fd4;
@@ -368,4 +343,47 @@ pre.origin em, code em {
 
 .ks-download-btn:hover, .ks-download-btn:focus {
   background: #8f66e0;
+}
+
+/* ---- Download picker ---- */
+
+.dl-card {
+  background: #26262b;
+  border-color: #44454b;
+}
+
+.dl-card:hover, .dl-card:focus {
+  border-color: #a77bf3;
+  box-shadow: 0 4px 14px rgba(0,0,0,.45);
+}
+
+.dl-icon, .dl-os {
+  color: #a77bf3;
+}
+
+.dl-card[aria-current="true"] {
+  background: #7b4fd4;
+  border-color: #7b4fd4;
+}
+
+.dl-card[aria-current="true"] .dl-icon, .dl-card[aria-current="true"] .dl-os {
+  color: #fff;
+}
+
+.dl-card[aria-current="true"]:hover, .dl-card[aria-current="true"]:focus {
+  background: #8f66e0;
+  border-color: #8f66e0;
+}
+
+.dl-alt a {
+  border-color: #44454b;
+}
+
+.dl-alt a:hover, .dl-alt a:focus {
+  border-color: #a77bf3;
+  background: #2c2438;
+}
+
+.dl-status {
+  color: #b6b6b6;
 }

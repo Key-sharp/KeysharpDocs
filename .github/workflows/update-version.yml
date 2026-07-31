@@ -1,0 +1,108 @@
+name: Track Keysharp releases
+
+# Keeps the download links and version markers in the docs pointing at the current Keysharp release.
+#
+# Reading a public repository's releases needs no credentials beyond the token this workflow already
+# gets, so there is no cross-repository secret to create or rotate. The schedule is what makes this
+# reliable: a missed trigger, a release published by hand, or a failed run all correct themselves on
+# the next tick rather than leaving the documented download links pointing at a version that is gone.
+#
+# For an immediate update, the Keysharp release workflow can send a repository_dispatch event of type
+# keysharp-released, which requires a token with contents:write on this repository. That is an
+# optimisation, not a requirement - without it the links are correct within the hour.
+
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to pin (blank = whatever the latest release is)'
+        required: false
+  repository_dispatch:
+    types: [keysharp-released]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: track-keysharp-release
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: alpha
+
+      - name: Resolve the target version
+        id: resolve
+        env:
+          GH_TOKEN: ${{ github.token }}
+          INPUT_VERSION: ${{ inputs.version }}
+          DISPATCH_VERSION: ${{ github.event.client_payload.version }}
+        run: |
+          version="${INPUT_VERSION:-$DISPATCH_VERSION}"
+          if [ -z "$version" ]; then
+            version="$(gh release view --repo Descolada/keysharp --json tagName --jq .tagName)"
+          fi
+          version="${version#v}"
+
+          if ! printf '%s' "$version" | grep -Eq '^[0-9]+(\.[0-9]+){1,3}$'; then
+            echo "Refusing to rewrite the docs with '$version', which is not a version number." >&2
+            exit 1
+          fi
+
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Confirm the release actually carries the assets the docs link to
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.resolve.outputs.version }}
+        run: |
+          # Writing links to files that do not exist would be worse than leaving the old ones in place,
+          # so the release is checked before anything is rewritten.
+          assets="$(gh release view "v$VERSION" --repo Descolada/keysharp --json assets --jq '.assets[].name')"
+          missing=0
+          for name in \
+            "keysharp-$VERSION-win-x64.msi" \
+            "keysharp-$VERSION-win-x64.zip" \
+            "keysharp-$VERSION-osx-arm64.dmg" \
+            "keysharp-$VERSION-osx-x64.dmg" \
+            "keysharp-$VERSION-osx-arm64.pkg" \
+            "keysharp-$VERSION-osx-x64.pkg" \
+            "keysharp-$VERSION-linux-x64.deb" \
+            "keysharp-$VERSION-linux-arm64.deb" \
+            "keysharp-$VERSION-linux-x64.tar.gz" \
+            "keysharp-$VERSION-linux-arm64.tar.gz" ; do
+            if ! printf '%s\n' "$assets" | grep -Fxq "$name"; then
+              echo "missing from release v$VERSION: $name" >&2
+              missing=1
+            fi
+          done
+          [ "$missing" -eq 0 ] || { echo "Release v$VERSION is incomplete; leaving the docs unchanged." >&2; exit 1; }
+
+      - name: Rewrite the download links and version markers
+        shell: pwsh
+        run: ./scripts/Set-KeysharpVersion.ps1 ${{ steps.resolve.outputs.version }}
+
+      - name: Validate the result
+        shell: pwsh
+        run: ./scripts/Test-Docs.ps1
+
+      - name: Commit
+        env:
+          VERSION: ${{ steps.resolve.outputs.version }}
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "Docs already target Keysharp $VERSION; nothing to commit."
+            exit 0
+          fi
+
+          git config user.name  'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m "Point downloads at Keysharp $VERSION"
+          git push
