@@ -4,7 +4,7 @@ tocData = [
   ["Platform Support","Platforms.htm"],
   ["Keysharp Extensions","",
   [
-    ["Built-in Variables","lib/KeysharpVariables.htm"],
+    ["Built-in Variables","Variables.htm#KS"],
     ["Conditional Compilation","lib/Preprocessor.htm"],
     ["Build Directives","lib/KeysharpDirectives.htm"],
     ["Capabilities and Permissions","",
@@ -31,6 +31,8 @@ tocData = [
     [
       ["Image","lib/Image.htm"],
       ["Overlay","lib/Overlay.htm"],
+      ["Highlight","lib/Highlight.htm"],
+      ["ClipCursor","lib/ClipCursor.htm"],
       ["WinEvent","lib/WinEvent.htm"],
       ["WinFromPoint","lib/WinFromPoint.htm"],
       ["WinMaximizeAll","lib/WinMaximizeAll.htm"],

@@ -10,8 +10,9 @@
     It is normally run by .github/workflows/update-version.yml, which discovers the current release
     and commits the result. Run it by hand to correct the docs without waiting for that.
 
-    Only the Keysharp version is touched. The <!--ver--> marker on the front page holds the
-    AutoHotkey compatibility target, which is unrelated and is maintained by hand.
+    Only the Keysharp version is touched. The AutoHotkey compatibility target is unrelated, is
+    maintained by hand, and is stated in the front page's lead paragraph and in the notice banner
+    that static/content.js adds to every page.
 
 .PARAMETER Version
     The release version, with or without a leading "v" (0.0.0.17 or v0.0.0.17).

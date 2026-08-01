@@ -19,11 +19,11 @@
 <p>Encrypts <em>Value</em> with the AES algorithm and returns a <a href="Buffer.htm">Buffer</a>. If <em>Decrypt</em> is non-zero, decrypts the supplied data instead.</p>
 
 <h2 id="Hashes">Hash Functions</h2>
-<pre class="Syntax">Digest := <span class="func">MD5</span>(Value)
-Digest := <span class="func">SHA1</span>(Value)
-Digest := <span class="func">SHA256</span>(Value)
-Digest := <span class="func">SHA384</span>(Value)
-Digest := <span class="func">SHA512</span>(Value)</pre>
+<pre class="Syntax"><span id="MD5">Digest := <span class="func">MD5</span>(Value)</span>
+<span id="SHA1">Digest := <span class="func">SHA1</span>(Value)</span>
+<span id="SHA256">Digest := <span class="func">SHA256</span>(Value)</span>
+<span id="SHA384">Digest := <span class="func">SHA384</span>(Value)</span>
+<span id="SHA512">Digest := <span class="func">SHA512</span>(Value)</span></pre>
 <p>Returns a hexadecimal digest. The result lengths are 32, 40, 64, 96 and 128 characters respectively.</p>
 <p class="warning"><strong>Security warning:</strong> MD5 and SHA-1 are unsuitable for collision-resistant security uses. Use SHA-256 or stronger unless compatibility requires an older digest.</p>
 

@@ -158,7 +158,7 @@
 <h4 id="GetClientPos_Remarks">Remarks</h4>
 <p>This method differs from <a href="#GetPos">GetPos</a> in two ways: the coordinates are relative to the screen rather than to the GUI's client area, and the reported area is the control's client area rather than its full bounds. The client area excludes any border, scrollbar or other non-client element supplied by the platform, so for a control drawn without such elements the size matches <a href="#GetPos">GetPos</a>.</p>
 <p>Screen coordinates are what most positioning tasks need: showing a <a href="Menu.htm#Show">menu</a>, tooltip or second GUI aligned with a control, or restricting <a href="ImageSearch.htm">ImageSearch</a> or <a href="PixelSearch.htm">PixelSearch</a> to a control's contents. This method is the control-level counterpart of <a href="WinGetClientPos.htm">WinGetClientPos</a>.</p>
-<p><em>Width</em> and <em>Height</em> are adjusted for <a href="Gui.htm#DPIScale">DPI scaling</a> unless the <code class="no-highlight">-DPIScale</code> option was used; <em>X</em> and <em>Y</em> are always in screen pixels.</p>
+<p>On Windows, <em>Width</em> and <em>Height</em> are adjusted for <a href="Gui.htm#DPIScale">DPI scaling</a> unless the <code class="no-highlight">-DPIScale</code> option was used; <em>X</em> and <em>Y</em> remain in the platform's screen-coordinate space. On Linux and macOS, the returned sizes use the GUI toolkit's logical coordinates regardless of the <code class="no-highlight">DPIScale</code> option.</p>
 </div>
 
 <div class="methodShort" id="GetPos">
@@ -179,7 +179,7 @@
   </dd>
 </dl>
 <h4 id="GetPos_Remarks">Remarks</h4>
-<p>Unlike <a href="ControlGetPos.htm">ControlGetPos</a>, this method applies <a href="Gui.htm#DPIScale">DPI scaling</a> to the returned coordinates (unless the <code class="no-highlight">-DPIScale</code> option was used).</p>
+<p>On Windows, unlike <a href="ControlGetPos.htm">ControlGetPos</a>, this method applies <a href="Gui.htm#DPIScale">DPI scaling</a> to the returned coordinates unless the <code class="no-highlight">-DPIScale</code> option was used. On Linux and macOS, it returns the GUI toolkit's logical coordinates regardless of the <code class="no-highlight">DPIScale</code> option.</p>
 <p>See <a href="#ExMoveResize">example #5</a> or <a href="#ExGetPos">example #10</a> for a demonstration.</p>
 </div>
 
@@ -201,7 +201,7 @@
   </dd>
 </dl>
 <h4 id="Move_Remarks">Remarks</h4>
-<p>Unlike <a href="ControlMove.htm">ControlMove</a>, this method applies <a href="Gui.htm#DPIScale">DPI scaling</a> to the coordinates (unless the <code class="no-highlight">-DPIScale</code> option was used).</p>
+<p>On Windows, unlike <a href="ControlMove.htm">ControlMove</a>, this method applies <a href="Gui.htm#DPIScale">DPI scaling</a> to the coordinates unless the <code class="no-highlight">-DPIScale</code> option was used. On Linux and macOS, it accepts the GUI toolkit's logical coordinates regardless of the <code class="no-highlight">DPIScale</code> option.</p>
 <p>See <a href="#ExMove">example #4</a> or <a href="#ExMoveResize">example #5</a> for a demonstration.</p>
 
 </div>

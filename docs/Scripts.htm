@@ -344,7 +344,7 @@ MsgBox Format(FormatStr, A_TickCount, A_Now)</pre>
   </tr>
   <tr id="SlashDebug">
     <td>/Debug</td>
-    <td>Connect to a debugging client. For more details, see <a href="#idebug">Interactive Debugging</a>.</td>
+    <td>Reserved for AutoHotkey command-line compatibility. Keysharp does not currently implement a debugger or connect to DBGp clients.</td>
     <td>No</td>
   </tr>
   <tr id="CPn">
@@ -456,29 +456,7 @@ Pause</pre>
 <p>The following functions are also useful for debugging: <a href="lib/ListLines.htm">ListLines</a>, <a href="lib/KeyHistory.htm">KeyHistory</a>, and <a href="lib/OutputDebug.htm">OutputDebug</a>.</p>
 <p>Some common errors, such as typos and missing "global" declarations, can be detected by <a href="lib/_Warn.htm">enabling warnings</a>.</p>
 <h3 id="idebug">Interactive Debugging</h3>
-<p>Interactive debugging is possible with a supported <a href="AHKL_DBGPClients.htm">DBGp client</a>. Typically the following actions are possible:</p>
-<ul>
-  <li>Set and remove breakpoints on lines - pause execution when a <a href="https://en.wikipedia.org/wiki/Breakpoint">breakpoint</a> is reached.</li>
-  <li>Step through code line by line - step into, over or out of functions.</li>
-  <li>Inspect all variables or a specific variable.</li>
-  <li>View the stack of running threads and functions.</li>
-</ul>
-<p>Note that this functionality is disabled for compiled scripts which are <a href="#ahk2exe-base">based on a BIN file</a>. For compiled scripts based on an EXE file, /debug must be specified after <a href="#SlashScript">/script</a>.</p>
-<p>To enable interactive debugging, first launch a supported debugger client then launch the script with the <b>/Debug</b> command-line switch.</p>
-<pre class="Syntax">AutoHotkey.exe /Debug[=<i>SERVER</i>:<i>PORT</i>] ...</pre>
-<p><i>SERVER</i> and <i>PORT</i> may be omitted.  For example, the following are equivalent:</p>
-<pre class="no-highlight">AutoHotkey /Debug "myscript.ahk"
-AutoHotkey /Debug=localhost:9000 "myscript.ahk"</pre>
-<p id="debug_attach">To attach the debugger to a script which is already running, send it a message as shown below:</p>
-<pre>ScriptPath := "" <em>; SET THIS TO THE FULL PATH OF THE SCRIPT</em>
-A_DetectHiddenWindows := true
-if WinExist(ScriptPath " ahk_class AutoHotkey")
-    <em>; Optional parameters:
-    ;   wParam  = the IPv4 address of the debugger client, as a 32-bit integer.
-    ;   lParam  = the port which the debugger client is listening on.</em>
-    PostMessage DllCall("RegisterWindowMessage", "Str", "AHK_ATTACH_DEBUGGER")
-</pre>
-<p>Once the debugger client is connected, it may detach without terminating the script by sending the "detach" DBGp command.</p>
+<p>Keysharp does not currently provide interactive script debugging or implement the DBGp protocol. The <a href="#SlashDebug">/Debug</a> switch is accepted only for command-line compatibility and has no effect. Use the diagnostic facilities described above, such as <a href="lib/ListVars.htm">ListVars</a>, <a href="lib/ListLines.htm">ListLines</a>, <a href="lib/KeyHistory.htm">KeyHistory</a> and <a href="lib/OutputDebug.htm">OutputDebug</a>.</p>
 
 <h2 id="Script_Showcase">Script Showcase</h2>
 <p>See <a href="scripts/">this page</a> for some useful scripts.</p>

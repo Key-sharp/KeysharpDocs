@@ -94,12 +94,17 @@ height:112px;
 width:112px
 }
 
+/* The wordmark is the page's h1, so the generic heading rules (border-bottom and margins) are cleared
+   here to keep it looking like a logo rather than a section heading. */
 #keysharplogo .ks-wordmark {
 color:#5B32A3;
 font-size:2.5em;
 font-weight:700;
 letter-spacing:-.04em;
-line-height:1
+line-height:1;
+border:0;
+margin:0;
+padding:0
 }
 
 #keysharplogo small {
@@ -111,29 +116,34 @@ margin-top:.5em;
 text-transform:uppercase
 }
 
+/* The measure is capped for readability. 70em at this font size is around 1290px, which on a wide
+   window is no constraint at all and leaves lines of well over 100 characters. */
 .ks-lead {
 font-size:1.15em;
-max-width:70em
+line-height:1.65;
+max-width:42em
 }
 
+/* Sits directly under the logo as a header strip, ruled above and below. The rules stand in for the
+   heading border that used to separate the masthead from the page. The padding is deliberately
+   generous: with a tight band the two rules read as a squeeze rather than a deliberate strip. */
 .ks-project-links {
 display:flex;
 flex-wrap:wrap;
-gap:.5em 1.25em
+gap:.5em 1.5em;
+border-top:1px solid #ddd;
+border-bottom:1px solid #ddd;
+padding:.9em 0;
+margin:1.6em 0 1.8em
 }
 
-.ks-disclaimer,.ks-compat-notice {
+.ks-disclaimer {
 background:#f5f0ff;
 border-left:.35em solid #6D3FC0;
 box-sizing:border-box;
 color:#38245d;
 margin:1em 0;
 padding:.65em .9em
-}
-
-.ks-compat-notice {
-font-size:.92em;
-margin-top:.25em
 }
 
 /* pre: code blocks, code: inline code, .Syntax: syntax definition (block/pre or inline/span) */
@@ -434,7 +444,10 @@ list-style-type: disc;
 margin:1em 0 .8em
 }
 
-.ks-download-btn {
+/* The :link/:visited pseudo-classes are needed here: the generic "a:link,a:visited" rule above is
+   more specific than a bare class selector, and would otherwise paint the label the same purple as
+   this button's background. */
+a.ks-download-btn, a.ks-download-btn:link, a.ks-download-btn:visited {
 display:inline-flex;
 flex-direction:column;
 background:#5B32A3;
@@ -446,7 +459,7 @@ border-radius:8px;
 text-decoration:none
 }
 
-.ks-download-btn:hover, .ks-download-btn:focus {
+a.ks-download-btn:hover, a.ks-download-btn:focus, a.ks-download-btn:visited:hover {
 background:#4a2887;
 color:#fff;
 text-decoration:none

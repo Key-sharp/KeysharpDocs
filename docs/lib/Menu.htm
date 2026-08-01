@@ -118,6 +118,7 @@ MyMenuBar := MenuBar.<span class="func">Call</span>()
     <p><strong>Break:</strong> The item begins a new column in a popup menu.</p>
     <p><strong>BarBreak:</strong> As above, but with a dividing line between columns.</p>
     <p><strong>RTL</strong> <span class="ver">[v2.1-alpha.17+]</span>: The item is displayed in right-to-left order. This is used to support right-to-left languages, such as Arabic and Hebrew.</p>
+    <p><em>Radio</em> and <em>RTL</em> are supported on Windows, Linux and macOS. <em>Right</em>, <em>Break</em> and <em>BarBreak</em> are supported on Windows and Linux. Cocoa's native menu system does not provide right-justified application-menu items or multi-column popup menus, so those three options are accepted but have no effect on macOS.</p>
 <p>To change an existing item's options without affecting its callback or submenu, simply omit the <em>CallbackOrSubmenu</em> parameter.</p>
   </dd>
 </dl>
@@ -351,7 +352,7 @@ MyMenuBar := MenuBar.<span class="func">Call</span>()
   <dt>Wait <span class="ver">[v2.1-alpha.1+]</span></dt>
   <dd>
     <p>Type: <a href="../Concepts.htm#boolean">Boolean</a></p>
-    <p>If omitted, the default value depends on the menu style. If the script has applied the MNS_MODELESS style (typically via <a href="DllCall.htm">DllCall</a>), the default is false (no wait); otherwise, the default is true (wait).</p>
+    <p>If omitted, the default is true (wait). Keysharp does not expose AutoHotkey's native MNS_MODELESS menu style. Pass false explicitly to use the non-blocking form.</p>
     <p>If <strong>true</strong>, the method will not return until after the menu is closed.</p>
     <p>If <strong>false</strong>, the method will return immediately, allowing the script to continue execution while the menu is being displayed.</p>
   </dd>

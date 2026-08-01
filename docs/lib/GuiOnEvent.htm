@@ -80,6 +80,7 @@
   <tr><th>Event</th><th>Raised when...</th></tr>
   <tr><td><a href="#Close">Close</a></td><td>The window is closed.</td></tr>
   <tr><td><a href="#ContextMenu">ContextMenu</a></td><td>The user right-clicks within the window or presses <kbd>Menu</kbd> or <kbd>Shift</kbd>+<kbd>F10</kbd>.</td></tr>
+  <tr><td><a href="#DPIChange">DPIChange</a></td><td>The window moves to a display with a different DPI or backing scale.</td></tr>
   <tr><td><a href="#DropFiles">DropFiles</a></td><td>Files/folders are dragged and dropped onto the window.</td></tr>
   <tr><td><a href="#Escape">Escape</a></td><td>The user presses <kbd>Esc</kbd> while the GUI window is active.</td></tr>
   <tr><td><a href="#Size">Size</a></td><td>The window is resized, minimized, maximized or restored.</td></tr>
@@ -142,6 +143,18 @@ MyGui.Show()</pre>
 <p>Unlike most other GUI events, the ContextMenu event can have more than one concurrent <a href="../misc/Threads.htm">thread</a>.</p>
 <p>Each control can have its own ContextMenu event callback which is called before any callback registered for the Gui object. Control-specific callbacks omit the <em>GuiObj</em> parameter, but all other parameters are the same.</p>
 <p>Note: Since <a href="GuiControls.htm#Edit">Edit</a> and <a href="GuiControls.htm#MonthCal">MonthCal</a> controls have their own context menu, a right-click in one of them will not launch the ContextMenu event.</p>
+
+<h3 id="DPIChange">DPIChange</h3>
+<p>Launched when the GUI window moves to a display with a different DPI or backing scale.</p>
+<pre class="Syntax">Gui_<span class="func">DPIChange</span>(GuiObj, OldDPI, NewDPI)</pre>
+<dl>
+  <dt>OldDPI, NewDPI</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#numbers">Integer</a></p>
+    <p>The previous and current display DPI, where 96 represents 100% scale. On Linux and macOS these values are derived from the toolkit's logical-pixel scale.</p>
+  </dd>
+</dl>
+<p>On Windows, a script can use <a href="Gui.htm#Gui_DPIResize"><code class="no-highlight">Gui.Opt("-DPIResize")</code></a> to disable automatic resizing by default for controls added afterward, or use <code class="no-highlight">-DPIResize</code> in an individual control's options. The callback can then reposition and resize those controls according to the script's own rules. Changing the GUI option does not affect controls which already exist. On Linux and macOS, native toolkit scaling still applies, but this event can be used to react to the new backing scale.</p>
 
 <h3 id="DropFiles">DropFiles</h3>
 <p>Launched whenever files/folders are dropped onto the window as part of a drag-and-drop operation (but if this callback is already running, drop events are ignored).</p>

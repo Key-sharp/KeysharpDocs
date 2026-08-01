@@ -36,6 +36,7 @@ docs\static\source\data_deprecate.js
 docs\KeysharpDifferences.htm
 docs\Platforms.htm
 docs\lib\ClipboardFunctions.htm
+docs\lib\ClipCursor.htm
 docs\lib\Clr.htm
 docs\lib\Collect.htm
 docs\lib\Crypto.htm
@@ -43,9 +44,9 @@ docs\lib\EnvUpdate.htm
 docs\lib\FilePath.htm
 docs\lib\FormatCs.htm
 docs\lib\HashMap.htm
+docs\lib\Highlight.htm
 docs\lib\Image.htm
 docs\lib\KeysharpDirectives.htm
-docs\lib\KeysharpVariables.htm
 docs\lib\LockRun.htm
 docs\lib\Mail.htm
 docs\lib\ObjFree.htm

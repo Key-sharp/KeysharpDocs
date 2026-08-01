@@ -327,7 +327,12 @@ pre.origin em, code em {
   color: #c4a7ff;
 }
 
-.ks-disclaimer, .ks-compat-notice {
+.ks-project-links {
+  border-top-color: #443852;
+  border-bottom-color: #443852;
+}
+
+.ks-disclaimer {
   background: #2c2438;
   border-left-color: #a77bf3;
   color: #ece7f3;
@@ -336,12 +341,12 @@ pre.origin em, code em {
 
 /* ---- Download button (index.htm) ---- */
 
-.ks-download-btn {
+a.ks-download-btn, a.ks-download-btn:link, a.ks-download-btn:visited {
   background: #7b4fd4;
   color: #fff;
 }
 
-.ks-download-btn:hover, .ks-download-btn:focus {
+a.ks-download-btn:hover, a.ks-download-btn:focus, a.ks-download-btn:visited:hover {
   background: #8f66e0;
 }
 

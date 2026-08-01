@@ -31,7 +31,7 @@
 <ul>
   <li><code>ImageCapture()</code> was removed. Use the <a href="lib/Image.htm">Image</a> class instead.</li>
   <li>Linux input requires the <code class="no-highlight">keysharp-inputd</code> daemon; the SharpHook and X11 fallbacks were removed. See <a href="Platforms.htm">Platform Support</a>.</li>
-  <li><code>A_ScaledScreenDPI</code> was renamed to <a href="lib/KeysharpVariables.htm#A_ScreenScale">A_ScreenScale</a>.</li>
+  <li><code>A_ScaledScreenDPI</code> was renamed to <a href="Variables.htm#A_ScreenScale">A_ScreenScale</a>.</li>
   <li><a href="Variables.htm#A_OSType">A_OSType</a> now returns <code>WINDOWS</code>, <code>OSX</code> or <code>LINUX</code>.</li>
   <li><a href="Variables.htm#LineFile">A_LineFile</a> in the main file resolves to the main script's full path, as <a href="Variables.htm#ScriptFullPath">A_ScriptFullPath</a> does.</li>
   <li><a href="lib/_Import.htm">#Import</a> inside a function or class body binds to that scope, and an unknown import throws.</li>
@@ -44,7 +44,7 @@
   <li><a href="lib/Image.htm">Image</a> captures, loads, creates, draws, transforms, searches and manipulates pixels before saving. It replaces <code>ImageCapture()</code>.</li>
   <li><a href="lib/Overlay.htm">Overlay</a> is an always-on-top, click-through canvas using the same drawing primitives as Image. It now backs <code>Highlight</code> and <a href="lib/ToolTip.htm">ToolTip</a> on Linux and macOS.</li>
   <li><a href="lib/WinEvent.htm">WinEvent</a> subscribes to window events across platforms: <code>Active</code>, <code>Exist</code>, <code>NotExist</code>, <code>Move</code>, <code>Minimize</code>, <code>Restore</code> and <code>TitleChange</code>.</li>
-  <li><a href="lib/KeysharpVariables.htm#A_ThreadId">A_ThreadId</a> and <a href="lib/Exit.htm">Exit</a> with a thread identifier.</li>
+  <li><a href="Variables.htm#A_ThreadId">A_ThreadId</a> and <a href="lib/Exit.htm">Exit</a> with a thread identifier.</li>
   <li><a href="lib/InputHook.htm#OnMouseDown">OnMouseDown</a>, <a href="lib/InputHook.htm#OnMouseUp">OnMouseUp</a> and <a href="lib/InputHook.htm#OnMouseMove">OnMouseMove</a> on InputHook.</li>
   <li>Fully cross-platform <a href="lib/Monitor.htm">monitor functions</a>, plus <a href="lib/Monitor.htm#MonitorGetScale">MonitorGetScale</a> and <a href="lib/Monitor.htm#MonitorFromPoint">MonitorFromPoint</a> in the KS module.</li>
   <li>Gui <a href="lib/Gui.htm#ClickThrough">+ClickThrough</a> and <a href="lib/Gui.htm#AutoScroll">+AutoScroll</a> options.</li>

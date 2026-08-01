@@ -30,6 +30,15 @@ foreach ($relativePath in $requiredFiles) {
     }
 }
 
+$projectText = [IO.File]::ReadAllText((Join-Path $repoRoot 'Project.hhp'))
+foreach ($relativePath in @(
+        'docs\lib\ClipCursor.htm',
+        'docs\lib\Highlight.htm')) {
+    if (-not $projectText.Contains($relativePath)) {
+        Add-ValidationError "CHM project is missing: $relativePath"
+    }
+}
+
 $htmlFiles = Get-ChildItem -LiteralPath $docsRoot -Recurse -File |
     Where-Object { $_.Extension -in '.htm', '.html' }
 
@@ -101,9 +110,30 @@ foreach ($relativePath in $identityFiles) {
     }
 }
 
+# The download links embed a release version, and so do the <!--ksver--> markers that display it.
+# They are rewritten together by Set-KeysharpVersion.ps1, so disagreement means an edit by hand went
+# only part of the way - which would leave the site advertising one version and serving another.
+$downloadVersions = [System.Collections.Generic.HashSet[string]]::new()
+foreach ($file in $htmlFiles) {
+    $text = [IO.File]::ReadAllText($file.FullName)
+    foreach ($pattern in @(
+            '/releases/download/v(\d+(?:\.\d+){1,3})/',
+            'keysharp-(\d+(?:\.\d+){1,3})-(?:win|linux|osx)-(?:x64|arm64)\.',
+            '<!--ksver-->([^<]*)<!--/ksver-->')) {
+        foreach ($match in [regex]::Matches($text, $pattern)) {
+            [void]$downloadVersions.Add($match.Groups[1].Value)
+        }
+    }
+}
+if ($downloadVersions.Count -gt 1) {
+    $list = ($downloadVersions | Sort-Object) -join ', '
+    Add-ValidationError "Download links and version markers disagree ($list). Run ./scripts/Set-KeysharpVersion.ps1 <version>."
+}
+
 if ($errors.Count) {
     $errors | ForEach-Object { Write-Error $_ }
     throw "Documentation validation failed with $($errors.Count) error(s)."
 }
 
-Write-Host "Validated $($htmlFiles.Count) HTML files; required files, local links, titles, and shell identity are consistent."
+$versionNote = if ($downloadVersions.Count -eq 1) { " Downloads target Keysharp $($downloadVersions | Select-Object -First 1)." } else { '' }
+Write-Host "Validated $($htmlFiles.Count) HTML files; required files, local links, titles, and shell identity are consistent.$versionNote"

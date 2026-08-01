@@ -18,7 +18,12 @@
   <li><a href="#Intro">Variables</a></li>
   <li><a href="#Expressions">Expressions</a></li>
   <li><a href="#Operators">Operators in Expressions</a></li>
-  <li><a href="#BuiltIn">Built-in Variables</a></li>
+  <li><a href="#BuiltIn">Built-in Variables</a>
+    <ul>
+      <li><a href="#additional">Compatibility Variables</a></li>
+      <li><a href="#KS">KS Module Variables</a></li>
+    </ul>
+  </li>
   <li><a href="#cap">Variable Capacity and Memory</a></li>
 </ul>
 <span id="Variables"></span><h2 id="Intro">Variables</h2>
@@ -406,7 +411,7 @@ sumfn := Sum</pre>
   <li>Operating System and User Info: <a href="#OSVersion">A_OSVersion</a>, <a href="#Screen">A_ScreenWidth</a>, <a href="#Screen">A_ScreenHeight</a>, <a href="#os">(...more...)</a></li>
   <li>Misc: <a href="#Clipboard">A_Clipboard</a>, <a href="#Cursor">A_Cursor</a>, <a href="#EventInfo">A_EventInfo</a>, <a href="#misc">(...more...)</a></li>
   <li>Loop: <a href="#Index">A_Index</a>, <a href="#loop">(...more...)</a></li>
-  <li><a href="#additional">Additional Runtime and Compatibility Variables</a></li>
+  <li><a href="#additional">Compatibility Variables</a></li>
 </ul>
 <h3 id="Special_Characters">Special Characters</h3>
 <table class="info">
@@ -487,7 +492,7 @@ sumfn := Sum</pre>
   </tr>
   <tr id="AhkVersion">
     <td>A_AhkVersion</td>
-    <td>Contains the version of AutoHotkey that is running the script, such as 1.0.22. In the case of a <a href="Scripts.htm#ahk2exe">compiled script</a>, the version that was originally used to compile it is reported. The formatting of the version number allows a script to check whether A_AhkVersion is greater than some minimum version number with &gt; or &gt;= as in this example: <code>if (A_AhkVersion &gt;= "1.0.25.07")</code>. See also: <a href="lib/_Requires.htm">#Requires</a> and <a href="lib/VerCompare.htm">VerCompare</a></td>
+    <td>Contains the AutoHotkey compatibility version targeted by the running Keysharp build, such as <code class="no-highlight">2.1-alpha.30</code>. It does not identify the Keysharp release; use <a href="#A_KsVersion">A_KsVersion</a> for that. The version string can be compared with <a href="lib/VerCompare.htm">VerCompare</a>, and <a href="lib/_Requires.htm">#Requires</a> selects the script's compatibility mode.</td>
   </tr>
   <tr id="AhkPath">
     <td>A_AhkPath</td>
@@ -1038,98 +1043,268 @@ VirtualHeight := <a href="lib/SysGet.htm">SysGet</a>(79)
   </tr>
 </table>
 
-<h3 id="additional">Additional Runtime and Compatibility Variables</h3>
-<p>The following global variables are additions or retained compatibility aliases. Variables exported only by the KS module are listed separately under <a href="lib/KeysharpVariables.htm">Keysharp Built-in Variables</a>.</p>
+<h3 id="additional">Compatibility Variables</h3>
+<p>These global variables exist for compatibility with AutoHotkey v1 and are recognized without an import. Variables which Keysharp adds are not global at all: they are exported by the KS module and listed under <a href="#KS">KS Module Variables</a>.</p>
+<table class="info">
+  <tr>
+    <th abbr="Var">Variable</th>
+    <th abbr="Descr">Description</th>
+  </tr>
+  <tr id="A_IsUnicode">
+    <td>A_IsUnicode</td>
+    <td>Always true. This compatibility variable is retained even though scripts run on the Unicode .NET runtime.</td>
+  </tr>
+  <tr id="A_LoopFileLongPath">
+    <td>A_LoopFileLongPath</td>
+    <td>A compatibility alias of <a href="lib/LoopFiles.htm#LoopFileFullPath">A_LoopFileFullPath</a>.</td>
+  </tr>
+  <tr id="A_OSType">
+    <td>A_OSType</td>
+    <td>The current platform symbol: <code>WINDOWS</code>, <code>LINUX</code> or <code>OSX</code>. These values match the corresponding <a href="lib/Preprocessor.htm">conditional-compilation symbols</a>.</td>
+  </tr>
+</table>
+
+<h3 id="KS">KS Module Variables</h3>
+<p>These variables are exported by the <a href="Modules.htm#KS">KS module</a> rather than being global, so a script must import the names it uses. This keeps the global namespace identical to AutoHotkey's.</p>
+<pre>#Import "Ks" { A_DirSeparator, A_NowMs, A_ThreadId }</pre>
 <table class="info">
   <tr>
     <th abbr="Var">Variable</th>
     <th abbr="Descr">Description</th>
   </tr>
   <tr id="A_AhkBuildVersion">
-    <td>A_AhkBuildVersion</td>
+    <td><span id="KS_A_AhkBuildVersion">A_AhkBuildVersion</span></td>
     <td>The build version stamped onto the running script assembly by the script compiler, or blank if the assembly has no build-version attribute. This is distinct from the compatibility version reported by <a href="#AhkVersion">A_AhkVersion</a>.</td>
   </tr>
+  <tr id="A_AllowTimers">
+    <td><span id="KS_A_AllowTimers">A_AllowTimers</span></td>
+    <td>Gets or sets whether timers are allowed, as an alternative to <code>Thread("NoTimers")</code>.</td>
+  </tr>
   <tr id="A_AsmCompany">
-    <td>A_AsmCompany</td>
+    <td><span id="KS_A_AsmCompany">A_AsmCompany</span></td>
     <td>The assembly company set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyCompany</a>, or blank if unset.</td>
   </tr>
   <tr id="A_AsmConfiguration">
-    <td>A_AsmConfiguration</td>
+    <td><span id="KS_A_AsmConfiguration">A_AsmConfiguration</span></td>
     <td>The assembly configuration set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyConfiguration</a>, or blank if unset.</td>
   </tr>
   <tr id="A_AsmCopyright">
-    <td>A_AsmCopyright</td>
+    <td><span id="KS_A_AsmCopyright">A_AsmCopyright</span></td>
     <td>The assembly copyright set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyCopyright</a>, or blank if unset.</td>
   </tr>
   <tr id="A_AsmDescription">
-    <td>A_AsmDescription</td>
+    <td><span id="KS_A_AsmDescription">A_AsmDescription</span></td>
     <td>The assembly description set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyDescription</a>, or blank if unset.</td>
   </tr>
   <tr id="A_AsmProduct">
-    <td>A_AsmProduct</td>
+    <td><span id="KS_A_AsmProduct">A_AsmProduct</span></td>
     <td>The assembly product set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyProduct</a>, or blank if unset.</td>
   </tr>
   <tr id="A_AsmTitle">
-    <td>A_AsmTitle</td>
+    <td><span id="KS_A_AsmTitle">A_AsmTitle</span></td>
     <td>The assembly title set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyTitle</a>, or blank if unset.</td>
   </tr>
   <tr id="A_AsmTrademark">
-    <td>A_AsmTrademark</td>
+    <td><span id="KS_A_AsmTrademark">A_AsmTrademark</span></td>
     <td>The assembly trademark set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyTrademark</a>, or blank if unset.</td>
   </tr>
   <tr id="A_AsmVersion">
-    <td>A_AsmVersion</td>
+    <td><span id="KS_A_AsmVersion">A_AsmVersion</span></td>
     <td>The assembly file version set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyVersion</a>, or blank if unset.</td>
   </tr>
+  <tr id="A_ClipboardTimeout">
+    <td><span id="KS_A_ClipboardTimeout">A_ClipboardTimeout</span></td>
+    <td>Gets or sets the clipboard timeout used by <a href="lib/_ClipboardTimeout.htm">#ClipboardTimeout</a>.</td>
+  </tr>
+  <tr id="A_CommandLine">
+    <td><span id="KS_A_CommandLine">A_CommandLine</span></td>
+    <td>The complete command-line string. Prefer this to a native <code>GetCommandLine</code> call.</td>
+  </tr>
+  <tr id="A_DefaultHotstringCaseSensitive">
+    <td><span id="KS_A_DefaultHotstringCaseSensitive">A_DefaultHotstringCaseSensitive</span></td>
+    <td>The default hotstring case-sensitivity mode.</td>
+  </tr>
+  <tr id="A_DefaultHotstringConformToCase">
+    <td><span id="KS_A_DefaultHotstringConformToCase">A_DefaultHotstringConformToCase</span></td>
+    <td>The default case-conformity mode.</td>
+  </tr>
+  <tr id="A_DefaultHotstringDetectWhenInsideWord">
+    <td><span id="KS_A_DefaultHotstringDetectWhenInsideWord">A_DefaultHotstringDetectWhenInsideWord</span></td>
+    <td>The default inside-word detection mode.</td>
+  </tr>
+  <tr id="A_DefaultHotstringDoBackspace">
+    <td><span id="KS_A_DefaultHotstringDoBackspace">A_DefaultHotstringDoBackspace</span></td>
+    <td>The default backspacing mode.</td>
+  </tr>
+  <tr id="A_DefaultHotstringDoReset">
+    <td><span id="KS_A_DefaultHotstringDoReset">A_DefaultHotstringDoReset</span></td>
+    <td>The default recognizer-reset mode.</td>
+  </tr>
+  <tr id="A_DefaultHotstringEndCharRequired">
+    <td><span id="KS_A_DefaultHotstringEndCharRequired">A_DefaultHotstringEndCharRequired</span></td>
+    <td>Whether an ending character is required by default.</td>
+  </tr>
+  <tr id="A_DefaultHotstringEndChars">
+    <td><span id="KS_A_DefaultHotstringEndChars">A_DefaultHotstringEndChars</span></td>
+    <td>The default ending-character set.</td>
+  </tr>
+  <tr id="A_DefaultHotstringKeyDelay">
+    <td><span id="KS_A_DefaultHotstringKeyDelay">A_DefaultHotstringKeyDelay</span></td>
+    <td>The default hotstring key delay in milliseconds.</td>
+  </tr>
+  <tr id="A_DefaultHotstringNoMouse">
+    <td><span id="KS_A_DefaultHotstringNoMouse">A_DefaultHotstringNoMouse</span></td>
+    <td>Whether <code>#Hotstring NoMouse</code> prevents mouse clicks from resetting recognition.</td>
+  </tr>
+  <tr id="A_DefaultHotstringOmitEndChar">
+    <td><span id="KS_A_DefaultHotstringOmitEndChar">A_DefaultHotstringOmitEndChar</span></td>
+    <td>The default ending-character omission mode.</td>
+  </tr>
+  <tr id="A_DefaultHotstringPriority">
+    <td><span id="KS_A_DefaultHotstringPriority">A_DefaultHotstringPriority</span></td>
+    <td>The default hotstring priority.</td>
+  </tr>
+  <tr id="A_DefaultHotstringSendMode">
+    <td><span id="KS_A_DefaultHotstringSendMode">A_DefaultHotstringSendMode</span></td>
+    <td>The default sending mode.</td>
+  </tr>
+  <tr id="A_DefaultHotstringSendRaw">
+    <td><span id="KS_A_DefaultHotstringSendRaw">A_DefaultHotstringSendRaw</span></td>
+    <td>The default raw-send mode.</td>
+  </tr>
+  <tr id="A_DirSeparator">
+    <td><span id="KS_A_DirSeparator">A_DirSeparator</span></td>
+    <td>The directory separator: <code class="no-highlight">\</code> on Windows and <code class="no-highlight">/</code> elsewhere.</td>
+  </tr>
+  <tr id="A_GuiTheme">
+    <td><span id="KS_A_GuiTheme">A_GuiTheme</span></td>
+    <td>Gets or sets the application-wide WinForms theme: <code class="no-highlight">Classic</code>, <code class="no-highlight">System</code> or <code class="no-highlight">Dark</code>. Windows only.</td>
+  </tr>
+  <tr id="A_HasExited">
+    <td><span id="KS_A_HasExited">A_HasExited</span></td>
+    <td>True once script shutdown has begun.</td>
+  </tr>
   <tr id="A_HotIfTimeout">
-    <td>A_HotIfTimeout</td>
+    <td><span id="KS_A_HotIfTimeout">A_HotIfTimeout</span></td>
     <td>Gets or sets the maximum time, in milliseconds, allowed for evaluating a <a href="lib/_HotIf.htm">#HotIf</a> criterion. <a href="lib/_HotIfTimeout.htm">#HotIfTimeout</a> sets this value.</td>
   </tr>
   <tr id="A_InputLevel">
-    <td>A_InputLevel</td>
+    <td><span id="KS_A_InputLevel">A_InputLevel</span></td>
     <td>Gets or sets the default input level, from 0 through 100, for subsequently created hotkeys and hotstrings. <a href="lib/_InputLevel.htm">#InputLevel</a> sets this value.</td>
   </tr>
   <tr id="A_IsPersistent">
-    <td>A_IsPersistent</td>
+    <td><span id="KS_A_IsPersistent">A_IsPersistent</span></td>
     <td>Gets or sets whether the script is persistent. Prefer <a href="lib/Persistent.htm">Persistent</a> when changing this state so normal lifetime handling occurs.</td>
   </tr>
-  <tr id="A_IsUnicode">
-    <td>A_IsUnicode</td>
-    <td>Always true. This compatibility variable is retained even though scripts run on the Unicode .NET runtime.</td>
+  <tr id="A_KeysharpCorePath">
+    <td><span id="KS_A_KeysharpCorePath">A_KeysharpCorePath</span></td>
+    <td>The full path of <code class="no-highlight">Keysharp.Core.dll</code>.</td>
   </tr>
   <tr id="A_KeysharpPath">
-    <td>A_KeysharpPath</td>
+    <td><span id="KS_A_KeysharpPath">A_KeysharpPath</span></td>
     <td>An alias of <a href="#AhkPath">A_AhkPath</a>, containing the full path of the running executable.</td>
   </tr>
-  <tr id="A_LoopFileLongPath">
-    <td>A_LoopFileLongPath</td>
-    <td>A compatibility alias of <a href="lib/LoopFiles.htm#LoopFileFullPath">A_LoopFileFullPath</a>.</td>
+  <tr id="A_KsVersion">
+    <td><span id="KS_A_KsVersion">A_KsVersion</span></td>
+    <td>The file version of <code class="no-highlight">Keysharp.Core.dll</code>.</td>
   </tr>
   <tr id="A_LoopKey">
-    <td>A_LoopKey</td>
+    <td><span id="KS_A_LoopKey">A_LoopKey</span></td>
     <td>The key or index of the current item in the innermost active <a href="lib/For.htm">for-loop</a>, or blank when no such loop is active.</td>
   </tr>
+  <tr id="A_LoopRegValue">
+    <td><span id="KS_A_LoopRegValue">A_LoopRegValue</span></td>
+    <td>The current Registry value in a <code>Loop Reg</code>.</td>
+  </tr>
+  <tr id="A_MaxThreads">
+    <td><span id="KS_A_MaxThreads">A_MaxThreads</span></td>
+    <td>The value configured by <code>#MaxThreads</code>.</td>
+  </tr>
   <tr id="A_MaxThreadsBuffer">
-    <td>A_MaxThreadsBuffer</td>
+    <td><span id="KS_A_MaxThreadsBuffer">A_MaxThreadsBuffer</span></td>
     <td>Gets or sets whether eligible hotkey presses are buffered after their per-hotkey thread limit is reached. <a href="lib/_MaxThreadsBuffer.htm">#MaxThreadsBuffer</a> sets this value.</td>
   </tr>
   <tr id="A_MaxThreadsPerHotkey">
-    <td>A_MaxThreadsPerHotkey</td>
+    <td><span id="KS_A_MaxThreadsPerHotkey">A_MaxThreadsPerHotkey</span></td>
     <td>Gets or sets the default maximum number of simultaneous threads per hotkey or hotstring. <a href="lib/_MaxThreadsPerHotkey.htm">#MaxThreadsPerHotkey</a> sets this value.</td>
   </tr>
   <tr id="A_NewLine">
-    <td>A_NewLine</td>
+    <td><span id="KS_A_NewLine">A_NewLine</span></td>
     <td>The platform-native newline sequence: <code class="no-highlight">`r`n</code> on Windows and <code class="no-highlight">`n</code> on Linux and macOS.</td>
   </tr>
-  <tr id="A_OSType">
-    <td>A_OSType</td>
-    <td>The current platform symbol: <code>WINDOWS</code>, <code>LINUX</code> or <code>OSX</code>. These values match the corresponding <a href="lib/Preprocessor.htm">conditional-compilation symbols</a>.</td>
+  <tr id="A_NoTrayIcon">
+    <td><span id="KS_A_NoTrayIcon">A_NoTrayIcon</span></td>
+    <td>Whether <code>#NoTrayIcon</code> hid the tray icon.</td>
+  </tr>
+  <tr id="A_NowMs">
+    <td><span id="KS_A_NowMs">A_NowMs</span></td>
+    <td>Local time including milliseconds in <code class="no-highlight">YYYYMMDDHH24MISS.ff</code> form.</td>
+  </tr>
+  <tr id="A_NowUtcMs">
+    <td><span id="KS_A_NowUtcMs">A_NowUtcMs</span></td>
+    <td>UTC time including milliseconds in <code class="no-highlight">YYYYMMDDHH24MISS.ff</code> form.</td>
+  </tr>
+  <tr id="A_PeekFrequency">
+    <td><span id="KS_A_PeekFrequency">A_PeekFrequency</span></td>
+    <td>Gets or sets the current thread's message-check interval in milliseconds.</td>
   </tr>
   <tr id="A_Priority">
-    <td>A_Priority</td>
+    <td><span id="KS_A_Priority">A_Priority</span></td>
     <td>Gets or sets the default priority copied into newly created script threads. See <a href="lib/Thread.htm">Thread</a>.</td>
   </tr>
+  <tr id="A_ScreenScale">
+    <td><span id="KS_A_ScreenScale">A_ScreenScale</span></td>
+    <td>The primary screen's authored-size scale: 1.0 is 100%, 1.5 is 150%. See <a href="#ScreenScale">Screen Scale</a>.</td>
+  </tr>
+  <tr id="A_SuspendExempt">
+    <td><span id="KS_A_SuspendExempt">A_SuspendExempt</span></td>
+    <td>Whether subsequent hotkeys/hotstrings are exempt because <code>#SuspendExempt true</code> was used.</td>
+  </tr>
+  <tr id="A_ThreadId">
+    <td><span id="KS_A_ThreadId">A_ThreadId</span></td>
+    <td>The current pseudo-thread's 64-bit identifier. See <a href="#ThreadId">Thread Identity</a>.</td>
+  </tr>
+  <tr id="A_Timers">
+    <td><span id="KS_A_Timers">A_Timers</span></td>
+    <td>A Map of timer Func objects to their enabled states.</td>
+  </tr>
+  <tr id="A_TotalScreenHeight">
+    <td><span id="KS_A_TotalScreenHeight">A_TotalScreenHeight</span></td>
+    <td>The virtual screen's total height in pixels.</td>
+  </tr>
+  <tr id="A_TotalScreenWidth">
+    <td><span id="KS_A_TotalScreenWidth">A_TotalScreenWidth</span></td>
+    <td>The virtual screen's total width in pixels.</td>
+  </tr>
+  <tr id="A_UseHook">
+    <td><span id="KS_A_UseHook">A_UseHook</span></td>
+    <td>The value configured by <code>#UseHook</code>.</td>
+  </tr>
+  <tr id="A_WinActivateForce">
+    <td><span id="KS_A_WinActivateForce">A_WinActivateForce</span></td>
+    <td>Whether <code>#WinActivateForce</code> enabled forceful activation.</td>
+  </tr>
+  <tr id="A_WorkAreaHeight">
+    <td><span id="KS_A_WorkAreaHeight">A_WorkAreaHeight</span></td>
+    <td>The primary screen work area's height.</td>
+  </tr>
+  <tr id="A_WorkAreaWidth">
+    <td><span id="KS_A_WorkAreaWidth">A_WorkAreaWidth</span></td>
+    <td>The primary screen work area's width.</td>
+  </tr>
 </table>
+
+<h4 id="ThreadId">Thread Identity</h4>
+<p><code>A_ThreadId</code> consists of a 48-bit script-wide creation sequence and a 16-bit zero-based pseudo-thread stack index. <code>A_ThreadId &amp; 0xFFFF</code> retrieves the stack index; auto-execute is index 0 on its real thread.</p>
+<p>An ID is nearly unique for the script's lifetime but valid only while its pseudo-thread is active. An exact ID can be targeted only from its owning real thread. See <a href="lib/Exit.htm">Exit</a> for targeted termination.</p>
+
+<h4 id="Dates">Millisecond Date Values</h4>
+<p><code>A_NowMs</code> and <code>A_NowUtcMs</code> can be used with <a href="lib/DateAdd.htm">DateAdd</a> and <a href="lib/DateDiff.htm">DateDiff</a> by specifying <code class="no-highlight">"L"</code> as the time unit.</p>
+
+<h4 id="ScreenScale">Screen Scale</h4>
+<p><code>A_ScreenScale</code> reports how large deliberately authored UI sizes should be drawn on the primary screen: 1.0 is 100%, 1.5 is 150%.</p>
+<p class="warning"><strong>Note:</strong> This is not a screen-coordinate conversion factor. Applying it to an absolute position produces a wrong result.</p>
+<p>The value describes the primary monitor only. Code which spans monitors of differing scale should call <a href="lib/Monitor.htm#MonitorGetScale">MonitorGetScale</a> for the monitor it is working with.</p>
 
 <h2 id="cap">Variable Capacity and Memory</h2>
 <ul>

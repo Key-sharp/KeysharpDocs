@@ -1516,7 +1516,6 @@ function ctor_features()
     $.queueFunc.add(self.modifyDeprecatedLinks);
     $.queueFunc.add(self.modifyVersions);
     $.queueFunc.add(self.modifyCodeBoxes);
-    self.addCompatibilityNotice();
     self.addFooter();
     $.queueFunc.add(self.addBackButton);
     self.scrollToPos();
@@ -1799,18 +1798,11 @@ function ctor_features()
       highlighter.addSyntaxColors(pres, cache.index_data, docs_path, false);
   };
 
-  // --- Add Keysharp compatibility and provenance notices ---
-
-  self.addCompatibilityNotice = function() {
-    if (!self.content || /(?:^|\/)(?:Keysharp|license)\.htm$/i.test(location.pathname))
-      return;
-    var div = document.createElement('div');
-    div.className = 'ks-compat-notice';
-    div.innerHTML = '<strong>Keysharp compatibility target: AutoHotkey v2.1-alpha.30.</strong> This inherited reference is being verified against Keysharp. Platform coverage and implementation status can differ. <a href="' + scriptDir + '/../Keysharp.htm" class="no-ext">Read the compatibility notice</a>.';
-    self.content.insertBefore(div, self.content.firstChild);
-  };
-
   // --- Add footer at the bottom of the site ---
+  //
+  // The footer carries the independence and provenance statement on every page. A compatibility
+  // banner used to be injected above each page's content as well; it was removed as repetitive, so
+  // this footer is now the only site-wide notice. Keep it.
 
   self.addFooter = function() {
     var div = document.createElement('div');
