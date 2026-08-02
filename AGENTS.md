@@ -3,7 +3,7 @@
 ## Purpose
 
 KeysharpDocs is the reference documentation for
-[Keysharp](https://github.com/Descolada/keysharp), an independent,
+[Keysharp](https://github.com/keysharp-org/Keysharp), an independent,
 cross-platform C# implementation of the AutoHotkey v2 language. Keysharp
 parses `.ahk` and `.ks` source, lowers it to C#, compiles it with Roslyn, and
 runs the resulting .NET assembly.

@@ -5,7 +5,7 @@
 </p>
 
 KeysharpDocs is the reference documentation for
-[Keysharp](https://github.com/Descolada/keysharp), a cross-platform C#
+[Keysharp](https://github.com/keysharp-org/Keysharp), a cross-platform C#
 implementation of the AutoHotkey v2 language.
 
 > **Status:** Keysharp is under active development and is being brought up to
@@ -15,8 +15,8 @@ implementation of the AutoHotkey v2 language.
 > on every Keysharp platform.
 
 - [Read KeysharpDocs online](https://keysharp-org.github.io/KeysharpDocs/)
-- [Download Keysharp](https://github.com/Descolada/keysharp/releases)
-- [Keysharp source and issues](https://github.com/Descolada/keysharp)
+- [Download Keysharp](https://github.com/keysharp-org/Keysharp/releases)
+- [Keysharp source and issues](https://github.com/keysharp-org/Keysharp)
 - [Documentation issues](https://github.com/keysharp-org/KeysharpDocs/issues)
 
 ## Independence and provenance

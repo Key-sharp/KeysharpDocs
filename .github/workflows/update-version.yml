@@ -46,7 +46,7 @@ jobs:
         run: |
           version="${INPUT_VERSION:-$DISPATCH_VERSION}"
           if [ -z "$version" ]; then
-            version="$(gh release view --repo Descolada/keysharp --json tagName --jq .tagName)"
+            version="$(gh release view --repo keysharp-org/Keysharp --json tagName --jq .tagName)"
           fi
           version="${version#v}"
 
@@ -64,7 +64,7 @@ jobs:
         run: |
           # Writing links to files that do not exist would be worse than leaving the old ones in place,
           # so the release is checked before anything is rewritten.
-          assets="$(gh release view "v$VERSION" --repo Descolada/keysharp --json assets --jq '.assets[].name')"
+          assets="$(gh release view "v$VERSION" --repo keysharp-org/Keysharp --json assets --jq '.assets[].name')"
           missing=0
           for name in \
             "keysharp-$VERSION-win-x64.msi" \

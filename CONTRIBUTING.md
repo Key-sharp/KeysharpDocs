@@ -11,7 +11,7 @@ platform.
 
 For current implementation status, consult:
 
-- the [Keysharp platform reference](https://github.com/Descolada/keysharp/blob/master/docs/reference.md);
+- the [Keysharp platform reference](https://github.com/keysharp-org/Keysharp/blob/master/docs/reference.md);
 - the Keysharp source and tests; and
 - a reproducible script run against the current Keysharp build.
 

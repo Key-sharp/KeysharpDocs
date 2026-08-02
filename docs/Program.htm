@@ -13,7 +13,7 @@
 <h1>Using Keysharp</h1>
 <p>Keysharp executes plain-text scripts written in its AutoHotkey v2-compatible language. Use <code class="no-highlight">.ks</code> for an explicitly Keysharp script or <code class="no-highlight">.ahk</code> when compatibility with AutoHotkey-oriented tools is useful. Compiled Keysharp assemblies use <code class="no-highlight">.cks</code>.</p>
 
-<pre>#z::Run "https://github.com/Descolada/keysharp"  <em>; Win+Z</em>
+<pre>#z::Run "https://github.com/keysharp-org/Keysharp"  <em>; Win+Z</em>
 
 ^!n::  <em>; Ctrl+Alt+N</em>
 {
@@ -39,7 +39,7 @@
 <p>On Windows, extract the portable ZIP and run <code class="no-highlight">Keysharp.exe</code> directly. See the <a href="howto/Install.htm#Portable_Windows">portable Windows instructions</a>. Linux source builds and macOS source archives can likewise run from their build or extracted directories after their platform prerequisites are installed.</p>
 
 <h3 id="update">Updates</h3>
-<p>Install a newer release using the same method as the original installation. Check the <a href="https://github.com/Descolada/keysharp/releases">Keysharp releases</a> and read <a href="ChangeLog.htm">Recent Changes</a> before replacing an existing installation.</p>
+<p>Install a newer release using the same method as the original installation. Check the <a href="https://github.com/keysharp-org/Keysharp/releases">Keysharp releases</a> and read <a href="ChangeLog.htm">Recent Changes</a> before replacing an existing installation.</p>
 
 <h3 id="Installer_uiAccess">UI Access on Windows</h3>
 <p>Keysharp executables do not use a Windows <code class="no-highlight">uiAccess</code> manifest. AutoHotkey instructions which rely on an installed UI-access executable therefore do not apply. To automate an elevated target, run the script at a sufficient integrity level and consider the security implications before doing so.</p>
@@ -117,11 +117,11 @@
 
 <h2 id="Window_Spy">Window and Accessibility Inspectors</h2>
 <p>Window Spy is a bundled script which reports window titles, classes, process information, controls, coordinates and colors. Launch it from the standard tray menu or the script main window. The bundled <code class="no-highlight">WindowSpy.cks</code> is preferred when present, with <code class="no-highlight">WindowSpy.ks</code> used as a fallback.</p>
-<p>On Linux, Accessibility Spy launches <a href="https://github.com/Descolada/keysharp/blob/master/Keysharp/Scripts/AtSpi.ks"><code>AtSpi.ks</code></a>. On macOS it launches <code class="no-highlight">Ax.ks</code>. These inspectors expose platform accessibility information which is not represented by Windows ClassNN values.</p>
+<p>On Linux, Accessibility Spy launches <a href="https://github.com/keysharp-org/Keysharp/blob/master/Keysharp/Scripts/AtSpi.ks"><code>AtSpi.ks</code></a>. On macOS it launches <code class="no-highlight">Ax.ks</code>. These inspectors expose platform accessibility information which is not represented by Windows ClassNN values.</p>
 
 <h2 id="platforms">Platform Differences</h2>
 <p>Language parsing and general runtime behavior are intended to be cross-platform, but window management, keyboard hooks, COM, registry access, GUI behavior, and other operating-system integrations can differ. See <a href="Platforms.htm">Platform Support</a> and each affected reference page.</p>
-<p class="note"><strong>Compatibility note:</strong> Much of this reference originated in AutoHotkeyDocs. A described function may be part of the language target before its Keysharp implementation is complete. Reproducible gaps should be reported to the <a href="https://github.com/Descolada/keysharp/issues">Keysharp issue tracker</a>.</p>
+<p class="note"><strong>Compatibility note:</strong> Much of this reference originated in AutoHotkeyDocs. A described function may be part of the language target before its Keysharp implementation is complete. Reproducible gaps should be reported to the <a href="https://github.com/keysharp-org/Keysharp/issues">Keysharp issue tracker</a>.</p>
 
 </body>
 </html>
