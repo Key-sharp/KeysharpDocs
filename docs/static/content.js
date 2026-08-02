@@ -1012,11 +1012,11 @@ function ctor_structure()
     // --- Online tools (only visible if help is not CHM) ---
 
     var $online = $('#head .h-tools.online');
-    var onlineDocsRoot = 'https://key-sharp.github.io/KeysharpDocs/';
+    var onlineDocsRoot = 'https://keysharp-org.github.io/KeysharpDocs/';
     self.modifyTools = function(relPath, equivPath) {
       // 'Edit page on GitHub' button:
       $("li.edit > a").attr({
-        href: "https://github.com/Key-sharp/KeysharpDocs/edit/alpha/docs/" + relPath,
+        href: "https://github.com/keysharp-org/KeysharpDocs/edit/alpha/docs/" + relPath,
         target: "_blank"
       });
 

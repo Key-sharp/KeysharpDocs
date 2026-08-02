@@ -36,7 +36,7 @@ translateData = {
   "v1":"v2",
   "Change the version":true,
   "Edit this document on GitHub":true,
-  "https://github.com/Key-sharp/KeysharpDocs/edit/alpha/docs/":"https://github.com/Key-sharp/KeysharpDocs/edit/alpha/docs/",
+  "https://github.com/keysharp-org/KeysharpDocs/edit/alpha/docs/":"https://github.com/keysharp-org/KeysharpDocs/edit/alpha/docs/",
   "Go back":true,
   "Go forward":true,
   "Change the font size":true,

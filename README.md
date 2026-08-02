@@ -14,10 +14,10 @@ implementation of the AutoHotkey v2 language.
 > reference pages can describe functionality which has not yet been verified
 > on every Keysharp platform.
 
-- [Read KeysharpDocs online](https://key-sharp.github.io/KeysharpDocs/)
+- [Read KeysharpDocs online](https://keysharp-org.github.io/KeysharpDocs/)
 - [Download Keysharp](https://github.com/Descolada/keysharp/releases)
 - [Keysharp source and issues](https://github.com/Descolada/keysharp)
-- [Documentation issues](https://github.com/Key-sharp/KeysharpDocs/issues)
+- [Documentation issues](https://github.com/keysharp-org/KeysharpDocs/issues)
 
 ## Independence and provenance
 

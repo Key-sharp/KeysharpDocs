@@ -110,7 +110,7 @@ function ctor_highlighter()
       } catch (e) {
         if (window.console) // For IE9
         {
-          console.log("Syntax highlighting failed. Clear cache and hard refresh. If this doesn't help, please report the following error message and the problematic code at https://github.com/Key-sharp/KeysharpDocs.");
+          console.log("Syntax highlighting failed. Clear cache and hard refresh. If this doesn't help, please report the following error message and the problematic code at https://github.com/keysharp-org/KeysharpDocs.");
           console.log(e);
         }
       }
