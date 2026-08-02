@@ -18,6 +18,7 @@
 <pre class="Syntax"><span class="func">BlockInput</span> OnOff
 <span class="func">BlockInput</span> SendMouse
 <span class="func">BlockInput</span> MouseMove</pre>
+<p class="note"><strong>Note:</strong> On Linux, reliable blocking on X11 and all blocking on Wayland require <code class="no-highlight">keysharp-inputd</code>. <em>MouseMove</em> is enforced by the existing mouse-hook decision and therefore preserves button and wheel input; all-input mode uses the daemon's block facility. X11 can otherwise use an <code class="no-highlight">xinput</code> fallback, but that fallback disables the whole mouse device. On macOS, blocking uses event taps and requires Input Monitoring permission.</p>
 <h2 id="Parameters">Parameters</h2>
 <dl>
 
@@ -49,7 +50,7 @@
 
 <h2 id="Remarks">Remarks</h2>
 <p>All three BlockInput modes (<em>OnOff</em>, <em>SendMouse</em> and <em>MouseMove</em>) operate independently of each other. For example, <code>BlockInput "On"</code> will continue to block input until <code>BlockInput "Off"</code> is used, even if one of the words from <em>SendMouse</em> is also in effect. Another example is, if <code>BlockInput "On"</code> and <code>BlockInput "MouseMove"</code> are both in effect, mouse movement will be blocked until both are turned off.</p>
-<p class="note"><strong>Note:</strong> The <em>OnOff</em> and <em>SendMouse</em> modes might have no effect if UAC is enabled or the script has not been run as administrator. For more information, refer to the <a href="../FAQ.htm#uac">FAQ</a>.</p>
+<p class="note"><strong>Note:</strong> On Windows, the <em>OnOff</em> and <em>SendMouse</em> modes might have no effect if UAC is enabled or the script has not been run as administrator. For more information, refer to the <a href="../FAQ.htm#uac">FAQ</a>.</p>
 <p>In preference to BlockInput, it is often better to use the sending modes <a href="SendMode.htm#Input">SendInput</a> or <a href="SendMode.htm#Play">SendPlay</a> so that keystrokes and mouse clicks become uninterruptible. This is because unlike BlockInput, those modes do not discard what the user types during the send; instead, those keystrokes are buffered and sent afterward. Avoiding BlockInput also avoids the need to work around sticking keys as described in the next paragraph.</p>
 <p>If BlockInput becomes active while the user is holding down keys, it might cause those keys to become "stuck down". This can be avoided by waiting for the keys to be released prior to turning BlockInput on, as in this example:</p>
 <pre>^!p::
@@ -60,7 +61,7 @@
     <em>; ... send keystrokes and mouse clicks ...</em>
     BlockInput false
 }</pre>
-<p>When BlockInput is in effect, user input is blocked but AutoHotkey can simulate keystrokes and mouse clicks. However, pressing <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>Del</kbd> will re-enable input due to a Windows API feature.</p>
+<p>When BlockInput is in effect, user input is blocked but the script can simulate keystrokes and mouse clicks. On Windows, pressing <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>Del</kbd> will re-enable input due to a Windows API feature.</p>
 <p>Certain types of <a href="_UseHook.htm">hook hotkeys</a> can still be triggered when BlockInput is on. Examples include <code class="no-highlight">MButton</code> (mouse hook) and <code class="no-highlight">LWin &amp; Space</code> (keyboard hook with explicit prefix rather than modifiers <code class="no-highlight">$#</code>).</p>
 <p>Input is automatically re-enabled when the script closes.</p>
 <h2 id="Related">Related</h2>

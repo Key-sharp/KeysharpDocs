@@ -16,6 +16,8 @@
 <p>Emits a tone from the PC speaker.</p>
 
 <pre class="Syntax"><span class="func">SoundBeep</span> <span class="optional">Frequency, Duration</span></pre>
+
+<p class="note"><strong>Note:</strong> On Linux, the tone is played through an external audio player. If none of the players listed under <a href="SoundPlay.htm">SoundPlay</a> is installed, an error is thrown.</p>
 <h2 id="Parameters">Parameters</h2>
 <dl>
 
@@ -36,6 +38,10 @@
 <h2 id="Remarks">Remarks</h2>
 <p>The script waits for the sound to finish before continuing. In addition, system responsiveness might be reduced during sound production.</p>
 <p>If the computer lacks a sound card, a standard beep is played through the PC speaker.</p>
+<h3 id="Linux">Linux</h3>
+<p>The tone is synthesized and handed to the same external player <a href="SoundPlay.htm">SoundPlay</a> uses, so <em>Frequency</em> and <em>Duration</em> are honoured. Because the tone is a WAV, any of the listed players can play it.</p>
+<h3 id="macOS">macOS</h3>
+<p>The tone is synthesized and played through <code class="no-highlight">afplay</code>, so <em>Frequency</em> and <em>Duration</em> are honoured.</p>
 <p>To produce the standard system sounds instead of beeping the PC Speaker, see the asterisk mode of <a href="SoundPlay.htm">SoundPlay</a>.</p>
 <h2 id="Related">Related</h2>
 <p><a href="SoundPlay.htm">SoundPlay</a></p>

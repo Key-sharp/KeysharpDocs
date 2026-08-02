@@ -13,7 +13,7 @@
 
 <h1>WinEvent Object</h1>
 <pre class="NoIndent">class WinEvent extends Object</pre>
-<p>Subscribes to active-window, appearance, disappearance, movement, minimize, restore and title-change events.</p>
+<p>Subscribes to active-window, appearance, disappearance, movement, minimize, restore, title-change and caret-movement events.</p>
 <p>This class is exported by the <a href="../Modules.htm#KS">KS module</a> and is modeled on Descolada's AutoHotkey WinEvent library.</p>
 <pre>#Import "Ks" { WinEvent }</pre>
 
@@ -24,8 +24,10 @@ Hook := WinEvent.<span class="func">NotExist</span>(Callback <span class="option
 Hook := WinEvent.<span class="func">Move</span>(Callback <span class="optional">, WinTitle, Count := -1, WinText, ExcludeTitle, ExcludeText</span>)
 Hook := WinEvent.<span class="func">Minimize</span>(Callback <span class="optional">, WinTitle, Count := -1, WinText, ExcludeTitle, ExcludeText</span>)
 Hook := WinEvent.<span class="func">Restore</span>(Callback <span class="optional">, WinTitle, Count := -1, WinText, ExcludeTitle, ExcludeText</span>)
-Hook := WinEvent.<span class="func">TitleChange</span>(Callback <span class="optional">, WinTitle, Count := -1, WinText, ExcludeTitle, ExcludeText</span>)</pre>
+Hook := WinEvent.<span class="func">TitleChange</span>(Callback <span class="optional">, WinTitle, Count := -1, WinText, ExcludeTitle, ExcludeText</span>)
+Hook := WinEvent.<span class="func">CaretMove</span>(Callback <span class="optional">, WinTitle, Count := -1, WinText, ExcludeTitle, ExcludeText</span>)</pre>
 <p><em>Callback</em> receives <code class="no-highlight">(Hook, Hwnd, EventTime)</code>. <em>Count</em> limits how many callbacks are delivered; -1 is unlimited. Window criteria use ordinary <a href="../misc/WinTitle.htm">WinTitle matching</a>.</p>
+<p>Event-specific data arrives in <a href="../Variables.htm#EventInfo">A_EventInfo</a> rather than as an extra parameter. <code>Move</code> and <code>CaretMove</code> put a rectangle there as an object with <code>x</code>, <code>y</code>, <code>w</code> and <code>h</code>; every other event type leaves the event time in <code>A_EventInfo</code>. The rectangle is built only if the callback reads it.</p>
 
 <table class="info">
   <tr><th>Method</th><th>Event</th></tr>
@@ -36,7 +38,9 @@ Hook := WinEvent.<span class="func">TitleChange</span>(Callback <span class="opt
   <tr><td><code>Minimize</code></td><td>A window was minimized.</td></tr>
   <tr><td><code>Restore</code></td><td>A window was restored.</td></tr>
   <tr><td><code>TitleChange</code></td><td>A window title changed.</td></tr>
+  <tr><td><code>CaretMove</code></td><td>The text caret (insertion point) moved: typing, clicking into text, arrow keys, scrolling a text view, or focus moving to another text field. <em>Hwnd</em> is the caret owner's <em>top-level</em> window, not the focused edit control, so ordinary window criteria apply. Consecutive events reporting an unchanged rectangle are suppressed, and an event whose caret position cannot be resolved is dropped.</td></tr>
 </table>
+<p class="note"><strong>Note:</strong> <code>CaretMove</code> reads the caret through the same accessibility APIs as <a href="CaretGetPos.htm">CaretGetPos</a> and has the same coverage. An application which draws its own caret without exposing it to accessibility &mdash; common in browser-based and Electron editors, and in some game and terminal interfaces &mdash; reports nothing on any platform. The caret rectangle is always in screen coordinates, regardless of <a href="CoordMode.htm">CoordMode</a>, which affects only <code>CaretGetPos</code>.</p>
 <p>The values of DetectHiddenWindows, DetectHiddenText and title-match mode are captured when the subscription is created.</p>
 
 <h2 id="Global">Global Control</h2>
@@ -58,13 +62,18 @@ WinEvent.<span class="func">IsPaused</span> := NewState</pre>
 <p>The subscription stops during <code>__Delete</code>, but garbage collection is non-deterministic. Call <code>Stop()</code> when the subscription is no longer needed.</p>
 
 <h2 id="Remarks">Platform Remarks</h2>
+<p>Every event type is available on every platform. What differs is the source each one is read from, and the permissions or helpers that source needs.</p>
+
 <h3 id="Windows">Windows</h3>
-<p>Uses SetWinEventHook and supports every event type.</p>
+<p>Window events come from SetWinEventHook. <code>CaretMove</code> uses the MSAA caret, and its rectangle is read from the same GUITHREADINFO source as <a href="CaretGetPos.htm">CaretGetPos</a>, so the two always agree.</p>
+
 <h3 id="Linux">Linux</h3>
-<p><strong>X11/XWayland:</strong> Events come from a GDK/X11 filter on the UI thread. Restore and disappearance caused only by hiding are not yet emitted.</p>
-<p><strong>Wayland:</strong> Native GNOME, KWin and wlroots event sources are not yet connected.</p>
+<p><strong>X11/XWayland:</strong> Window events come from a GDK/X11 filter running on the UI thread.</p>
+<p><strong>Wayland:</strong> Window events come from the compositor, through the GNOME Shell, KWin, Cinnamon or wlroots foreign-toplevel source available in the session.</p>
+<p><code>CaretMove</code> is not a display-server event on either backend: it comes from the AT-SPI <code>object:text-caret-moved</code> signal, which is why a caret subscription works the same way under X11 and Wayland. It requires accessibility to be enabled for the session; with no AT-SPI bridge running, no caret events arrive.</p>
+
 <h3 id="macOS">macOS</h3>
-<p>Only active-application changes are currently reported. Window-granular Accessibility events are planned.</p>
+<p>Window events come from per-application Accessibility <code>AXObserver</code> streams and require Accessibility permission; without it the stream stays empty. <code>CaretMove</code> uses the <code>AXSelectedTextChanged</code> notification, which is registered only while a caret subscription exists because it fires on every keystroke. The event is reported against the edited element's containing window.</p>
 
 </body>
 </html>

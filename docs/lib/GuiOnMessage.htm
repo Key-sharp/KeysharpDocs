@@ -14,6 +14,8 @@
 
 <h1>OnMessage (GUI) <span class="ver">[v2.1-alpha.1+]</span></h1>
 <p>Registers a function or method to be called whenever the GUI window or control receives the specified message.</p>
+
+<p class="note"><strong>Note:</strong> Window messages exist only on Windows. On Linux and macOS the registration is accepted, so a cross-platform script still loads, but the callback is never called.</p>
 <pre class="Syntax"><a href="Gui.htm">Gui</a>.<span class="func">OnMessage</span>(MsgNumber, Callback <span class="optional">, AddRemove</span>)
 <a href="GuiControl.htm">GuiCtrl</a>.<span class="func">OnMessage</span>(MsgNumber, Callback <span class="optional">, AddRemove</span>) <em>; Requires <span class="ver">[v2.1-alpha.7+]</span></em></pre>
 
@@ -54,6 +56,7 @@
       <li>-1 = Call the callback before any previously registered callbacks.</li>
       <li>0 = Do not call the callback.</li>
     </ul>
+    <p>Any other value raises a <a href="Error.htm#ValueError">ValueError</a>: a GUI event runs only one thread at a time, so this parameter is an ordering and removal switch rather than a thread count.</p>
   </dd>
 </dl>
 

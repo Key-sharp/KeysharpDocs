@@ -54,6 +54,7 @@
 
 <h2 id="ActiveX">ActiveX</h2>
 <p>Allows embedding ActiveX components such as the MSIE browser control into a GUI window.</p>
+<p class="note"><strong>Note:</strong> This control type is available only on Windows. On Linux and macOS, adding it raises a ValueError.</p>
 <p>Syntax:</p>
 <pre class="Syntax Indent"><a href="GuiControl.htm">GuiCtrl</a> := MyGui.<span class="func">Add</span>("ActiveX", Options, ComponentName)
 <a href="GuiControl.htm">GuiCtrl</a> := MyGui.<span class="func">AddActiveX</span>(Options, ComponentName)</pre>
@@ -194,6 +195,7 @@ MyGui.Show("h70")</pre>
 <p>On a related note, if you want to automate the process of showing and hiding the popup list later on, use <a href="ControlShowDropDown.htm">ControlShowDropDown</a> and <a href="ControlHideDropDown.htm">ControlHideDropDown</a>.</p>
 
 <h2 id="Custom">Custom</h2>
+<p class="note"><strong>Note:</strong> This control type is available only on Windows. On Linux and macOS, adding it raises a ValueError.</p>
 <p>Allows embedding controls that are not directly supported by AutoHotkey into a GUI window.</p>
 <p>Syntax:</p>
 <pre class="Syntax Indent"><a href="GuiControl.htm">GuiCtrl</a> := MyGui.<span class="func">Add</span>("Custom", Options, Text)
