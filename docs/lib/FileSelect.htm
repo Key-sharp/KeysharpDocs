@@ -16,7 +16,7 @@
 
 <p>Displays a standard dialog  that allows the user to open or save file(s).</p>
 
-<pre class="Syntax">SelectedFile := <span class="func">FileSelect</span>(<span class="optional">Options, RootDir\Filename, Title, Filter</span>)</pre>
+<pre class="Syntax">SelectedFile := <span class="func">FileSelect</span>(<span class="optional">Options, RootDirFilename, Title, Filter</span>)</pre>
 <h2 id="Parameters">Parameters</h2>
 <dl>
 
@@ -36,7 +36,7 @@
       <p>As the "Prompt to Overwrite" option is supported only by the Save dialog, specifying that option without the "Prompt to Create" option also puts the S option into effect. Similarly, the "Prompt to Create" option has no effect when the S option is present. Specifying the number 24 enables whichever type of prompt is supported by the dialog.</p>
   </dd>
 
-  <dt>RootDir\Filename</dt>
+  <dt>RootDirFilename</dt>
   <dd>
       <p>Type: <a href="../Concepts.htm#strings">String</a></p>
       <p>If blank or omitted, the starting directory will be a default that might depend on the OS version (it will likely be the directory most recently selected by the user during a prior use of FileSelect). Otherwise, specify one or both of the following:</p>

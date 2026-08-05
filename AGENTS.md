@@ -310,6 +310,33 @@ differs. If a whole family of pages shares one limitation, keep each page's
 local statement short and link to one maintained explanation instead of
 copying a large platform essay everywhere.
 
+### The change log
+
+`docs/ChangeLog.htm` is running documentation of what a release provides. It
+is not a history of how the implementation arrived there. Describe the current
+contract and link to the reference page which documents it.
+
+- Reference earlier behavior only where a reader must recognize their own code
+  in order to change it. That is what `Breaking Changes` is for, and there an
+  old-to-new mapping is the point: name the previous spelling, parameter, or
+  return value alongside the current one.
+- Elsewhere, state what a feature does, not what it used to do. Do not narrate
+  that something was previously a no-op, a stub, unimplemented, parsed and
+  ignored, or broken. Write "the `Break` menu option is supported", not "is
+  implemented rather than parsed and ignored".
+- Do not describe a feature which was added and then removed within the same
+  unreleased cycle. It never shipped, so it is neither new nor a breaking
+  change. Document only the state the release ships in.
+- Avoid "now" and "finally" as framing. A dated release section already
+  establishes when the behavior arrived.
+- Keep `Fixes and Performance` to a short paragraph naming what works, without
+  diagnosing the defect.
+
+Before listing an addition, verify it against the previous release tag in the
+Keysharp repository. A new row in `docs/capabilities.md` frequently records a
+pre-existing API which was only now inventoried, not a new feature; confirm
+that the symbol was actually absent at the previous tag.
+
 ## Examples
 
 - Prefer a portable example first.

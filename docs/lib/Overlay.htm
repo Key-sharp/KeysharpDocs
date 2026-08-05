@@ -25,11 +25,14 @@
 
 <h2 id="Content">Content</h2>
 <dl>
-  <dt><code>SetImage(Source)</code></dt>
-  <dd><p>Replaces the displayed content with an Image or compatible source.</p></dd>
   <dt><code>Update(Source [, X, Y, W, H])</code></dt>
-  <dd><p>Atomically replaces the content and optionally changes geometry.</p></dd>
+  <dd><p>Atomically replaces the displayed content with an Image or compatible source, optionally changing the geometry in the same operation. Omit the geometry to just swap the image in place.</p></dd>
 </dl>
+
+<h2 id="OnEvent">OnEvent</h2>
+<pre class="Syntax">Surface.<span class="func">OnEvent</span>(EventName, Callback <span class="optional">, AddRemove := 1</span>)</pre>
+<p>Registers a mouse-event callback, in the style of <a href="GuiOnEvent.htm">Gui.OnEvent</a>. <em>EventName</em> is one of <code class="no-highlight">Click</code> (left button), <code class="no-highlight">DoubleClick</code>, <code class="no-highlight">ContextMenu</code> (right button) or <code class="no-highlight">MouseMove</code>. The callback receives <code class="no-highlight">(Surface, X, Y)</code> with coordinates local to the overlay, in the same units the drawing methods use, so drawn content can be hit-tested without conversion. <em>AddRemove</em> 1 calls the function after previously registered functions, -1 before them, and 0 unregisters it.</p>
+<p>The overlay must not be click-through to receive mouse input: set <code>ClickThrough := false</code>, or the events never fire and input passes through to the windows beneath. Events also require a backing with a client-side window (<code>Hwnd</code> is non-zero); a compositor-drawn surface cannot receive input. Registered handlers keep the script running; <code>Destroy</code> removes them all.</p>
 
 <h2 id="Presentation">Presentation</h2>
 <dl>
@@ -60,8 +63,12 @@
 
 Surface := Overlay(100, 100, 300, 120)
 Surface.FillRoundRect(0, 0, 300, 120, 12, "0xC0202040")
-Surface.DrawText("Working…", 24, 36, "White", "Sans 18 bold")
-Surface.Show()</pre>
+Surface.DrawText("Working…", 24, 36, "White", "s18 bold", "Sans")
+Surface.Show()
+
+<em>; An interactive overlay: receive clicks instead of passing them through.</em>
+Surface.ClickThrough := false
+Surface.OnEvent("Click", (Ov, X, Y) => ToolTip("Clicked at " X "," Y))</pre>
 
 <h2 id="Related">Related</h2>
 <p><a href="Image.htm">Image</a>, <a href="ToolTip.htm">ToolTip</a></p>

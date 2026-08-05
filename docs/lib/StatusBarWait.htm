@@ -15,7 +15,7 @@
 
 <p>Waits until a window's status bar contains the specified string.</p>
 
-<pre class="Syntax">Boolean := <span class="func">StatusBarWait</span>(<span class="optional">BarText, Timeout, Part#, WinTitle, WinText, Interval, ExcludeTitle, ExcludeText</span>)</pre>
+<pre class="Syntax">Boolean := <span class="func">StatusBarWait</span>(<span class="optional">BarText, Timeout, PartNumber, WinTitle, WinText, Interval, ExcludeTitle, ExcludeText</span>)</pre>
 <h2 id="Parameters">Parameters</h2>
 <dl>
 
@@ -32,7 +32,7 @@
     <p>If omitted, the function will wait indefinitely. Otherwise, it will wait no longer than this many seconds. To wait for a fraction of a second, specify a floating-point number, for example, 0.25 to wait for a maximum of 250 milliseconds.</p>
   </dd>
   
-  <dt>Part#</dt>
+  <dt>PartNumber</dt>
   <dd>
     <p>Type: <a href="../Concepts.htm#numbers">Integer</a></p>
     <p>If omitted, it defaults to 1, which is usually the part that contains the text of interest. Otherwise, specify the part number of the bar to retrieve.</p>

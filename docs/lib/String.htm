@@ -23,12 +23,12 @@
 <p>If <em>Value</em> is an object, the return value is the result of calling <code>Value.ToString()</code>. If the object has no such method, a <a href="Error.htm#MethodError">MethodError</a> is thrown. This method is not implemented by default, so must be defined by the script.</p>
 
 <h2 id="StartsWith">StartsWith</h2>
-<pre class="Syntax">Result := StringValue.<span class="func">StartsWith</span>(Token <span class="optional">, Comparison</span>)</pre>
-<p>Returns 1 (true) if the string begins with <em>Token</em>, or 0 (false) otherwise. <em>Comparison</em> selects the string-comparison mode.</p>
+<pre class="Syntax">Result := StringValue.<span class="func">StartsWith</span>(Token <span class="optional">, CaseSense</span>)</pre>
+<p>Returns 1 (true) if the string begins with <em>Token</em>, or 0 (false) otherwise. <em>CaseSense</em> selects the comparison mode and follows <a href="InStr.htm">InStr</a>: omitted or <code>Off</code> is case-insensitive, <code>On</code> is case-sensitive, and <code>Locale</code> compares according to the current user's locale. Both <code>On</code> and <code>Off</code> are culture-invariant.</p>
 
 <h2 id="EndsWith">EndsWith</h2>
-<pre class="Syntax">Result := StringValue.<span class="func">EndsWith</span>(Token <span class="optional">, Comparison</span>)</pre>
-<p>Returns 1 (true) if the string ends with <em>Token</em>, or 0 (false) otherwise. <em>Comparison</em> selects the string-comparison mode.</p>
+<pre class="Syntax">Result := StringValue.<span class="func">EndsWith</span>(Token <span class="optional">, CaseSense</span>)</pre>
+<p>Returns 1 (true) if the string ends with <em>Token</em>, or 0 (false) otherwise. <em>CaseSense</em> is as for <a href="#StartsWith">StartsWith</a>.</p>
 
 <h2 id="Related">Related</h2>
 <p><a href="StringFunctions.htm">Keysharp string functions</a>, <a href="Type.htm">Type</a>, <a href="Integer.htm">Integer</a>, <a href="Float.htm">Float</a>, <a href="../Concepts.htm#values">Values</a>, <a href="../Language.htm#expressions">Expressions</a>, <a href="Is.htm">Is functions</a></p>

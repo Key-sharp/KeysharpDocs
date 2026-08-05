@@ -98,8 +98,9 @@ ArrayObj := Array.<span class="func">Call</span>(<span class="optional">Value, V
 
 <div class="methodShort" id="Contains"><h3>Contains</h3>
 <p>Returns whether the array contains a value.</p>
-<pre class="Syntax">Boolean := ArrayObj.<span class="func">Contains</span>(Value)</pre>
+<pre class="Syntax">Boolean := ArrayObj.<span class="func">Contains</span>(<span class="optional">Value</span>)</pre>
 <p>The return value is 1 (true) if an element equal to <em>Value</em> is present, otherwise 0 (false).</p>
+<p>If <em>Value</em> is omitted, the search is for an element which has no value, as left behind by <a href="#Delete">Delete</a>.</p>
 </div>
 
 <div class="methodShort" id="Delete"><h3>Delete</h3>
@@ -233,14 +234,17 @@ MsgBox x[1]              <em>; C</em></pre>
 
 <div class="methodShort" id="Remove"><h3>Remove</h3>
 <p>Removes the first occurrence of a value.</p>
-<pre class="Syntax">ArrayObj.<span class="func">Remove</span>(Value)</pre>
+<pre class="Syntax">Boolean := ArrayObj.<span class="func">Remove</span>(<span class="optional">Value</span>)</pre>
 <p>Elements after the removed value are shifted to the left. If the value is not present, the array is unchanged.</p>
+<p>If <em>Value</em> is omitted, the first element which has no value is removed, as left behind by <a href="#Delete">Delete</a>.</p>
+<p>The return value is 1 (true) if an element equal to <em>Value</em> was found and removed, otherwise 0 (false).</p>
 </div>
 
 <div class="methodShort" id="Filter"><h3>Filter</h3>
 <p>Returns a new Array containing each element for which a callback returned true.</p>
-<pre class="Syntax">Filtered := ArrayObj.<span class="func">Filter</span>(Callback)</pre>
+<pre class="Syntax">Filtered := ArrayObj.<span class="func">Filter</span>(Callback <span class="optional">, StartIndex := 1</span>)</pre>
 <p>The callback receives <code class="no-highlight">(Value, Index)</code>; it may declare only the parameters it needs.</p>
+<p>A negative <em>StartIndex</em> begins at the corresponding position from the end and filters toward the beginning, so the result is in reverse order.</p>
 </div>
 
 <div class="methodShort" id="FindIndex"><h3>FindIndex</h3>
@@ -251,8 +255,10 @@ MsgBox x[1]              <em>; C</em></pre>
 
 <div class="methodShort" id="IndexOf"><h3>IndexOf</h3>
 <p>Returns the first index whose value equals <em>Value</em>, or 0 if it is absent.</p>
-<pre class="Syntax">Index := ArrayObj.<span class="func">IndexOf</span>(Value <span class="optional">, StartIndex := 1</span>)</pre>
+<pre class="Syntax">Index := ArrayObj.<span class="func">IndexOf</span>(<span class="optional">Value, StartIndex := 1</span>)</pre>
 <p>A negative <em>StartIndex</em> searches toward the beginning.</p>
+<p>If <em>Value</em> is omitted, the search is for an element which has no value, as left behind by <a href="#Delete">Delete</a>.</p>
+<p>An <a href="Error.htm#IndexError">IndexError</a> is thrown if <em>StartIndex</em> is 0 or its absolute value exceeds <a href="#Length">Length</a>. Searching an empty array is not an error; the return value is 0.</p>
 </div>
 
 <div class="methodShort" id="Join"><h3>Join</h3>

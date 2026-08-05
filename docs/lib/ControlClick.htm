@@ -15,11 +15,11 @@
 
 <p>Sends a mouse button or mouse wheel event to a window or control.</p>
 
-<pre class="Syntax"><span class="func">ControlClick</span> <span class="optional">ControlID-or-Pos, WinTitle, WinText, WhichButton, ClickCount, Options, ExcludeTitle, ExcludeText</span></pre>
+<pre class="Syntax"><span class="func">ControlClick</span> <span class="optional">ControlOrPos, WinTitle, WinText, WhichButton, ClickCount, Options, ExcludeTitle, ExcludeText</span></pre>
 <h2 id="Parameters">Parameters</h2>
 <dl>
 
-  <dt>ControlID-or-Pos</dt>
+  <dt>ControlOrPos</dt>
   <dd>
       <p>Type: <a href="../Concepts.htm#strings">String</a>, <a href="../Concepts.htm#numbers">Integer</a> or <a href="../Concepts.htm#objects">Object</a></p>
       <p>If omitted, the target window itself will be clicked. Otherwise, use one of the following modes:</p>
@@ -58,7 +58,7 @@
       <p><strong>NA:</strong> May improve reliability. See <a href="#Reliability">reliability</a> below.</p>
       <p><strong>D:</strong> Press the mouse button down but do not release it (i.e. generate a down-event). If both the D and U options are absent, a complete click (down and up) will be sent.</p>
       <p><strong>U:</strong> Release the mouse button (i.e. generate an up-event). This option should not be present if the D option is already present (and vice versa).</p>
-      <p><strong>Pos:</strong> Specify the word Pos anywhere in <em>Options</em> to unconditionally use the X/Y positioning mode as described in the <em>ControlID-or-Pos</em> parameter above.</p>
+      <p><strong>Pos:</strong> Specify the word Pos anywhere in <em>Options</em> to unconditionally use the X/Y positioning mode as described in the <em>ControlOrPos</em> parameter above.</p>
       <p><strong>X</strong><em>n</em>: Specify for <em>n</em> the X position to click at, relative to the control's upper left corner. If unspecified, the click will occur at the horizontal-center of the control.</p>
       <p><strong>Y</strong><em>n</em>: Specify for <em>n</em> the Y position to click at, relative to the control's upper left corner. If unspecified, the click will occur at the vertical-center of the control.</p>
       <p>Use decimal (not hexadecimal) numbers for the X and Y options. The numbers are in pixels.</p>
@@ -70,7 +70,7 @@
 <p>An exception is thrown in the following cases:</p>
 <ul>
   <li><a href="Error.htm#TargetError">TargetError</a>: The target window could not be found.</li>
-  <li><a href="Error.htm#TargetError">TargetError</a>: The target control could not be found and <em>ControlID-or-Pos</em> does not specify a valid position.</li>
+  <li><a href="Error.htm#TargetError">TargetError</a>: The target control could not be found and <em>ControlOrPos</em> does not specify a valid position.</li>
   <li><a href="Error.htm#OSError">OSError</a> (very rare): the X or Y position is omitted and the control's position could not be determined.</li>
   <li><a href="Error.htm#ValueError">ValueError</a> or <a href="Error.htm#TypeError">TypeError</a>: Invalid parameters were detected.</li>
 </ul>
