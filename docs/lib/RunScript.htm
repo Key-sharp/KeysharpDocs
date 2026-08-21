@@ -14,7 +14,8 @@
 <h1>RunScript</h1>
 <p>Dynamically parses, compiles and runs source code.</p>
 <p>This function is exported by the <a href="../Modules.htm#KS">KS module</a>.</p>
-<pre class="Syntax">Process := <span class="func">RunScript</span>(Code <span class="optional">, CallbackOrAsync, Name := "*", Executable</span>)</pre>
+<p class="note"><strong>Note:</strong> This function requires the optional compiler component in the calling process. A compiled artifact which calls RunScript includes that component automatically unless it is explicitly excluded. See <a href="ComponentAvailable.htm">ComponentAvailable</a>.</p>
+<pre class="Syntax">Process := <span class="func">RunScript</span>(Code <span class="optional">, CallbackOrAsync, Name := "*", Executable, Options</span>)</pre>
 
 <h2 id="Parameters">Parameters</h2>
 <dl>
@@ -25,7 +26,17 @@
   <dt>Name</dt>
   <dd><p>The script name. The default <code class="no-highlight">"*"</code> indicates that source is supplied through standard input rather than loaded from a file.</p></dd>
   <dt>Executable</dt>
-  <dd><p>An executable path used to run the compiled assembly. If omitted, the current executable is used.</p></dd>
+  <dd><p>An executable path used to run the compiled assembly. If omitted, the current executable is used.</p>
+  </dd>
+  <dt>Options</dt>
+  <dd><p>Type: String or Array</p>
+    <p><a href="../Program.htm#cmd">Command-line switches</a> for this script. A string is split on whitespace, with double quotes grouping an argument which contains spaces and being removed:</p>
+    <pre>RunScript(src, , , , '--define:FEATURE_X --include "My include.ahk"')</pre>
+    <p>An Array supplies each argument separately, which needs no quoting and is the reliable form when a value may contain quotes or trailing backslashes:</p>
+    <pre>RunScript(src, , , , ["--define:FEATURE_X", "--include", "My include.ahk"])</pre>
+    <p>Nothing is inherited from the calling script; this is a separate compilation in a separate process, so it states what it needs.</p>
+    <p><code class="no-highlight">--define</code> is applied to the compilation this function performs, because the child process receives an already-compiled assembly and a symbol given to it would arrive after the conditionals were resolved. It is therefore rejected when <em>Code</em> names a <code class="no-highlight">.cks</code> or <code class="no-highlight">.dll</code>, which was compiled beforehand. Every other switch is passed to the child process.</p>
+  </dd>
 </dl>
 
 <h2 id="Return_Value">Return Value</h2>

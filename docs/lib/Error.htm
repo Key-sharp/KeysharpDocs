@@ -204,6 +204,7 @@ Stack:
 
 <p>The following subclasses of <strong>Error</strong> are predefined:</p>
 <ul>
+  <li id="ArgumentError"><strong>ArgumentError:</strong> A call omitted a required parameter, or supplied it as <a href="../Concepts.htm#unset">unset</a>. This subclass is a Keysharp addition and has no AutoHotkey equivalent.</li>
   <li id="MemoryError"><strong>MemoryError:</strong> A memory allocation failed.</li>
   <li id="OSError"><strong>OSError:</strong> An internal call to an operating-system function failed. OSErrors have an additional <strong id="Number">Number</strong> property which contains the OS-specific error code. For errors raised by the runtime, <strong>Message</strong> describes the failed operation or underlying operating-system error.
     <p class="note"><strong>Note:</strong> Calling <code>OSError(Code)</code> is intended to initialize <em>Number</em> and <em>Message</em> from the supplied numeric code, but <em>Code</em> is currently ignored. On Windows, <em>Number</em> and <em>Message</em> are initialized from the last P/Invoke error. On Linux and macOS, <em>Number</em> is initialized from <a href="../Variables.htm#LastError">A_LastError</a> and no operating-system message is generated.</p>

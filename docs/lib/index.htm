@@ -23,16 +23,19 @@
 <table class="info">
   <tr><th style="width:16em">Name</th><th abbr="Descr">Description</th></tr>
   <tr><td><a href="StringFunctions.htm">Base64Decode / Base64Encode</a></td><td>Converts between Base64 text and binary data.</td></tr>
-  <tr><td><a href="ClipboardFunctions.htm">Clipboard image functions</a></td><td>Copies image data and tests whether the clipboard is empty.</td></tr>
+  <tr><td><a href="Clipboard.htm">Clipboard</a></td><td>Reads and writes clipboard text, images, files, HTML, RTF and native formats.</td></tr>
   <tr><td><a href="Clr.htm">Clr</a></td><td>Provides experimental direct .NET interop.</td></tr>
   <tr><td><a href="Collect.htm">Collect</a></td><td>Requests managed garbage collection and finalization.</td></tr>
-  <tr><td><a href="Crypto.htm">Crypto functions</a></td><td>Provides AES, hash, CRC32 and secure-random helpers.</td></tr>
+  <tr><td><a href="ComponentAvailable.htm">ComponentAvailable</a></td><td>Reports whether the optional parser or compiler is available.</td></tr>
+  <tr><td><a href="Crypto.htm">Crypt</a></td><td>Hashes values and files, encrypts and decrypts with AES, derives keys from passwords, and returns cryptographically secure random values.</td></tr>
   <tr><td><a href="EnvUpdate.htm">EnvUpdate</a></td><td>Notifies the platform that environment variables changed.</td></tr>
   <tr><td><a href="FilePath.htm">FileDirName / FileFullPath</a></td><td>Normalizes and extracts file-system paths.</td></tr>
   <tr><td><a href="FormatCs.htm">FormatCs</a></td><td>Formats values with .NET composite-format strings.</td></tr>
+  <tr><td><a href="Font.htm">Font</a></td><td>A font as a value object, plus the platform's standard interface, emoji and monospace families.</td></tr>
   <tr><td><a href="HashMap.htm">HashMap</a></td><td>Provides Map behavior without sorted-copy enumeration.</td></tr>
   <tr><td><a href="Image.htm">Image</a></td><td>Loads, captures, transforms and saves images.</td></tr>
   <tr><td><a href="StringFunctions.htm">Join / NormalizeEol</a></td><td>Joins values and normalizes line endings.</td></tr>
+  <tr><td><a href="Lock.htm">Lock</a></td><td>Guards code shared between real threads.</td></tr>
   <tr><td><a href="LockRun.htm">LockRun</a></td><td>Serializes execution with a named lock.</td></tr>
   <tr><td><a href="Mail.htm">Mail</a></td><td>Creates and sends email messages.</td></tr>
   <tr><td><a href="NamedArgs.htm">NamedArgs</a></td><td>Carries the named arguments of one call, for building or inspecting them at run time.</td></tr>
@@ -1545,6 +1548,10 @@
   <tr>
     <td class="larger"><a href="_NoTrayIcon.htm">#NoTrayIcon</a></td>
     <td>Disables the showing of a <a href="../Program.htm#tray-icon">tray icon</a>.</td>
+  </tr>
+  <tr>
+    <td><a href="_Package.htm">#Package</a></td>
+    <td>Makes a NuGet package's assemblies available to the <a href="Clr.htm">Clr</a> object.</td>
   </tr>
   <tr>
     <td><a href="_Requires.htm">#Requires</a></td>

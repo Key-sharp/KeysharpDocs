@@ -138,6 +138,15 @@
 <p>See <a href="#ExFocus">example #6</a> for a demonstration.</p>
 </div>
 
+<div class="methodShort" id="Font">
+<h3>Font</h3>
+<p class="note"><strong>Keysharp extension.</strong> This property does not exist in AutoHotkey v2.</p>
+<p>Gets or sets this control's font, as a <a href="Font.htm">Font</a> object.</p>
+<pre class="Syntax">FontObj := GuiCtrl.<span class="func">Font</span></pre>
+<pre class="Syntax">GuiCtrl.<span class="func">Font</span> := FontObj</pre>
+<p>Reading the property returns a detached snapshot, so changing the returned object does not change the control; assign it back to apply it. The font's color round-trips through the control's <code>ForeColor</code>. See <a href="Gui.htm#Font">Gui.Font</a> for the window-level equivalent.</p>
+</div>
+
 <div class="methodShort" id="GetClientPos">
 <h3>GetClientPos</h3>
 <p>Retrieves the screen position and size of a control's client area.</p>

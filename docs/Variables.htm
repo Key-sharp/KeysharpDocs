@@ -1066,7 +1066,7 @@ VirtualHeight := <a href="lib/SysGet.htm">SysGet</a>(79)
 
 <h3 id="KS">KS Module Variables</h3>
 <p>These variables are exported by the <a href="Modules.htm#KS">KS module</a> rather than being global, so a script must import the names it uses. This keeps the global namespace identical to AutoHotkey's.</p>
-<pre>#Import "Ks" { A_DirSeparator, A_NowMs, A_ThreadId }</pre>
+<pre>#Import "Ks" { A_DirSeparator, A_NowMs, A_Thread }</pre>
 <table class="info">
   <tr>
     <th abbr="Var">Variable</th>
@@ -1080,36 +1080,40 @@ VirtualHeight := <a href="lib/SysGet.htm">SysGet</a>(79)
     <td><span id="KS_A_AllowTimers">A_AllowTimers</span></td>
     <td>Gets or sets whether timers are allowed, as an alternative to <code>Thread("NoTimers")</code>.</td>
   </tr>
-  <tr id="A_AsmCompany">
-    <td><span id="KS_A_AsmCompany">A_AsmCompany</span></td>
+  <tr id="A_AssemblyCompany">
+    <td><span id="KS_A_AssemblyCompany">A_AssemblyCompany</span></td>
     <td>The assembly company set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyCompany</a>, or blank if unset.</td>
   </tr>
-  <tr id="A_AsmConfiguration">
-    <td><span id="KS_A_AsmConfiguration">A_AsmConfiguration</span></td>
+  <tr id="A_AssemblyConfiguration">
+    <td><span id="KS_A_AssemblyConfiguration">A_AssemblyConfiguration</span></td>
     <td>The assembly configuration set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyConfiguration</a>, or blank if unset.</td>
   </tr>
-  <tr id="A_AsmCopyright">
-    <td><span id="KS_A_AsmCopyright">A_AsmCopyright</span></td>
+  <tr id="A_AssemblyCopyright">
+    <td><span id="KS_A_AssemblyCopyright">A_AssemblyCopyright</span></td>
     <td>The assembly copyright set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyCopyright</a>, or blank if unset.</td>
   </tr>
-  <tr id="A_AsmDescription">
-    <td><span id="KS_A_AsmDescription">A_AsmDescription</span></td>
+  <tr id="A_AssemblyDescription">
+    <td><span id="KS_A_AssemblyDescription">A_AssemblyDescription</span></td>
     <td>The assembly description set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyDescription</a>, or blank if unset.</td>
   </tr>
-  <tr id="A_AsmProduct">
-    <td><span id="KS_A_AsmProduct">A_AsmProduct</span></td>
+  <tr id="A_AssemblyName">
+    <td><span id="KS_A_AssemblyName">A_AssemblyName</span></td>
+    <td>The assembly's name, set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyName</a>. Unlike the other <code>A_Assembly*</code> variables this is the assembly's identity rather than an attribute, so it is never blank: without the directive it is the name the script was compiled under.</td>
+  </tr>
+  <tr id="A_AssemblyProduct">
+    <td><span id="KS_A_AssemblyProduct">A_AssemblyProduct</span></td>
     <td>The assembly product set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyProduct</a>, or blank if unset.</td>
   </tr>
-  <tr id="A_AsmTitle">
-    <td><span id="KS_A_AsmTitle">A_AsmTitle</span></td>
+  <tr id="A_AssemblyTitle">
+    <td><span id="KS_A_AssemblyTitle">A_AssemblyTitle</span></td>
     <td>The assembly title set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyTitle</a>, or blank if unset.</td>
   </tr>
-  <tr id="A_AsmTrademark">
-    <td><span id="KS_A_AsmTrademark">A_AsmTrademark</span></td>
+  <tr id="A_AssemblyTrademark">
+    <td><span id="KS_A_AssemblyTrademark">A_AssemblyTrademark</span></td>
     <td>The assembly trademark set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyTrademark</a>, or blank if unset.</td>
   </tr>
-  <tr id="A_AsmVersion">
-    <td><span id="KS_A_AsmVersion">A_AsmVersion</span></td>
+  <tr id="A_AssemblyVersion">
+    <td><span id="KS_A_AssemblyVersion">A_AssemblyVersion</span></td>
     <td>The assembly file version set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyVersion</a>, or blank if unset.</td>
   </tr>
   <tr id="A_ClipboardTimeout">
@@ -1244,6 +1248,10 @@ VirtualHeight := <a href="lib/SysGet.htm">SysGet</a>(79)
     <td><span id="KS_A_NowUtcMs">A_NowUtcMs</span></td>
     <td>UTC time including milliseconds in <code class="no-highlight">YYYYMMDDHH24MISS.ff</code> form.</td>
   </tr>
+  <tr id="A_OSArch">
+    <td><span id="KS_A_OSArch">A_OSArch</span></td>
+    <td>The CPU architecture of the operating system, using the same names as <a href="#A_ProcessArch">A_ProcessArch</a>. It differs from that variable only when the process runs emulated, such as an X64 build on ARM64 Windows.</td>
+  </tr>
   <tr id="A_PeekFrequency">
     <td><span id="KS_A_PeekFrequency">A_PeekFrequency</span></td>
     <td>Gets or sets the current thread's message-check interval in milliseconds.</td>
@@ -1251,6 +1259,10 @@ VirtualHeight := <a href="lib/SysGet.htm">SysGet</a>(79)
   <tr id="A_Priority">
     <td><span id="KS_A_Priority">A_Priority</span></td>
     <td>Gets or sets the default priority copied into newly created script threads. See <a href="lib/Thread.htm">Thread</a>.</td>
+  </tr>
+  <tr id="A_ProcessArch">
+    <td><span id="KS_A_ProcessArch">A_ProcessArch</span></td>
+    <td>The CPU architecture this script runs as: <code class="no-highlight">X64</code>, <code class="no-highlight">ARM64</code>, <code class="no-highlight">X86</code> or <code class="no-highlight">ARM</code>, matching the <a href="lib/Preprocessor.htm">conditional-compilation symbol</a> of the same name. This is the calling convention <a href="lib/DllCall.htm">DllCall</a> and <a href="lib/ComCall.htm">ComCall</a> must obey, so interop code should branch on it rather than on <a href="#PtrSize">A_PtrSize</a>, which is 8 for both X64 and ARM64.</td>
   </tr>
   <tr id="A_ScreenScale">
     <td><span id="KS_A_ScreenScale">A_ScreenScale</span></td>
@@ -1260,9 +1272,13 @@ VirtualHeight := <a href="lib/SysGet.htm">SysGet</a>(79)
     <td><span id="KS_A_SuspendExempt">A_SuspendExempt</span></td>
     <td>Whether subsequent hotkeys/hotstrings are exempt because <code>#SuspendExempt true</code> was used.</td>
   </tr>
-  <tr id="A_ThreadId">
-    <td><span id="KS_A_ThreadId">A_ThreadId</span></td>
-    <td>The current pseudo-thread's 64-bit identifier. See <a href="#ThreadId">Thread Identity</a>.</td>
+  <tr id="A_Thread">
+    <td><span id="KS_A_Thread">A_Thread</span></td>
+    <td>The current script thread as a <a href="lib/Thread.htm#Object">Thread</a> object. See <a href="#Thread">Thread Identity</a>.</td>
+  </tr>
+  <tr id="A_RealThread">
+    <td><span id="KS_A_RealThread">A_RealThread</span></td>
+    <td>The real operating-system thread the current script thread runs on, as a <a href="lib/RealThread.htm">RealThread</a> object. See <a href="#Thread">Thread Identity</a>.</td>
   </tr>
   <tr id="A_Timers">
     <td><span id="KS_A_Timers">A_Timers</span></td>
@@ -1294,9 +1310,17 @@ VirtualHeight := <a href="lib/SysGet.htm">SysGet</a>(79)
   </tr>
 </table>
 
-<h4 id="ThreadId">Thread Identity</h4>
-<p><code>A_ThreadId</code> consists of a 48-bit script-wide creation sequence and a 16-bit zero-based pseudo-thread stack index. <code>A_ThreadId &amp; 0xFFFF</code> retrieves the stack index; auto-execute is index 0 on its real thread.</p>
-<p>An ID is nearly unique for the script's lifetime but valid only while its pseudo-thread is active. An exact ID can be targeted only from its owning real thread. See <a href="lib/Exit.htm">Exit</a> for targeted termination.</p>
+<h4 id="Thread">Thread Identity</h4>
+<p><code>A_Thread</code> is the current <a href="misc/Threads.htm">script thread</a> and <code>A_RealThread</code> the real operating-system thread it runs on. Each carries its own facts as properties, so no further <code>A_</code> variable is needed to describe a thread:</p>
+<pre>#Import "Ks" { A_Thread, A_RealThread }
+A_Thread.Id           <em>; identity, valid while the thread is active</em>
+A_Thread.Index        <em>; 1 = the oldest active thread on this real thread</em>
+A_Thread.Elapsed      <em>; ms since it launched</em>
+A_Thread.Underlying        <em>; the thread it interrupted</em>
+A_Thread.Exit()       <em>; terminate it</em>
+A_RealThread.Threads  <em>; every active script thread here, oldest first</em></pre>
+<p><code>A_Thread.Id</code> consists of a 48-bit script-wide creation sequence and a 16-bit zero-based stack index. It is nearly unique for the script's lifetime but only meaningful while the thread is active; a stored <a href="lib/Thread.htm#Object">Thread</a> object reports <code>IsActive</code> false once its thread ends. A thread can be terminated only from the real thread which owns it.</p>
+<p>See the <a href="lib/Thread.htm#Object">Thread object</a>, <a href="lib/RealThread.htm">RealThread</a> and <a href="lib/Exit.htm">Exit</a>.</p>
 
 <h4 id="Dates">Millisecond Date Values</h4>
 <p><code>A_NowMs</code> and <code>A_NowUtcMs</code> can be used with <a href="lib/DateAdd.htm">DateAdd</a> and <a href="lib/DateDiff.htm">DateDiff</a> by specifying <code class="no-highlight">"L"</code> as the time unit.</p>
@@ -1304,7 +1328,7 @@ VirtualHeight := <a href="lib/SysGet.htm">SysGet</a>(79)
 <h4 id="ScreenScale">Screen Scale</h4>
 <p><code>A_ScreenScale</code> reports how large deliberately authored UI sizes should be drawn on the primary screen: 1.0 is 100%, 1.5 is 150%.</p>
 <p class="warning"><strong>Note:</strong> This is not a screen-coordinate conversion factor. Applying it to an absolute position produces a wrong result.</p>
-<p>The value describes the primary monitor only. Code which spans monitors of differing scale should call <a href="lib/Monitor.htm#MonitorGetScale">MonitorGetScale</a> for the monitor it is working with.</p>
+<p>The value describes the primary monitor only. Code which spans monitors of differing scale should read <a href="lib/Monitor.htm#Scale">Monitor.Scale</a> for the monitor it is working with.</p>
 
 <h2 id="cap">Variable Capacity and Memory</h2>
 <ul>

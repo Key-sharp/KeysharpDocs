@@ -18,6 +18,7 @@ tocData = [
       ["String and Base64 Functions","lib/StringFunctions.htm"],
       ["C# Regular Expressions","lib/RegExCs.htm"],
       ["C# String Formatting","lib/FormatCs.htm"],
+      ["Boolean","lib/Boolean.htm"],
       ["HashMap","lib/HashMap.htm"],
       ["Json","lib/Json.htm"]
     ]],
@@ -32,23 +33,28 @@ tocData = [
       ["Image","lib/Image.htm"],
       ["Overlay","lib/Overlay.htm"],
       ["Highlight","lib/Highlight.htm"],
+      ["Font","lib/Font.htm"],
       ["ClipCursor","lib/ClipCursor.htm"],
       ["WinEvent","lib/WinEvent.htm"],
       ["WinFromPoint","lib/WinFromPoint.htm"],
       ["WinMaximizeAll","lib/WinMaximizeAll.htm"],
-      ["Clipboard Image Functions","lib/ClipboardFunctions.htm"]
+      ["Clipboard","lib/Clipboard.htm"]
     ]],
     ["Runtime and Interop","",
     [
       ["RealThread","lib/RealThread.htm"],
       ["LockRun","lib/LockRun.htm"],
+      ["Lock","lib/Lock.htm"],
       ["Collect","lib/Collect.htm"],
       ["ObjFree","lib/ObjFree.htm"],
+      ["ComponentAvailable","lib/ComponentAvailable.htm"],
       ["ParseScript","lib/ParseScript.htm"],
-      ["Clr Interop","lib/Clr.htm"]
+      ["Clr Interop","lib/Clr.htm"],
+      ["#Package","lib/_Package.htm"],
+      ["#CSharp","lib/_CSharp.htm"]
     ]],
     ["Keyboard Layout Functions","lib/KeyboardLayout.htm"],
-    ["Cryptography","lib/Crypto.htm"]
+    ["Crypt","lib/Crypto.htm"]
   ]],
   ["Using Keysharp","",
   [
@@ -285,7 +291,8 @@ tocData = [
     ["MonitorGetCount","lib/MonitorGetCount.htm"],
     ["MonitorGetName","lib/MonitorGetName.htm"],
     ["MonitorGetPrimary","lib/MonitorGetPrimary.htm"],
-    ["MonitorGetWorkArea","lib/MonitorGetWorkArea.htm"]
+    ["MonitorGetWorkArea","lib/MonitorGetWorkArea.htm"],
+    ["Monitor object","lib/Monitor.htm#KS"]
   ]],
   ["Mouse and Keyboard","",
   [
@@ -555,6 +562,7 @@ tocData = [
   ["#Directives","",
   [
     ["#ClipboardTimeout","lib/_ClipboardTimeout.htm"],
+    ["#CSharp","lib/_CSharp.htm"],
     ["#DllLoad","lib/_DllLoad.htm"],
     ["#ErrorStdOut","lib/_ErrorStdOut.htm"],
     ["#HotIf","lib/_HotIf.htm"],
@@ -567,6 +575,7 @@ tocData = [
     ["#MaxThreadsPerHotkey","lib/_MaxThreadsPerHotkey.htm"],
     ["#Module","lib/_Module.htm"],
     ["#NoTrayIcon","lib/_NoTrayIcon.htm"],
+    ["#Package","lib/_Package.htm"],
     ["#Requires","lib/_Requires.htm"],
     ["#SingleInstance","lib/_SingleInstance.htm"],
     ["#StructPack","lib/_StructPack.htm"],

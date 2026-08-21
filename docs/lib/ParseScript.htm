@@ -32,6 +32,7 @@
 <h2 id="Remarks">Remarks</h2>
 <p>Only compilation is performed: the code is never executed, no hotkeys are registered and the auto-execute section does not run. This makes ParseScript suitable for validating code a script generated or received before writing it to disk.</p>
 <p>The <a href="../Program.htm#cmd"><code class="no-highlight">--validate</code></a> command-line option performs the same check on a file from outside a script.</p>
+<p>ParseScript requires the optional compiler component and performs Roslyn binding, including validation of inline C#. For parser-only validation without Roslyn, use <a href="../Program.htm#components"><code class="no-highlight">--validate-syntax</code></a>. Use <a href="ComponentAvailable.htm">ComponentAvailable</a> when the compiler is optional at run time.</p>
 
 <h2 id="Examples">Examples</h2>
 

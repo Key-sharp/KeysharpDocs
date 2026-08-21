@@ -21,11 +21,11 @@
 
 <h2 id="Drawing">Drawing</h2>
 <p>Overlay supports the <a href="Image.htm#Drawing">Image drawing primitives</a>: <code>Clear</code>, <code>DrawLine</code>, <code>DrawRect</code>, <code>FillRect</code>, <code>DrawRoundRect</code>, <code>FillRoundRect</code>, <code>DrawEllipse</code>, <code>FillEllipse</code>, <code>DrawText</code>, <code>MeasureText</code> and <code>DrawImage</code>.</p>
-<p><code>BeginDraw()</code> and <code>EndDraw()</code> batch ordinary draw operations. <code>Redraw(Callback [, X, Y, W, H])</code> creates a target-sized frame off-screen, invokes <em>Callback</em> to draw it and commits it atomically.</p>
+<p><code>BeginDraw()</code> and <code>EndDraw()</code> batch ordinary draw operations. <code>Redraw(Callback [, X, Y, Width, Height])</code> creates a target-sized frame off-screen, invokes <em>Callback</em> to draw it and commits it atomically.</p>
 
 <h2 id="Content">Content</h2>
 <dl>
-  <dt><code>Update(Source [, X, Y, W, H])</code></dt>
+  <dt><code>Update(Source [, X, Y, Width, Height])</code></dt>
   <dd><p>Atomically replaces the displayed content with an Image or compatible source, optionally changing the geometry in the same operation. Omit the geometry to just swap the image in place.</p></dd>
 </dl>
 
@@ -36,8 +36,8 @@
 
 <h2 id="Presentation">Presentation</h2>
 <dl>
-  <dt><code>Show([X, Y, W, H])</code></dt><dd><p>Shows the surface, optionally changing its geometry.</p></dd>
-  <dt><code>Move([X, Y, W, H])</code></dt><dd><p>Moves or resizes the surface.</p></dd>
+  <dt><code>Show([X, Y, Width, Height])</code></dt><dd><p>Shows the surface, optionally changing its geometry.</p></dd>
+  <dt><code>Move([X, Y, Width, Height])</code></dt><dd><p>Moves or resizes the surface.</p></dd>
   <dt><code>Hide()</code></dt><dd><p>Hides the surface.</p></dd>
   <dt><code>Destroy()</code></dt><dd><p>Destroys the native surface.</p></dd>
 </dl>
@@ -46,7 +46,7 @@
 <table class="info">
   <tr><th>Property</th><th>Description</th></tr>
   <tr><td><code>X</code>, <code>Y</code></td><td>Get or set the native screen position.</td></tr>
-  <tr><td><code>W</code>, <code>H</code></td><td>Get or set the display rectangle without discarding the canvas.</td></tr>
+  <tr><td><code>Width</code>, <code>Height</code></td><td>Get or set the display rectangle without discarding the canvas.</td></tr>
   <tr><td><code>Opacity</code></td><td>Gets or sets surface opacity.</td></tr>
   <tr><td><code>ClickThrough</code></td><td>Gets or sets whether pointer input passes through the surface.</td></tr>
   <tr><td><code>Visible</code></td><td>Read-only visibility state.</td></tr>

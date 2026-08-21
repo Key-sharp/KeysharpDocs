@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Lock Object | Keysharp</title>
+<meta name="description" content="A mutual-exclusion lock for code shared between real threads." />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../static/theme.css" rel="stylesheet" type="text/css" />
+<link href="../static/dark.css" rel="stylesheet" type="text/css" media="(prefers-color-scheme: dark)" id="dark_css" />
+<script src="../static/content.js" type="text/javascript"></script>
+</head>
+<body>
+
+<h1>Lock Object</h1>
+<pre class="NoIndent">class Lock extends Object</pre>
+<p>A mutual-exclusion lock for code shared between <a href="RealThread.htm">real threads</a>.</p>
+<p>This class is exported by the <a href="../Modules.htm#KS">KS module</a>.</p>
+<p><a href="LockRun.htm">LockRun</a> is the way to hold a lock for the duration of one call, and is not duplicated here. This class covers the two things <code>LockRun</code> cannot express: acquiring with a timeout, and holding a lock across several statements. A Lock is itself an object, so <code>LockRun</code> accepts one and the two forms exclude each other.</p>
+
+<h2 id="Call">Call</h2>
+<pre class="Syntax">LockObj := <span class="func">Lock</span>()</pre>
+<p>Creates a lock. Share the same object between the threads which must not run the guarded code concurrently.</p>
+
+<h2 id="Acquire">Acquire</h2>
+<pre class="Syntax">Acquired := LockObj.<span class="func">Acquire</span>(<span class="optional">Timeout</span>)</pre>
+<p>Acquires the lock, returning 1 (true) once held or 0 (false) if <em>Timeout</em> elapsed first. <em>Timeout</em> is in milliseconds; omit it to wait indefinitely.</p>
+<p class="warning"><strong>Warning:</strong> This blocks the whole real thread, not just the calling <a href="../misc/Threads.htm">script thread</a>. Acquiring on the main thread stalls the script's message loop until it succeeds, so pass a timeout there rather than waiting indefinitely on work a worker might be slow to finish.</p>
+
+<h2 id="Release">Release</h2>
+<pre class="Syntax">LockObj.<span class="func">Release</span>()</pre>
+<p>Releases the lock once. Must be called by the real thread that acquired it, once per successful <a href="#Acquire">Acquire</a>. Releasing a lock this thread does not hold is an error.</p>
+
+<h2 id="Remarks">Remarks</h2>
+<p>The lock belongs to a real thread, not to a script thread, and it is reentrant: the same real thread may acquire it repeatedly and must release it once per acquisition.</p>
+<p class="warning"><strong>Warning:</strong> Because ownership is per real thread, a thread that interrupts a lock holder on the same real thread &mdash; a <a href="SetTimer.htm">timer</a> or <a href="../Hotkeys.htm">hotkey</a> &mdash; counts as the same owner. It can re-enter the lock, and a <a href="#Release">Release</a> there releases the interrupted thread's acquisition. Keep guarded sections short and do not let one span a point where the thread can be interrupted, or make the interrupting thread <a href="Critical.htm">Critical</a>.</p>
+
+<h2 id="Examples">Examples</h2>
+<div class="ex" id="ExTimeout">
+<p><a class="ex_number" href="#ExTimeout"></a> Giving up rather than stalling the main thread.</p>
+<pre>#Import "Ks" { RealThread, Lock }
+
+global stateLock := Lock(), state := 0
+
+worker := RealThread(Produce)
+
+if stateLock.Acquire(100) {
+    try
+        MsgBox "state is " state
+    finally
+        stateLock.Release()
+} else
+    MsgBox "worker is still busy; try again later"
+
+worker.Wait()
+
+Produce() {
+    stateLock.Acquire()
+    try {
+        Sleep 500
+        state := 42
+    } finally
+        stateLock.Release()
+}
+</pre>
+</div>
+
+<h2 id="Related">Related</h2>
+<p><a href="LockRun.htm">LockRun</a>, <a href="RealThread.htm">RealThread</a>, <a href="../misc/Threads.htm">Threads</a></p>
+
+</body>
+</html>

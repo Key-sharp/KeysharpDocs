@@ -27,7 +27,7 @@ Hook := WinEvent.<span class="func">Restore</span>(Callback <span class="optiona
 Hook := WinEvent.<span class="func">TitleChange</span>(Callback <span class="optional">, WinTitle, Count := -1, WinText, ExcludeTitle, ExcludeText</span>)
 Hook := WinEvent.<span class="func">CaretMove</span>(Callback <span class="optional">, WinTitle, Count := -1, WinText, ExcludeTitle, ExcludeText</span>)</pre>
 <p><em>Callback</em> receives <code class="no-highlight">(Hook, Hwnd, EventTime)</code>. <em>Count</em> limits how many callbacks are delivered; -1 is unlimited. Window criteria use ordinary <a href="../misc/WinTitle.htm">WinTitle matching</a>.</p>
-<p>Event-specific data arrives in <a href="../Variables.htm#EventInfo">A_EventInfo</a> rather than as an extra parameter. <code>Move</code> and <code>CaretMove</code> put a rectangle there as an object with <code>x</code>, <code>y</code>, <code>w</code> and <code>h</code>; every other event type leaves the event time in <code>A_EventInfo</code>. The rectangle is built only if the callback reads it.</p>
+<p>Event-specific data arrives in <a href="../Variables.htm#EventInfo">A_EventInfo</a> rather than as an extra parameter. <code>Move</code> and <code>CaretMove</code> put a rectangle there as an object with <code>X</code>, <code>Y</code>, <code>Width</code> and <code>Height</code>; every other event type leaves the event time in <code>A_EventInfo</code>. The rectangle is built only if the callback reads it.</p>
 
 <table class="info">
   <tr><th>Method</th><th>Event</th></tr>
@@ -45,8 +45,8 @@ Hook := WinEvent.<span class="func">CaretMove</span>(Callback <span class="optio
 
 <h2 id="Global">Global Control</h2>
 <pre class="Syntax">NewState := WinEvent.<span class="func">Pause</span>(<span class="optional">NewState := 1</span>)
-IsPaused := WinEvent.<span class="func">IsPaused</span>
-WinEvent.<span class="func">IsPaused</span> := NewState</pre>
+Paused := WinEvent.<span class="func">Paused</span>
+WinEvent.<span class="func">Paused</span> := NewState</pre>
 <p>Pause (1), resume (0) or toggle (-1) every subscription. Pause returns the resulting state.</p>
 
 <h2 id="Hook">Subscription Members</h2>
@@ -54,7 +54,7 @@ WinEvent.<span class="func">IsPaused</span> := NewState</pre>
   <tr><th>Member</th><th>Description</th></tr>
   <tr><td><code>Stop()</code></td><td>Cancels the subscription.</td></tr>
   <tr><td><code>Pause([NewState := 1])</code></td><td>Pauses, resumes or toggles this subscription and returns its new state.</td></tr>
-  <tr><td><code>IsPaused</code></td><td>Gets or sets whether this subscription is paused.</td></tr>
+  <tr><td><code>Paused</code></td><td>Gets or sets whether this subscription is paused.</td></tr>
   <tr><td><code>IsActive</code></td><td>Whether it is still registered to receive events.</td></tr>
   <tr><td><code>EventType</code></td><td>The event name.</td></tr>
   <tr><td><code>Count</code></td><td>Remaining callback count, or -1 for unlimited.</td></tr>

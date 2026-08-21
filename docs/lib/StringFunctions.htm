@@ -19,8 +19,9 @@
 <p>Decodes a Base64 string and returns a <a href="Buffer.htm">Buffer</a> containing the decoded bytes.</p>
 
 <h2 id="Base64Encode">Base64Encode</h2>
-<pre class="Syntax">Text := <span class="func">Base64Encode</span>(Value)</pre>
-<p>Encodes a byte array or Buffer as a Base64 string.</p>
+<pre class="Syntax">Text := <span class="func">Base64Encode</span>(Value <span class="optional">, Encoding := "UTF-8"</span>)</pre>
+<p>Encodes a byte array, <a href="Buffer.htm">Buffer</a> or string as a Base64 string.</p>
+<p>A string is converted to bytes with <em>Encoding</em>, which defaults to UTF-8 — what any other tool means by the Base64 of a text. Name another encoding, as for <a href="FileEncoding.htm">FileEncoding</a>, to encode a different byte sequence; a name which cannot be resolved throws a <a href="Error.htm">ValueError</a>. A Buffer or Array is encoded exactly as it stands, so no encoding applies to it.</p>
 
 <h2 id="NormalizeEol">NormalizeEol</h2>
 <pre class="Syntax">Text := <span class="func">NormalizeEol</span>(Text <span class="optional">, Eol</span>)</pre>

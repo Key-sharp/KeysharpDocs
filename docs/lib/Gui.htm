@@ -435,6 +435,9 @@ MyGui.Opt("+Owner")  <em>; Make the GUI owned by the <a href="../Variables.htm#S
       <li>The <code class="no-highlight">+Parent</code> option may fail during GUI creation if the parent window is external, but may work after the GUI is created. This is due to differences in how styles are applied.</li>
       <li>Navigating into and out of the child GUI with the Tab key requires the <code class="no-highlight">+E0x00010000</code> option (WS_EX_CONTROLPARENT).</li>
     </ul>
+    <p id="Round"><strong>Round:</strong> Rounds the window's outer corners, for a borderless window which draws its own chrome. Use <code class="no-highlight">-Round</code> to restore square corners.<br />
+    <strong>Windows:</strong> Requires Windows 11; the corner preference is reapplied whenever the window handle is recreated, such as after <code class="no-highlight">-Caption</code>.<br />
+    <strong>Linux and macOS:</strong> The option is accepted and has no effect, so a cross-platform script can set it unconditionally.</p>
     <p id="Resize"><strong>Resize:</strong> Makes the window resizable and enables its maximize button in the title bar. To avoid enabling the maximize button, specify <code class="no-highlight">+Resize -MaximizeBox</code>.</p>
     <p><strong>SysMenu</strong> (present by default): Specify <code class="no-highlight">-SysMenu</code> (minus SysMenu) to omit the system menu and icon in the window's upper left corner. This will also omit the minimize, maximize, and close buttons in the title bar.</p>
     <p id="Theme"><strong>Theme:</strong> By specifying <code class="no-highlight">-Theme</code>, all subsequently created controls in the window will have the Classic Theme appearance. To later create additional controls that obey the current theme, turn it back on via <code class="no-highlight">+Theme</code>. Note: This option has no effect if the Classic Theme is in effect. Finally, this setting may be changed for an individual control by specifying <code class="no-highlight">+Theme</code> or <code class="no-highlight">-Theme</code> in its options when it is created.</p>
@@ -628,6 +631,17 @@ MyGui.SetFont(, "Verdana")  <em>; Preferred font.</em></pre>
 WinSetTransColor("EEAA99", MyGui)</pre>
 <p>To additionally remove the border and title bar from a window with a transparent background, use the following: <code>MyGui.Opt("-Caption")</code></p>
 <p>To illustrate the above, there is an example of an on-screen display (OSD) near the bottom of this page.</p>
+</div>
+
+<div class="methodShort" id="Font">
+<h3>Font</h3>
+<p class="note"><strong>Keysharp extension.</strong> This property does not exist in AutoHotkey v2.</p>
+<p>Gets or sets the font which controls added from this point onward inherit, as a <a href="Font.htm">Font</a> object.</p>
+<pre class="Syntax">FontObj := MyGui.<span class="func">Font</span></pre>
+<pre class="Syntax">MyGui.<span class="func">Font</span> := FontObj</pre>
+<p>Reading the property returns a detached snapshot: changing the returned object does not change the GUI, so assign it back to apply it. This is the object form of <a href="#SetFont">SetFont</a>, and the two are interchangeable - <code>MyGui.Font := MyFont</code> does what <code>MyGui.SetFont(MyFont.Options, MyFont.Name)</code> does.</p>
+<p>Each control has the same property, which reads and writes that one control's font. Its color round-trips through the control's <code>ForeColor</code>.</p>
+<p>Requires <code>#Import "Ks" { Font }</code> only to name the class; the property itself needs no import.</p>
 </div>
 
 <div class="methodShort" id="FocusedCtrl">

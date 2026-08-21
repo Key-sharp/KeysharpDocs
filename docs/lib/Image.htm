@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+﻿<!DOCTYPE HTML>
 <html lang="en">
 <head>
 <title>Image Object | Keysharp</title>
@@ -51,7 +51,7 @@
 
 <h3 id="FromClipboard">FromClipboard</h3>
 <pre class="Syntax">Picture := Image.<span class="func">FromClipboard</span>()</pre>
-<p>Copies the image currently held by the clipboard. Returns an empty string if the clipboard contains no image. This is the round-trip counterpart of <a href="ClipboardFunctions.htm#CopyImageToClipboard">CopyImageToClipboard</a>.</p>
+<p>Copies the image currently held by the clipboard. Returns an empty string if the clipboard contains no image. This is an alias of the <a href="Clipboard.htm#Image">Clipboard.Image</a> getter; to put an image on the clipboard, assign to that property.</p>
 
 <h3 id="FromDesktop">FromDesktop</h3>
 <pre class="Syntax">Picture := Image.<span class="func">FromDesktop</span>()</pre>
@@ -81,15 +81,15 @@
   <tr><th>Method</th><th>Effect</th></tr>
   <tr><td><code>Clear([Color])</code></td><td>Clears the canvas, optionally to a color.</td></tr>
   <tr><td><code>DrawLine(X1, Y1, X2, Y2 [, Color, Thickness])</code></td><td>Draws a line.</td></tr>
-  <tr><td><code>DrawRect(X, Y, W, H [, Color, Thickness])</code></td><td>Draws a rectangle outline.</td></tr>
-  <tr><td><code>FillRect(X, Y, W, H [, Color])</code></td><td>Fills a rectangle.</td></tr>
-  <tr><td><code>DrawRoundRect(X, Y, W, H, Radius [, Color, Thickness])</code></td><td>Draws a rounded-rectangle outline.</td></tr>
-  <tr><td><code>FillRoundRect(X, Y, W, H, Radius [, Color])</code></td><td>Fills a rounded rectangle.</td></tr>
-  <tr><td><code>DrawEllipse(X, Y, W, H [, Color, Thickness])</code></td><td>Draws an ellipse outline.</td></tr>
-  <tr><td><code>FillEllipse(X, Y, W, H [, Color])</code></td><td>Fills an ellipse.</td></tr>
+  <tr><td><code>DrawRect(X, Y, Width, Height [, Color, Thickness])</code></td><td>Draws a rectangle outline.</td></tr>
+  <tr><td><code>FillRect(X, Y, Width, Height [, Color])</code></td><td>Fills a rectangle.</td></tr>
+  <tr><td><code>DrawRoundRect(X, Y, Width, Height, Radius [, Color, Thickness])</code></td><td>Draws a rounded-rectangle outline.</td></tr>
+  <tr><td><code>FillRoundRect(X, Y, Width, Height, Radius [, Color])</code></td><td>Fills a rounded rectangle.</td></tr>
+  <tr><td><code>DrawEllipse(X, Y, Width, Height [, Color, Thickness])</code></td><td>Draws an ellipse outline.</td></tr>
+  <tr><td><code>FillEllipse(X, Y, Width, Height [, Color])</code></td><td>Fills an ellipse.</td></tr>
   <tr><td><code>DrawText(Text, X, Y [, Color, Options, FontName])</code></td><td>Draws text using the <a href="#Colors">font convention</a> above.</td></tr>
-  <tr><td><code>DrawImage(Picture [, X, Y, W, H])</code></td><td>Draws another image, optionally at the supplied position and size.</td></tr>
-  <tr><td><code>MeasureText(Text [, Options, FontName])</code></td><td>Returns a <code>{w, h}</code> object with the size the text would occupy when drawn.</td></tr>
+  <tr><td><code>DrawImage(Picture [, X, Y, Width, Height])</code></td><td>Draws another image, optionally at the supplied position and size.</td></tr>
+  <tr id="MeasureText"><td><code>MeasureText(Text [, Options, FontName])</code></td><td>Returns a <code>{Width, Height}</code> object with the size the text would occupy when drawn.</td></tr>
 </table>
 
 <h2 id="Transforms">Transforms</h2>
@@ -127,19 +127,19 @@
 <p>Overwrites the image from a tightly packed Buffer. Use 1 for grayscale or 4 for RGBA.</p>
 
 <h2 id="Search">Searching</h2>
-<p>Searches compare RGB values and ignore alpha. Each method takes an optional region as flat <code class="no-highlight">X, Y, W, H</code> parameters; each region parameter defaults independently, with an omitted origin meaning 0 and an omitted size running to the far edge, so <code class="no-highlight">Search(Needle, 100, 100)</code> scans from (100, 100) to the bottom-right corner. Regions are clamped to the image and returned coordinates remain absolute image pixels.</p>
+<p>Searches compare RGB values and ignore alpha. Each method takes an optional region as flat <code class="no-highlight">X, Y, Width, Height</code> parameters; each region parameter defaults independently, with an omitted origin meaning 0 and an omitted size running to the far edge, so <code class="no-highlight">Search(Needle, 100, 100)</code> scans from (100, 100) to the bottom-right corner. Regions are clamped to the image and returned coordinates remain absolute image pixels.</p>
 
 <h3 id="SearchImage">Search</h3>
 <pre class="Syntax">Match := Picture.<span class="func">Search</span>(Needle <span class="optional">, X, Y, Width, Height, Variation, Trans, Direction</span>)</pre>
-<p>Finds one sub-image. On success, returns <code>{x, y}</code> for its top-left; on failure, returns an empty string, so <code class="no-highlight">if Match := Picture.Search(Needle)</code> is the idiomatic use. <em>Variation</em> is the per-channel tolerance from 0 to 255. <em>Trans</em> specifies a needle color which matches any color. <em>Direction</em> uses the <a href="ImageSearch.htm">ImageSearch</a> scan directions 1 through 9 to choose which match wins.</p>
+<p>Finds one sub-image. On success, returns <code>{X, Y}</code> for its top-left; on failure, returns an empty string, so <code class="no-highlight">if Match := Picture.Search(Needle)</code> is the idiomatic use. <em>Variation</em> is the per-channel tolerance from 0 to 255. <em>Trans</em> specifies a needle color which matches any color. <em>Direction</em> uses the <a href="ImageSearch.htm">ImageSearch</a> scan directions 1 through 9 to choose which match wins.</p>
 
 <h3 id="SearchAll">SearchAll</h3>
 <pre class="Syntax">Matches := Picture.<span class="func">SearchAll</span>(Needle <span class="optional">, X, Y, Width, Height, Variation, Trans, Direction</span>)</pre>
-<p>Returns every match as an <a href="Array.htm">Array</a> of <code>{x, y}</code> objects, ordered by <em>Direction</em>. If none are found, the array is empty, so check <code class="no-highlight">Matches.Length</code>.</p>
+<p>Returns every match as an <a href="Array.htm">Array</a> of <code>{X, Y}</code> objects, ordered by <em>Direction</em>. If none are found, the array is empty, so check <code class="no-highlight">Matches.Length</code>.</p>
 
 <h3 id="SearchPixel">SearchPixel</h3>
 <pre class="Syntax">Match := Picture.<span class="func">SearchPixel</span>(Color <span class="optional">, X, Y, Width, Height, Variation, Direction</span>)</pre>
-<p>Finds the first matching pixel. On success, returns <code>{x, y, color}</code>, where <code>color</code> is the actual full ARGB pixel value; on failure, returns an empty string. <em>Direction</em> selects the scan's starting corner: 1 is the top-left (the default), 2 the top-right, 3 the bottom-left and 4 the bottom-right. The image-search directions 5 through 9 do not apply to a pixel scan and throw ValueError.</p>
+<p>Finds the first matching pixel. On success, returns <code>{X, Y, Color}</code>, where <code>Color</code> is the actual full ARGB pixel value; on failure, returns an empty string. <em>Direction</em> selects the scan's starting corner: 1 is the top-left (the default), 2 the top-right, 3 the bottom-left and 4 the bottom-right. The image-search directions 5 through 9 do not apply to a pixel scan and throw ValueError.</p>
 
 <h2 id="Properties">Properties and Lifetime</h2>
 <table class="info">
@@ -163,7 +163,7 @@ Image.FromRect(100, 100, 640, 480)
     .Save("capture.png")</pre>
 
 <h2 id="Related">Related</h2>
-<p><a href="Overlay.htm">Overlay</a>, <a href="ImageSearch.htm">ImageSearch</a>, <a href="PixelSearch.htm">PixelSearch</a>, <a href="ClipboardFunctions.htm">Clipboard Helper Functions</a>, <a href="../Platforms.htm">Platform Support</a></p>
+<p><a href="Overlay.htm">Overlay</a>, <a href="ImageSearch.htm">ImageSearch</a>, <a href="PixelSearch.htm">PixelSearch</a>, <a href="Clipboard.htm">Clipboard</a>, <a href="../Platforms.htm">Platform Support</a></p>
 
 </body>
 </html>
