@@ -869,6 +869,8 @@ MsgBox ElapsedTime " milliseconds have elapsed."</pre>
     <td>
       <p>The full path and name of the folder containing the current user's application-specific data. For example:</p>
       <pre class="NoIndent no-highlight">C:\Users\&lt;UserName&gt;\AppData\Roaming</pre>
+      <p>On Linux this is <code class="no-highlight">$XDG_CONFIG_HOME</code> when that variable holds an absolute path, and <code class="no-highlight">~/.config</code> otherwise. On macOS it is <code class="no-highlight">~/Library/Application Support</code>.</p>
+      <p>The path is returned whether or not the folder exists yet, so the variable is never empty. Create the folder before writing to it, as with any subfolder of it.</p>
     </td>
   </tr>
   <tr id="AppDataCommon">
@@ -876,6 +878,8 @@ MsgBox ElapsedTime " milliseconds have elapsed."</pre>
     <td>
       <p>The full path and name of the folder containing the all-users application-specific data. For example:</p>
       <pre class="NoIndent no-highlight">C:\ProgramData</pre>
+      <p>On Linux this is the first absolute entry of <code class="no-highlight">$XDG_CONFIG_DIRS</code>, and <code class="no-highlight">/etc/xdg</code> when that variable is unset or names no absolute path. On macOS it is <code class="no-highlight">/Library/Application Support</code>.</p>
+      <p>On every platform this location is readable by all users but writable only by an administrator, so an ordinary script should read from it rather than write to it.</p>
     </td>
   </tr>
   <tr id="Desktop">

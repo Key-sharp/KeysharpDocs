@@ -157,7 +157,7 @@ M.<span class="func">SetVCP</span>(Code, Value)</pre>
 
 <h3 id="MonitorMacOS">macOS</h3>
 <p>Identity, physical size, rotation and refresh rate come from CoreGraphics. There is no product-name API, so <code>Model</code> is always the empty string, and <code>Adapter</code> is unavailable. <code>Connection</code> distinguishes only built-in from external. The refresh rate is 0, and therefore reported as the empty string, on some built-in panels.</p>
-<p>Brightness uses the DisplayServices framework for the built-in panel and Apple's own displays, and DDC/CI for every other external monitor: on Apple Silicon over IOAVService, which is the only option there because IOFramebuffer does not exist under the DCP architecture, and on Intel over the public IOKit I2C API. The VCP methods reach external monitors over that same DDC/CI connection, and cannot reach the built-in panel at all, which has no DDC/CI connection.</p>
+<p>Brightness works on the built-in panel and Apple's own displays through DisplayServices, and on every other external monitor over DDC/CI. The VCP methods use that same DDC/CI connection, so they reach external monitors only; the built-in panel has none.</p>
 <p class="note"><strong>Note:</strong> The Intel DDC/CI path is implemented but untested. Some USB-C hubs and docks do not carry the DDC channel through to the monitor, in which case <code>Brightness</code> and the VCP methods throw an OSError for a display that would otherwise support them.</p>
 
 <h2 id="Remarks">Remarks</h2>

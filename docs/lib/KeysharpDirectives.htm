@@ -59,10 +59,11 @@
 
 <h2 id="ConsoleApp">#ConsoleApp</h2>
 <pre class="Syntax"><span class="func">#ConsoleApp</span></pre>
-<p>Builds a <a href="../Program.htm#cmd">compiled executable</a> as a console application, so a shell waits for it to finish and its standard input and output are the terminal's. This is the equivalent of AutoHotkey's <a href="../misc/Ahk2ExeDirectives.htm#ConsoleApp">Ahk2Exe ConsoleApp directive</a>.</p>
-<p>A graphical application remains the default, so a script started by double-clicking never flashes a console window.</p>
-<p>The directive is ignored when the script is interpreted or compiled to a <code class="no-highlight">.cks</code> file, since neither writes an executable.</p>
-<p class="note"><strong>Note:</strong> On Windows this is recorded in the executable's PE subsystem, which is fixed before the process starts, so it cannot be changed while the script runs. On Linux and macOS executables have no subsystem and a shell always waits, so the directive is accepted and has no effect.</p>
+<p>Builds a <a href="../Program.htm#cmd">compiled executable</a> as a console application, so a shell waits for it and its standard streams are the terminal's. This is the equivalent of AutoHotkey's <a href="../misc/Ahk2ExeDirectives.htm#ConsoleApp">Ahk2Exe ConsoleApp directive</a>. A graphical application remains the default, so a double-clicked script never flashes a console window.</p>
+<pre>#ConsoleApp
+FileAppend "done`n", "*"</pre>
+<p>It is ignored when the script is interpreted or compiled to a <code class="no-highlight">.cks</code> file, since neither writes an executable.</p>
+<p class="note"><strong>Note:</strong> On Windows this sets the executable's PE subsystem, which is fixed before the process starts and cannot be changed at run time. On Linux and macOS executables have no subsystem and a shell always waits, so the directive has no effect.</p>
 
 <h2 id="HookMutexName">#HookMutexName</h2>
 <pre class="Syntax"><span class="func">#HookMutexName</span> Name</pre>

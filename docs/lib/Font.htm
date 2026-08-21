@@ -13,9 +13,9 @@
 
 <h1>Font Object</h1>
 <pre class="NoIndent">class Font extends Object</pre>
-<p>A font as a value object. It carries the same settings <a href="Gui.htm#SetFont">Gui.SetFont</a> takes, but as named properties which can be read, changed and passed around, and it names the families the platform actually uses for its own interface.</p>
+<p>A font as a value object, carrying what <a href="Gui.htm#SetFont">Gui.SetFont</a> takes as named properties.</p>
 <p>This class is exported by the <a href="../Modules.htm#KS">KS module</a>.</p>
-<p>Every property is optional. An unset one reads as an empty string and contributes nothing to <a href="#Options">Options</a>, so a Font describes only what it was told and leaves the rest to whatever applies it.</p>
+<p>Every property is optional. An unset one reads as an empty string and contributes nothing to <a href="#Options">Options</a>, so a Font can change one aspect of a font without restating the others.</p>
 
 <h2 id="toc">Table of Contents</h2>
 <ul class="indent">
@@ -28,46 +28,45 @@
 
 <h2 id="Call">Call</h2>
 <pre class="Syntax">FontObj := <span class="func">Font</span>(<span class="optional">Options, FontName</span>)</pre>
-<p>Creates a Font from the two arguments <a href="Gui.htm#SetFont">Gui.SetFont</a> takes, in the same order and with the same meaning.</p>
+<p>Creates a Font from the two arguments <a href="Gui.htm#SetFont">Gui.SetFont</a> takes.</p>
 <dl>
   <dt>Options</dt>
   <dd><p>Type: <a href="../Concepts.htm#strings">String</a></p>
-  <p>Zero or more space-delimited option tokens: <code class="no-highlight">s</code><em>Size</em>, <code class="no-highlight">w</code><em>Weight</em>, <code class="no-highlight">q</code><em>Quality</em>, <code class="no-highlight">c</code><em>Color</em>, and the keywords <code class="no-highlight">bold</code>, <code class="no-highlight">italic</code>, <code class="no-highlight">underline</code>, <code class="no-highlight">strike</code> and <code class="no-highlight">norm</code>.</p></dd>
+  <p>Zero or more space-delimited tokens: <code class="no-highlight">s</code><em>Size</em>, <code class="no-highlight">w</code><em>Weight</em>, <code class="no-highlight">q</code><em>Quality</em>, <code class="no-highlight">c</code><em>Color</em>, and the keywords <code class="no-highlight">bold</code>, <code class="no-highlight">italic</code>, <code class="no-highlight">underline</code>, <code class="no-highlight">strike</code> and <code class="no-highlight">norm</code>.</p></dd>
   <dt>FontName</dt>
   <dd><p>Type: <a href="../Concepts.htm#strings">String</a></p>
-  <p>The font family name, such as <code class="no-highlight">"Segoe UI"</code>. The family is separate from <em>Options</em> because a family name may contain spaces.</p></dd>
+  <p>The font family name, such as <code class="no-highlight">"Segoe UI"</code>.</p></dd>
 </dl>
 
 <h2 id="Properties">Properties</h2>
 <table class="info">
   <tr><th>Property</th><th>Description</th></tr>
   <tr id="Name"><td><code>Name</code></td><td>The font family name.</td></tr>
-  <tr id="Size"><td><code>Size</code></td><td>Point size, in the same convention scripts use everywhere else.</td></tr>
-  <tr id="Color"><td><code>Color</code></td><td>Text color as a 6-digit <code class="no-highlight">RRGGBB</code> string, like <a href="Gui.htm#BackColor">Gui.BackColor</a>. Accepts a color name, a hex string or an integer when assigned.</td></tr>
+  <tr id="Size"><td><code>Size</code></td><td>Point size.</td></tr>
+  <tr id="Color"><td><code>Color</code></td><td>Text color as a 6-digit <code class="no-highlight">RRGGBB</code> string, like <a href="Gui.htm#BackColor">Gui.BackColor</a>. A color name, hex string or integer may be assigned.</td></tr>
   <tr id="Weight"><td><code>Weight</code></td><td>Weight as the <code class="no-highlight">w</code><em>N</em> option takes it: 400 is normal, 700 is bold.</td></tr>
-  <tr id="Bold"><td><code>Bold</code></td><td>A view over <a href="#Weight">Weight</a> as a truth value. Reading it is <code>Weight &gt;= 700</code>; assigning sets the weight to 700 or 400.</td></tr>
+  <tr id="Bold"><td><code>Bold</code></td><td><a href="#Weight">Weight</a> as a truth value. Reading it is <code>Weight &gt;= 700</code>; assigning sets 700 or 400.</td></tr>
   <tr id="Italic"><td><code>Italic</code></td><td>Whether the font is italic.</td></tr>
   <tr id="Underline"><td><code>Underline</code></td><td>Whether the font is underlined.</td></tr>
   <tr id="Strike"><td><code>Strike</code></td><td>Whether the font is struck through.</td></tr>
-  <tr id="Quality"><td><code>Quality</code></td><td>Rendering quality as the <code class="no-highlight">q</code><em>N</em> option takes it. It is carried so that an option string round-trips unchanged; nothing acts on it yet.</td></tr>
-  <tr id="Options"><td><code>Options</code></td><td>The set properties rendered back as an option string <a href="Gui.htm#SetFont">SetFont</a> accepts, such as <code class="no-highlight">"s10 w700 cFF0000 italic"</code>. The family is not part of it, so the round trip is <code>SetFont(FontObj.Options, FontObj.Name)</code>.</td></tr>
+  <tr id="Quality"><td><code>Quality</code></td><td>Rendering quality as the <code class="no-highlight">q</code><em>N</em> option takes it. Carried so an option string round-trips; nothing acts on it yet.</td></tr>
+  <tr id="Options"><td><code>Options</code></td><td>The set properties as an option string <a href="Gui.htm#SetFont">SetFont</a> accepts, such as <code class="no-highlight">"s10 w700 cFF0000 italic"</code>. The family is not included, so the round trip is <code>SetFont(FontObj.Options, FontObj.Name)</code>.</td></tr>
 </table>
 
 <h2 id="Families">Standard Families</h2>
-<p>These class properties each return a new Font describing a family the platform itself uses, so a script can match the desktop instead of hard-coding a name which may not be installed.</p>
+<p>Each of these class properties returns a new Font describing a family the platform itself uses, so a script can match the desktop instead of naming a font which may not be installed.</p>
 <table class="info">
   <tr><th>Property</th><th>Description</th></tr>
   <tr id="Ui"><td><code>Font.Ui</code></td><td>The platform's standard interface font, queried from the system so it follows the desktop theme.</td></tr>
   <tr id="Emoji"><td><code>Font.Emoji</code></td><td>The family the platform draws color emoji with, at the UI font's size.</td></tr>
-  <tr id="Monospace"><td><code>Font.Monospace</code></td><td>The platform's fixed-pitch family, at the UI font's size. The first of the usual candidates which is actually installed is used, so it stays useful on a stripped-down system.</td></tr>
-  <tr id="GuiDefault"><td><code>Font.GuiDefault</code></td><td>The font a new <a href="Gui.htm">Gui</a> starts with. This is AutoHotkey's default rather than the platform interface font, so that a ported script lays out identically.</td></tr>
+  <tr id="Monospace"><td><code>Font.Monospace</code></td><td>The first fixed-pitch family which is installed, at the UI font's size.</td></tr>
+  <tr id="GuiDefault"><td><code>Font.GuiDefault</code></td><td>The font a new <a href="Gui.htm">Gui</a> starts with: AutoHotkey's default rather than the platform interface font, so a ported script lays out identically.</td></tr>
   <tr id="FamilyList"><td><code>Font.Families</code></td><td>An <a href="Array.htm">Array</a> of the family names installed on the system, sorted alphabetically.</td></tr>
 </table>
-<p class="note"><strong>Note:</strong> On Linux and macOS the system cannot be asked for its interface font until the first window exists, so <code>Font.Ui</code> falls back to the usual family for the platform before then.</p>
+<p class="note"><strong>Note:</strong> On Linux and macOS the system cannot be asked for its interface font until the first window exists, so <code>Font.Ui</code> falls back to the platform's usual family before then.</p>
 
 <h2 id="Remarks">Remarks</h2>
-<p>A <a href="Gui.htm">Gui</a> and each of its controls expose a <a href="Gui.htm#Font">Font</a> property returning a detached snapshot: changing the returned object does not change the control. Assign it back, or pass it to <a href="Gui.htm#SetFont">SetFont</a>, to apply it.</p>
-<p>Because <a href="#Options">Options</a> renders only what was set, a Font is also the way to change one aspect of a font without restating the others.</p>
+<p>A <a href="Gui.htm#Font">Gui</a> and each of its <a href="GuiControl.htm#Font">controls</a> expose a Font property returning a detached snapshot: changing the returned object does not change the control. Assign it back to apply it.</p>
 
 <h2 id="Examples">Examples</h2>
 
@@ -83,32 +82,19 @@ MyGui.Show()</pre>
 </div>
 
 <div class="ex" id="ExAdjust">
-<p><a class="ex_number" href="#ExAdjust"></a> Enlarges a control's existing font without restating the rest of it.</p>
+<p><a class="ex_number" href="#ExAdjust"></a> Enlarges a control's font without restating the rest of it, and uses the platform's own monospace family.</p>
 <pre>#Import "Ks" { Font }
 
 MyGui := Gui()
 Ctl := MyGui.Add("Text", , "Some text")
 
 MyFont := Ctl.Font   <em>; a detached snapshot</em>
-MyFont.Size := MyFont.Size + 4
+MyFont.Size += 4
 MyFont.Bold := true
 Ctl.Font := MyFont   <em>; assign it back to apply it</em>
 
-MyGui.Show()</pre>
-</div>
-
-<div class="ex" id="ExUi">
-<p><a class="ex_number" href="#ExUi"></a> Uses the platform's own interface and monospace families.</p>
-<pre>#Import "Ks" { Font }
-
-MyGui := Gui()
-MyGui.SetFont(Font.Ui.Options, Font.Ui.Name)
-MyGui.Add("Text", , "Matches the desktop theme")
-
-Mono := Font.Monospace
-MyGui.SetFont(Mono.Options, Mono.Name)
+MyGui.SetFont(Font.Monospace.Options, Font.Monospace.Name)
 MyGui.Add("Edit", "w300 r5", "Fixed-pitch text")
-
 MyGui.Show()</pre>
 </div>
 
