@@ -33,6 +33,7 @@ tocData = [
       ["Image","lib/Image.htm"],
       ["Overlay","lib/Overlay.htm"],
       ["Highlight","lib/Highlight.htm"],
+      ["Taskbar","lib/Taskbar.htm"],
       ["Font","lib/Font.htm"],
       ["ClipCursor","lib/ClipCursor.htm"],
       ["WinEvent","lib/WinEvent.htm"],
@@ -43,6 +44,8 @@ tocData = [
     ["Runtime and Interop","",
     [
       ["RealThread","lib/RealThread.htm"],
+      ["Task","lib/Task.htm"],
+      ["Await","lib/Await.htm"],
       ["LockRun","lib/LockRun.htm"],
       ["Lock","lib/Lock.htm"],
       ["Collect","lib/Collect.htm"],

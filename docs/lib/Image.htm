@@ -153,6 +153,7 @@
 <pre class="Syntax">Picture.<span class="func">SetOrigin</span>(X, Y <span class="optional">, ScaleX, ScaleY</span>)</pre>
 <p>Re-anchors the screen mapping: sets the origin and, optionally, the pixel scale (<em>ScaleY</em> defaults to <em>ScaleX</em>). Use it to give a <a href="#FromBuffer">FromBuffer</a> or file image a screen position, or to restore the mapping after Rotate or Flip invalidated it.</p>
 <p>Using an Image after it has been disposed throws an exception.</p>
+<p>One image belongs to one thread, in the same way a <a href="Gui.htm">Gui</a> does. Nothing in an image is synchronized: its pending operations, its pixels and the drawing resources it reuses between calls are all plain state. Ordinary threads share an OS thread and so are safe by construction, but a <a href="RealThread.htm">RealThread</a> is a real one &mdash; two of those drawing on the same image can corrupt its internal state, which presents as a hang rather than as an error. Hand an image to another real thread only after finishing with it, or give each thread its own.</p>
 
 <h2 id="Examples">Examples</h2>
 <pre>#Import "Ks" { Image }

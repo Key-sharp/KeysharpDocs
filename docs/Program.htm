@@ -44,8 +44,9 @@
 <h3 id="Installer_uiAccess">UI Access on Windows</h3>
 <p>Keysharp executables do not use a Windows <code class="no-highlight">uiAccess</code> manifest. AutoHotkey instructions which rely on an installed UI-access executable therefore do not apply. To automate an elevated target, run the script at a sufficient integrity level and consider the security implications before doing so.</p>
 
-<h2 id="dash">Keyview and AutoHotkey Dash References</h2>
-<p>Keysharp does not include AutoHotkey Dash. Use Keyview or a configured text editor to create, inspect and run scripts. References to Dash which remain in inherited AutoHotkey compatibility material describe an AutoHotkey tool, not part of the Keysharp distribution.</p>
+<h2 id="dash">The Dash and Keyview</h2>
+<p>Keysharp ships its own Dash, a launcher for creating a script from a template, running an existing one, and opening the bundled tools and demos. Editing happens in Keyview or a configured text editor.</p>
+<p>This is not AutoHotkey Dash, and the two are not the same program. References to Dash in inherited AutoHotkey compatibility material describe the AutoHotkey tool.</p>
 
 <h2 id="execution-model">How a Script Executes</h2>
 <ol>
@@ -67,6 +68,7 @@
 <pre class="no-highlight">keysharp hello.ks</pre>
 <p>Quote paths containing spaces. Arguments after the script path are made available to the script through <a href="Variables.htm#Args"><code>A_Args</code></a>.</p>
 <pre class="no-highlight">Keysharp.exe "C:\My Scripts\hello.ks" first "second argument"</pre>
+<p>Started with no script at all, Keysharp looks for one named after its own executable — <code class="no-highlight">Keysharp.ahk</code>, then <code class="no-highlight">Keysharp.ks</code>, then <code class="no-highlight">Keysharp.cks</code> — first in the working directory and then beside the executable.</p>
 
 <h2 id="cmd">Command-Line Options</h2>
 <p>Options must appear before the script or assembly input. After the input is found, all remaining arguments are passed to its entry point. Options can begin with <code class="no-highlight">-</code> or <code class="no-highlight">--</code>; AutoHotkey-compatible run options can also begin with <code class="no-highlight">/</code> on Windows.</p>
@@ -83,10 +85,10 @@
   <tr><td><code class="no-highlight">--validate</code></td><td>Parse and compile the source without running it.</td></tr>
   <tr><td><code class="no-highlight">--validate-syntax</code></td><td>Parse the source without lowering, compiling or loading Roslyn. <code class="no-highlight">--syntax-only</code> and <code class="no-highlight">--parse-only</code> are aliases.</td></tr>
   <tr><td><code class="no-highlight">--transpile</code></td><td>Write generated C# beside the source and do not run the script.</td></tr>
-  <tr><td><code class="no-highlight">--compile</code>, <code class="no-highlight">--compile asm</code> or <code class="no-highlight">--compile dll</code></td><td>Write a raw compiled <code class="no-highlight">.cks</code> assembly. <code class="no-highlight">asm</code> and <code class="no-highlight">dll</code> are aliases. A script using <a href="lib/_Package.htm">#Package</a> also writes its private <code class="no-highlight">.keysharp/packages</code> hierarchy. Runtime <a href="lib/Clr.htm#LoadPackage">Clr.LoadPackage</a> calls use the provider installed with the launcher.</td></tr>
+  <tr><td><code class="no-highlight">--compile</code>, <code class="no-highlight">--compile asm</code> or <code class="no-highlight">--compile dll</code></td><td>Write a raw compiled <code class="no-highlight">.cks</code> assembly. <code class="no-highlight">asm</code> and <code class="no-highlight">dll</code> are aliases. Several scripts may follow, each compiled to a <code class="no-highlight">.cks</code> beside its own source; they share one warm parser and compiler, so this is considerably faster than one command per script. A script using <a href="lib/_Package.htm">#Package</a> also writes its private <code class="no-highlight">.keysharp/packages</code> hierarchy. Runtime <a href="lib/Clr.htm#LoadPackage">Clr.LoadPackage</a> calls use the provider installed with the launcher.</td></tr>
   <tr><td><code class="no-highlight">--compile exe</code></td><td>Build a standalone executable which still requires .NET 10. A script using <a href="lib/_Package.htm">#Package</a> carries its assets in a private <code class="no-highlight">.keysharp/packages</code> hierarchy beside the output. Statically visible <a href="lib/Clr.htm#LoadPackage">Clr.LoadPackage</a> use carries its runtime provider under <code class="no-highlight">components/packages/&lt;name&gt;</code>.</td></tr>
   <tr><td><code class="no-highlight">--compile exe-min</code></td><td>Build an executable with dependencies, including <a href="lib/_Package.htm">#Package</a> assets and statically required package providers, embedded in the generated DLL. Embedded providers are verified and extracted on first use. The result consists of the executable, DLL, Keysharp.Core DLL, deps file and runtime-config file.</td></tr>
-  <tr><td><code class="no-highlight">--dest &lt;path&gt;</code></td><td>Select the output file or directory for a compile operation. For assembly output, <code class="no-highlight">*</code> writes the bytes to standard output.</td></tr>
+  <tr><td><code class="no-highlight">--dest &lt;path&gt;</code></td><td>Select the output file or directory for a compile operation. For assembly output, <code class="no-highlight">*</code> writes the bytes to standard output. It names a single output, so it takes a single script.</td></tr>
   <tr><td><code class="no-highlight">--with-parser</code>, <code class="no-highlight">--with-compiler</code></td><td>Include the selected optional first-party deployment unit in a compiled artifact.</td></tr>
   <tr><td><code class="no-highlight">--with-component &lt;parser|compiler&gt;</code></td><td>Generic form of the two unit-inclusion options. It accepts the stable unit IDs, not the capability aliases.</td></tr>
   <tr><td><code class="no-highlight">--without-parser</code>, <code class="no-highlight">--without-compiler</code></td><td>Exclude the selected component, including one detected from a call in the script.</td></tr>

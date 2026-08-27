@@ -134,15 +134,8 @@ Clipboard.<span class="func">All</span> := Saved</pre>
 <p>The subscription also stops when the hook is collected, but garbage-collection timing is unpredictable; call <code class="no-highlight">Stop()</code> when the exact moment matters.</p>
 
 <h2 id="Platform">Platform Support</h2>
-<table class="info">
-  <tr><th style="width:14em">Member</th><th>Windows</th><th>Linux</th><th>macOS</th></tr>
-  <tr><td>Text, IsEmpty, Clear, Formats, Has, GetData, Wait, OnChange</td><td>Full</td><td>Full</td><td>Unverified</td></tr>
-  <tr><td>Files, Html, Rtf</td><td>Full</td><td>Full</td><td>Unverified</td></tr>
-  <tr><td><a href="#Image">Image</a></td><td>Full</td><td>Writing works; reading an image back has not been confirmed on a desktop session</td><td>Unverified</td></tr>
-  <tr><td><a href="#Set">Set</a>, <a href="#All">All</a></td><td>Full</td><td>Full on X11 and on compositors exposing a data-control protocol; a single representation under a shell-extension Wayland session</td><td>Unverified</td></tr>
-</table>
+<p>On Linux, writing an <a href="#Image">Image</a> to the clipboard works everywhere; reading one back can return an empty value in some desktop sessions.</p>
 <p>Under a Wayland session served through a desktop shell extension (such as Cinnamon or Muffin), the compositor's selection source can advertise only one type. <a href="#Set">Set</a> and <a href="#All">All</a> therefore restore the single most useful representation rather than every format, which is the same limitation <a href="ClipboardAll.htm">ClipboardAll</a> documents there.</p>
-<p>macOS rows are unverified rather than unsupported: the macOS clipboard backend has not been exercised on a macOS machine.</p>
 
 <h2 id="Examples">Examples</h2>
 

@@ -13,10 +13,11 @@
 <body>
 
 <h1>ComObject</h1>
-<p>Creates a COM object.</p>
-<p class="note"><strong>Notice:</strong> COM APIs are available only on Windows.</p>
+<p>Creates a COM object on Windows, connects to a D-Bus service on Linux, or addresses a scriptable application on macOS.</p>
 <pre class="Syntax">ComObj := <span class="func">ComObject</span>(CLSID <span class="optional">, IID</span>)</pre>
 <p><code>ComObject</code> itself is a <a href="Class.htm">class</a> derived from <code>ComValue</code>, but is used only to create or identify COM objects.</p>
+<p>On Linux the parameters name a D-Bus service and interface instead of a CLSID and IID; on macOS they name an application and a scripting suite. In both cases the returned object is used with the same object syntax. See <a href="../Platforms.htm#Linux_DBus">Interprocess automation with ComObject</a> for the Linux addressing model and <a href="../Platforms.htm#macOS_AppleEvents">its macOS counterpart</a> for the Apple Events one, and <a href="#Linux">Linux</a> or <a href="#macOS">macOS</a> below for the behavior of this function.</p>
+<p>The three object systems share no targets, so no call to this function is portable between platforms: a script which runs on more than one selects the target for the platform it is running on. Each example below states the platform it is written for.</p>
 
 <h2 id="Parameters">Parameters</h2>
 <dl>
@@ -25,12 +26,16 @@
   <dd>
     <p>Type: <a href="../Concepts.htm#strings">String</a></p>
     <p>CLSID or human-readable Prog ID of the COM object to create.</p>
+    <p>On Linux, the D-Bus target to connect to, written <code>[session:|system:]service.name[:/object/path]</code>. The service is activated if it is not already running.</p>
+    <p>On macOS, the application to address: a bundle identifier such as <code>"com.apple.Finder"</code>, an application name such as <code>"Finder"</code>, the path of an application bundle, or <code>"pid:1234"</code>. A process id addresses that process, rather than whichever instance the bundle identifier currently resolves to. The application is launched if it is not already running, without being brought to the front; a process id that is no longer running cannot be launched and throws.</p>
   </dd>
 
   <dt>IID</dt>
   <dd>
     <p>Type: <a href="../Concepts.htm#strings">String</a></p>
     <p>If omitted, it defaults to <code>"{00020400-0000-0000-C000-000000000046}"</code> (IID_IDispatch). Otherwise, specify the identifier of the interface to return. In most cases this is omitted.</p>
+    <p>On Linux, the name of the D-Bus interface to bind to, such as <code>"org.freedesktop.DBus"</code>. If omitted, members are resolved across all of the object's interfaces. Supply it when a member name is ambiguous.</p>
+    <p>On macOS, the name of the scripting suite to bind to, such as <code>"Standard Suite"</code>. If omitted, members are resolved across every suite the application publishes. Supply it when a member name is ambiguous.</p>
   </dd>
 
 </dl>
@@ -57,6 +62,24 @@
 <h2 id="Error_Handling">Error Handling</h2>
 <p>An exception is thrown on failure, such as if a parameter is invalid or the object does not support the interface specified by <em>IID</em>.</p>
 <p>If a ComValue whose VarType is <code>VT_DISPATCH</code> and whose pointer is null is later assigned a non-null pointer, its type remains unchanged and its <code>Ptr</code> member remains available.</p>
+<p>On Linux, an error is thrown if the object has no usable interfaces at the requested path, if the object does not implement the requested interface, or if a member name is defined on more than one interface. An error reported by the service is thrown with the D-Bus error name it sent. A call which receives no reply within 25 seconds throws a timeout error.</p>
+<p>On macOS, an error is thrown if no such application can be found, if it publishes no scripting terminology, if it has no suite of the requested name, or if a member name is defined by more than one suite. An error reported by the application is thrown with the message and number it sent. Refused Automation permission throws an <a href="Error.htm#OSError">OSError</a> naming the setting to grant, and a command which receives no reply within 25 seconds throws a timeout error.</p>
+
+<h2 id="Remarks">Remarks</h2>
+
+<h3 id="Linux">Linux</h3>
+<p>Methods and properties are resolved through D-Bus introspection and called with ordinary object syntax. A property is read and written through the standard <code>org.freedesktop.DBus.Properties</code> interface, so a read-only property throws when assigned.</p>
+<p>A D-Bus method may return several values. A single return value is returned directly; two or more are returned as an <a href="Array.htm">Array</a> in declared order. A method which returns nothing yields an empty string.</p>
+<p>Indexing the object with an object path returns a child object, so <code>nm["Devices/0"]</code> and <code>nm["/org/freedesktop/NetworkManager/Devices/0"]</code> are equivalent. Child objects cannot be assigned.</p>
+<p>Waiting for a reply does not block timers, hotkeys or the GUI.</p>
+
+<h3 id="macOS">macOS</h3>
+<p>Commands, properties and elements are resolved through the application's scripting definition and used with ordinary object syntax. A property whose definition marks it read-only throws when assigned.</p>
+<p>An object is a query which the application resolves when it is used, not a handle it hands out. A plural term yields a collection without sending anything, and indexing one narrows it: <code>app.Windows[1]</code> by position, counting from one and reading a negative index from the end, or <code>app.Windows["Untitled"]</code> by name. <code>ById(value)</code> selects by unique identifier and <code>Count</code> asks the application how many there are. Iterating a collection with a <a href="For.htm">for-loop</a> asks once and walks the answer.</p>
+<p>A command takes its direct parameter as the first unnamed argument; every other value is passed by name, because that is how an Apple event addresses its parameters. When the command is sent to an object rather than to the application, that object is already the direct parameter, so passing another unnamed argument is an error.</p>
+<p>Values convert both ways: text, numbers and booleans directly, a record to a <a href="Map.htm">Map</a>, a list to an <a href="Array.htm">Array</a>, a file reference to its POSIX path, a date to <code>YYYYMMDDHH24MISS</code>, and an object specifier back to another <code>ComObject</code>. An enumerator is reported by name, and a name is accepted wherever the definition declares an enumerated type. Use <a href="ComValue.htm">ComValue</a> where a value must carry a type the definition does not pin down.</p>
+<p>Controlling another application requires Automation permission, which is requested before the first command is sent and granted per application in <em>System Settings &rarr; Privacy &amp; Security &rarr; Automation</em>.</p>
+<p>Waiting for a reply does not block timers, hotkeys or the GUI.</p>
 
 <h2 id="Related">Related</h2>
 <p><a href="ComValue.htm">ComValue</a>, <a href="ComObjGet.htm">ComObjGet</a>, <a href="ComObjActive.htm">ComObjActive</a>, <a href="ComObjConnect.htm">ComObjConnect</a>, <a href="ComObjArray.htm">ComObjArray</a>, <a href="ComObjQuery.htm">ComObjQuery</a>, <a href="ComCall.htm">ComCall</a>, <a href="https://learn.microsoft.com/previous-versions/dcw63t7z(v=vs.85)">CreateObject (Microsoft Docs)</a></p>
@@ -64,14 +87,14 @@
 <h2 id="Examples">Examples</h2>
 <p>For a long list of v1.1 examples, see <a href="https://www.autohotkey.com/board/topic/56987-">this archived forum thread</a>.</p>
 <div class="ex" id="ExIE">
-<p><a class="ex_number" href="#ExIE"></a> Launches an instance of Internet Explorer, makes it visible and navigates to a website.</p>
+<p><a class="ex_number" href="#ExIE"></a> <strong>Windows only.</strong> Launches an instance of Internet Explorer, makes it visible and navigates to a website.</p>
 <pre>ie := ComObject("InternetExplorer.Application")
 ie.Visible := true  <em>; This is known to work incorrectly on IE7.</em>
 ie.Navigate("https://www.autohotkey.com/")
 </pre>
 </div>
 <div class="ex" id="ExWallpaper">
-<p><a class="ex_number" href="#ExWallpaper"></a> Retrieves the path of the desktop's current wallpaper.</p>
+<p><a class="ex_number" href="#ExWallpaper"></a> <strong>Windows only.</strong> Retrieves the path of the desktop's current wallpaper.</p>
 <pre>
 AD_GETWP_BMP := 0
 AD_GETWP_LAST_APPLIED := 0x00000002
@@ -85,6 +108,112 @@ wszWallpaper := Buffer(cchWallpaper * 2)
 ComCall(GetWallpaper, AD, "ptr", wszWallpaper, "uint", cchWallpaper, "uint", AD_GETWP_LAST_APPLIED)
 Wallpaper := StrGet(wszWallpaper, "UTF-16")
 MsgBox "Wallpaper: " Wallpaper
+</pre>
+</div>
+<div class="ex" id="ExDBus">
+<p><a class="ex_number" href="#ExDBus"></a> <strong>Linux only.</strong> Asks the message bus itself which services are currently on the session bus. The bus daemon is always present, so this runs on any Linux system with a session bus.</p>
+<pre>bus := ComObject("org.freedesktop.DBus")
+for name in bus.ListNames()
+    if !InStr(name, ":")  <em>; skip unique connection names</em>
+        MsgBox name
+</pre>
+</div>
+<div class="ex" id="ExDBusDiscover">
+<p><a class="ex_number" href="#ExDBusDiscover"></a> <strong>Linux only.</strong> Discovers what an object offers. <code>Introspect</code> is a method of the standard <code>org.freedesktop.DBus.Introspectable</code> interface, which nearly every D-Bus object implements; it returns an XML description of the object's interfaces, methods, properties, signals and child objects. This is the D-Bus counterpart of browsing a COM type library.</p>
+<pre>bus := ComObject("org.freedesktop.DBus")
+xml := bus.Introspect()
+
+<em>; The interfaces this object implements.</em>
+out := "Interfaces:`n"
+pos := 1
+while pos := RegExMatch(xml, '&lt;interface name="([^"]+)"', &amp;m, pos)
+{
+    out .= "  " m[1] "`n"
+    pos += m.Len
+}
+
+<em>; The members of one interface. Each &lt;method&gt;, &lt;property&gt; and &lt;signal&gt;
+; belongs to the &lt;interface&gt; it is nested in, so narrow to that element first.</em>
+seg := SubStr(xml, InStr(xml, '&lt;interface name="org.freedesktop.DBus"'))
+seg := SubStr(seg, 1, InStr(seg, "&lt;/interface&gt;"))
+
+out .= "`nMethods of org.freedesktop.DBus:`n"
+pos := 1
+while pos := RegExMatch(seg, '&lt;method name="([^"]+)"', &amp;m, pos)
+{
+    out .= "  " m[1] "`n"
+    pos += m.Len
+}
+
+out .= "`nProperties:`n"
+pos := 1
+while pos := RegExMatch(seg, '&lt;property name="([^"]+)" type="([^"]+)" access="([^"]+)"', &amp;m, pos)
+{
+    out .= "  " m[1] " (" m[2] ", " m[3] ")`n"
+    pos += m.Len
+}
+
+MsgBox out
+</pre>
+</div>
+<div class="ex" id="ExDBusProps">
+<p><a class="ex_number" href="#ExDBusProps"></a> <strong>Linux only.</strong> Reads property values. A single property is read as an ordinary property of the object. <code>GetAll</code>, on the standard <code>org.freedesktop.DBus.Properties</code> interface, returns every property of one interface at once as a <a href="Map.htm">Map</a>.</p>
+<pre>bus := ComObject("org.freedesktop.DBus")
+
+<em>; One property, by name.</em>
+MsgBox "Interfaces: " bus.Interfaces.Length
+
+<em>; Every property of one interface. ComObjQuery selects the interface which
+; declares GetAll, so its own members do not collide with the object's.</em>
+props := ComObjQuery(bus, "org.freedesktop.DBus.Properties")
+for name, value in props.GetAll("org.freedesktop.DBus")
+    MsgBox name " = " (value is Array ? "[" value.Length " items]" : value)
+
+<em>; Where this object lives.</em>
+MsgBox ComObjType(bus, "Name") " at " ComObjType(bus, "Path")
+</pre>
+</div>
+<div class="ex" id="ExDBusChildren">
+<p><a class="ex_number" href="#ExDBusChildren"></a> <strong>Linux only.</strong> Walks to child objects. A service exposes a tree of objects, and each <code>&lt;node&gt;</code> in the introspection XML names a child of the object being introspected. Start at the service's root object, <code>/</code>: a leaf such as the bus daemon's own <code>/org/freedesktop/DBus</code> has no children. A node name can itself contain slashes where a service publishes nothing at the levels in between.</p>
+<pre>root := ComObject("org.freedesktop.DBus:/")   <em>; the service's root object</em>
+xml := root.Introspect()
+
+pos := 1
+while pos := RegExMatch(xml, '&lt;node name="([^"]+)"', &amp;m, pos)
+{
+    child := root[m[1]]           <em>; a child name is relative to its parent</em>
+    MsgBox m[1] " -> " ComObjType(child, "Path")
+    pos += m.Len
+}
+</pre>
+</div>
+<div class="ex" id="ExDBusTyped">
+<p><a class="ex_number" href="#ExDBusTyped"></a> <strong>Linux only.</strong> Passes a dictionary whose values are typed explicitly, which is required wherever introspection cannot supply the type. This example names a hypothetical service; adapt it to one present on your system.</p>
+<pre>obj := ComObject("system:com.example.Service")
+options := Map(
+    "label", "report",                 <em>; a plain string needs no annotation</em>
+    "count", ComValue("u", 4),         <em>; unsigned 32-bit</em>
+    "path", ComValue("o", "/com/example/Target"))  <em>; object path, not a string</em>
+obj.Submit(options)
+</pre>
+</div>
+<div class="ex" id="ExAppleEvents">
+<p><a class="ex_number" href="#ExAppleEvents"></a> <strong>macOS only.</strong> Reads properties and walks a collection. System Events is installed on every Mac, so this needs no other application; the first run prompts for permission to control it.</p>
+<pre>events := ComObject("com.apple.systemevents")
+for p in events.ApplicationProcesses
+    MsgBox p.Name
+</pre>
+</div>
+<div class="ex" id="ExAppleEventsNamed">
+<p><a class="ex_number" href="#ExAppleEventsNamed"></a> <strong>macOS only.</strong> Narrows a collection and sends a command. The first unnamed argument of a command is its direct parameter, so a command sent to an object passes everything else by name.</p>
+<pre>finder := ComObject("com.apple.Finder")
+MsgBox finder.Windows.Count
+if finder.Windows.Count
+{
+    w := finder.Windows[1]
+    MsgBox w.Name          <em>; a property of that window</em>
+    w.Close(Saving: "no")  <em>; the window is the command's direct parameter</em>
+}
 </pre>
 </div>
 

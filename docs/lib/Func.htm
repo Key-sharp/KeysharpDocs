@@ -70,6 +70,7 @@ FuncObj.<span class="func">Call</span>(Param1, Param2, ...)</pre>
 </dl>
 <h4 id="Call_Remarks">Remarks</h4>
 <p>The "Call" method is implied when calling a value, so need not be explicitly specified.</p>
+<p>Calling a function object invokes the function directly while it has no own properties. Once it has any own property, even one unrelated to calling, invocation resolves <code>Call</code> through the prototype chain. An own <code>Call</code> property or one defined on <code>Func.Prototype</code> can then override the function, while the explicit <code>FuncObj.Call(...)</code> form always resolves through the chain.</p>
 </div>
 
 <div class="methodShort" id="Bind"><h3>Bind</h3>
@@ -123,7 +124,8 @@ FuncObj.<span class="func">Call</span>(Param1, Param2, ...)</pre>
 <h2 id="Properties">Properties</h2>
 
 <div class="methodShort" id="Name"><h3>Name</h3>
-<p>Gets the function's name.</p>
+<p>Gets the function's exact AHK-visible name. A top-level function reports a name such as <code>MyFunction</code>; static and instance methods report names such as <code>MyClass.MyMethod</code> and <code>MyClass.Prototype.MyMethod</code>; user-defined property accessors append <code>.get</code>/<code>.set</code>, or <code>.Get</code>/<code>.Set</code> when the accessor keyword begins with an uppercase letter.</p>
+<p>Anonymous functions and <a href="../misc/Functor.htm#BoundFunc">BoundFunc objects</a> have an empty name.</p>
 <pre class="Syntax">FunctionName := FuncObj.<span class="func">Name</span></pre>
 </div>
 

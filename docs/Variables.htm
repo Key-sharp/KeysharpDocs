@@ -488,7 +488,7 @@ sumfn := Sum</pre>
   </tr>
   <tr id="ThisFunc">
     <td>A_ThisFunc</td>
-    <td>The name of the <a href="Functions.htm">user-defined function</a> that is currently executing (blank if none); for example: MyFunction. See also: <a href="lib/Func.htm#Name">Name property (Func)</a></td>
+    <td>The exact AHK-visible name of the <a href="Functions.htm">user-defined function</a> that is currently executing, or blank if none. A top-level function reports a name such as <code>MyFunction</code>; static and instance methods report names such as <code>MyClass.MyMethod</code> and <code>MyClass.Prototype.MyMethod</code>; property accessors append <code>.get</code>/<code>.set</code>, or <code>.Get</code>/<code>.Set</code> when the accessor keyword begins with an uppercase letter. See also: <a href="lib/Func.htm#Name">Name property (Func)</a>.</td>
   </tr>
   <tr id="AhkVersion">
     <td>A_AhkVersion</td>
@@ -1186,7 +1186,7 @@ VirtualHeight := <a href="lib/SysGet.htm">SysGet</a>(79)
   </tr>
   <tr id="A_GuiTheme">
     <td><span id="KS_A_GuiTheme">A_GuiTheme</span></td>
-    <td>Gets or sets the application-wide WinForms theme: <code class="no-highlight">Classic</code>, <code class="no-highlight">System</code> or <code class="no-highlight">Dark</code>. Windows only.</td>
+    <td>Gets or sets the application-wide GUI theme: <code class="no-highlight">Classic</code>, <code class="no-highlight">System</code> or <code class="no-highlight">Dark</code>. <code class="no-highlight">System</code> selects the operating-system theme; Eto follows later system-theme changes, while WinForms resolves the setting when it is applied. On Linux and macOS, <code class="no-highlight">Classic</code> selects Eto's light theme.</td>
   </tr>
   <tr id="A_HasExited">
     <td><span id="KS_A_HasExited">A_HasExited</span></td>

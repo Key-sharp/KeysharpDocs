@@ -20,11 +20,11 @@
 <em>C# members</em>
 <span class="func">#EndCSharp</span>
 
-<span class="func">#CSharp</span> "File.cs"</pre>
+<span class="func">#CSharp</span> "File.cs"
+
+<span class="func">#CSharp</span> &lt;Library&gt;</pre>
 
 <p class="note"><strong>Note:</strong> This is for the handful of paths where AutoHotkey-level semantics cost too much &mdash; tight numeric loops, buffer and pixel work, repeated <a href="DllCall.htm">DllCall</a>. It is not a general substitute for script code, and it does not make <em>calls</em> cheaper. See <a href="#Performance">Performance</a>.</p>
-
-<p class="note"><strong>Platforms:</strong> Verified on Windows and Linux. The implementation is platform-neutral; it has not yet been verified on macOS.</p>
 
 <h2 id="Parameters">Parameters</h2>
 <dl>
@@ -37,6 +37,13 @@
     <p>The working directory is never consulted, deliberately: when a script is built by the compile daemon the working directory is the Keysharp <em>install</em> directory, so a path resolved against it would read from somewhere the script author cannot predict.</p>
     <p>Unlike a module name, the path is taken as written &mdash; no extension is appended and no <code class="no-highlight">__Init</code> lookup happens, because this names a file rather than a module.</p>
     <p>Prefer this once the C# outgrows a few lines: a real <code class="no-highlight">.cs</code> file gets syntax highlighting and can use editor completion when the editor is configured for a class-member fragment. The file contains members for the directive's scope, not a standalone namespace or containing class. This parameter is not an expression and does not accept <a href="../Variables.htm">variable references</a>.</p>
+  </dd>
+
+  <dt id="Library">Library</dt>
+  <dd>
+    <p>Type: Name</p>
+    <p>Reads <code class="no-highlight">Library.cs</code> using the same Lib-folder search order and underscore fallback as <a href="_Include.htm">#Include &lt;Library&gt;</a>. The local <code class="no-highlight">Lib</code> folder is searched first, followed by the user and standard library folders.</p>
+    <p>For example, <code class="no-highlight">#CSharp &lt;Math_Add&gt;</code> searches for <code class="no-highlight">Math_Add.cs</code> in every Lib folder, then for <code class="no-highlight">Math.cs</code>. The angle-bracket form is a library name rather than a path: it does not expand variables.</p>
   </dd>
 </dl>
 

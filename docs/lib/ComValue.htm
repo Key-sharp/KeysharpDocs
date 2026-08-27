@@ -14,8 +14,8 @@
 
 <h1>ComValue</h1>
 
-<p>Wraps a value, SafeArray or COM object for use by the script or for passing to a COM method.</p>
-<p class="note"><strong>Notice:</strong> COM APIs are available only on Windows.</p>
+<p>Wraps a value, SafeArray or COM object for use by the script or for passing to a COM method. On Linux, states the D-Bus wire type a value is sent as.</p>
+<p class="note"><strong>Notice:</strong> On macOS the first parameter is a four-character Apple Events descriptor type, such as <code>"utxt"</code> or <code>"enum"</code>, rather than a VT_ constant.</p>
 <pre class="Syntax">ComObj := <span class="func">ComValue</span>(VarType, Value <span class="optional">, Flags</span>)</pre>
 <p><code>ComValue</code> itself is a <a href="Class.htm">class</a> derived from <code>Any</code>, but is used only to create or identify COM wrapper objects.</p>
 
@@ -26,6 +26,7 @@
   <dd>
     <p>Type: <a href="../Concepts.htm#numbers">Integer</a></p>
     <p>An integer indicating the type of value. See <a href="ComObjType.htm#vt">ComObjType</a> for a list of types.</p>
+    <p>On Linux, a <a href="https://dbus.freedesktop.org/doc/dbus-specification.html#type-system">D-Bus type signature</a> naming a single complete type, such as <code>"u"</code> for unsigned 32-bit, <code>"o"</code> for an object path, or <code>"a{sv}"</code> for a dictionary. A VT_ integer is also accepted where it maps unambiguously, so <code>VT_UI4</code> and <code>"u"</code> are equivalent; an integer with no D-Bus counterpart throws. A signature which is malformed, or which describes more than one type, throws.</p>
   </dd>
 
   <dt>Value</dt>
@@ -90,12 +91,17 @@ MsgBox some_var</pre>
 <p>The <em>Value</em> of a wrapper object can be retrieved using <a href="ComObjValue.htm">ComObjValue</a>.</p>
 <p><b>Known limitation:</b> Each time a COM object is wrapped, a new wrapper object is created. Comparisons and assignments such as <code>obj1 == obj2</code> and <code>arr[obj1] := value</code> treat the two wrapper objects as unique, even when they contain the same variant type and value.</p>
 
+<h3 id="Linux">Linux</h3>
+<p>Most calls need no wrapper. Argument types are taken from the service's introspection data, and a value is converted to the declared type, so a plain number or string is usually enough.</p>
+<p>A wrapper is needed where the declared type is a variant, because the type is then not stated anywhere the runtime can read. This is most common in an <code class="no-highlight">a{sv}</code> dictionary, where each value carries its own type.</p>
+<p>An unwrapped value placed in a variant is sent as its closest match: a string as <code class="no-highlight">s</code>, a true/false value as <code class="no-highlight">b</code>, a floating-point number as <code class="no-highlight">d</code>, and an integer as <code class="no-highlight">i</code> when it fits in 32 bits and <code class="no-highlight">x</code> otherwise. Wrap the value when the service expects a different type, such as an unsigned integer or an object path.</p>
+
 <h2 id="Related">Related</h2>
 <p><a href="ComObjFromPtr.htm">ComObjFromPtr</a>, <a href="ComObject.htm">ComObject</a>, <a href="ComObjGet.htm">ComObjGet</a>, <a href="ComObjConnect.htm">ComObjConnect</a>, <a href="ComObjFlags.htm">ComObjFlags</a>, <a href="ObjAddRef.htm">ObjAddRef/ObjRelease</a>, <a href="ComObjQuery.htm">ComObjQuery</a>, <a href="https://learn.microsoft.com/windows/win32/api/oleauto/nf-oleauto-getactiveobject">GetActiveObject (Microsoft Docs)</a></p>
 
 <h2 id="Examples">Examples</h2>
 <div class="ex" id="ExByRef">
-<p><a class="ex_number" href="#ExByRef"></a> Passes a VARIANT ByRef to a COM function.</p>
+<p><a class="ex_number" href="#ExByRef"></a> <strong>Windows only.</strong> Passes a VARIANT ByRef to a COM function.</p>
 <pre>
 #Requires AutoHotkey v2 32-bit <em>; 32-bit for ScriptControl.</em>
 code := "

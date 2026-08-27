@@ -58,7 +58,7 @@ Worker := RealThread.<span class="func">Call</span>(Callback <span class="option
 <h2 id="Send">Send</h2>
 <pre class="Syntax">Result := Worker.<span class="func">Send</span>(Callback <span class="optional">, Params*</span>)</pre>
 <p>Runs <em>Callback</em> on the thread, waits for it, and returns its result. The calling thread keeps processing its own events while it waits.</p>
-<p>The target thread runs the callback the next time it processes events, so a thread busy in a long computation that never yields will not answer until it does.</p>
+<p>The target thread runs the callback the next time it processes events, so a thread busy in a long computation that never yields will not answer until it does. The callback runs as a <a href="../misc/Threads.htm">thread</a> of its own on the target, so a target which is <a href="Critical.htm">Critical</a> or has reached <a href="_MaxThreads.htm">#MaxThreads</a> refuses it and this raises an error, rather than waiting for the target to become interruptible.</p>
 
 <h2 id="Wait">Wait</h2>
 <pre class="Syntax">Finished := Worker.<span class="func">Wait</span>(<span class="optional">Timeout</span>)</pre>

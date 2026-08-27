@@ -16,57 +16,77 @@
 <p>Provides an always-on-top image surface, which is click-through by default.</p>
 <p>This class is exported by the <a href="../Modules.htm#KS">KS module</a>.</p>
 
-<pre class="Syntax">Surface := <span class="func">Overlay</span>(X, Y <span class="optional">, Width, Height</span>)</pre>
-<p>Screen-facing geometry uses the platform's native coordinate space. The platform selects the backing-pixel canvas size.</p>
+<pre class="Syntax">Surface := <span class="func">Overlay</span>()
+Surface := <span class="func">Overlay</span>(X, Y, Width, Height)
+Surface := Overlay.<span class="func">FromImage</span>(Source <span class="optional">, X, Y, Width, Height</span>)</pre>
+<p>The empty constructor creates an unconfigured overlay for which <code>SetImage</code> will provide a size. The rectangle constructor requires all four arguments and positive dimensions. <code>FromImage</code> copies its source into a hidden overlay and uses its pixel dimensions for omitted width or height. <em>Source</em> can be an <a href="Image.htm">Image</a>, file path or bitmap handle.</p>
+<p>Screen-facing geometry uses the platform's native coordinate space. The platform selects the backing-pixel canvas size. Nothing is shown until <code>Show</code>.</p>
 
 <h2 id="Drawing">Drawing</h2>
-<p>Overlay supports the <a href="Image.htm#Drawing">Image drawing primitives</a>: <code>Clear</code>, <code>DrawLine</code>, <code>DrawRect</code>, <code>FillRect</code>, <code>DrawRoundRect</code>, <code>FillRoundRect</code>, <code>DrawEllipse</code>, <code>FillEllipse</code>, <code>DrawText</code>, <code>MeasureText</code> and <code>DrawImage</code>.</p>
-<p><code>BeginDraw()</code> and <code>EndDraw()</code> batch ordinary draw operations. <code>Redraw(Callback [, X, Y, Width, Height])</code> creates a target-sized frame off-screen, invokes <em>Callback</em> to draw it and commits it atomically.</p>
+<p>The overlay owns window state. Its pixels are the borrowed <a href="Image.htm">Image</a> exposed by <code>Canvas</code>. Draw through that image, then call <code>Present()</code> when the frame is complete:</p>
+<pre>Surface.Canvas.Clear()
+Surface.Canvas.DrawText("Working…", 24, 36, "White", "s18 bold", "Sans")
+Surface.Present()</pre>
+<p>Drawing changes only the canvas. <code>Present</code> publishes it if the overlay is visible, without showing a hidden overlay. Publishing an unchanged canvas is cheap. <code>Show</code>, <code>SetImage</code>, <code>Redraw</code>, resizing and changing <code>Opacity</code> publish their complete state directly.</p>
+<p>The canvas belongs to the overlay, so it cannot be disposed, re-initialised, transformed or have all of its pixel data replaced. These operations raise an error. <code>Canvas.Copy()</code> returns an independent image which can be transformed freely. <code>Redraw</code> and a size-changing <code>SetImage</code> replace the canvas; re-read <code>Canvas</code> after either operation.</p>
+<p>An overlay follows the same thread-ownership rule as an <a href="Image.htm#Properties">Image</a>: two <a href="RealThread.htm">RealThreads</a> drawing on one surface can hang.</p>
 
 <h2 id="Content">Content</h2>
 <dl>
-  <dt><code>Update(Source [, X, Y, Width, Height])</code></dt>
-  <dd><p>Atomically replaces the displayed content with an Image or compatible source, optionally changing the geometry in the same operation. Omit the geometry to just swap the image in place.</p></dd>
+  <dt><code>Present()</code></dt>
+  <dd><p>Publishes the current canvas without changing visibility. A hidden overlay remains hidden.</p></dd>
+  <dt><code>SetImage(Source [, X, Y, Width, Height])</code></dt>
+  <dd><p>Copies an Image, file or bitmap handle into the canvas and optionally changes geometry in the same presentation. Each omitted geometry argument preserves its current setting. An automatic width or height (0) follows the corresponding source pixel dimension. The source remains owned by the caller. Passing the overlay's own <code>Canvas</code> is an error; use <code>Present</code> to publish it.</p>
+  <p>A same-sized source reuses the canvas, so a failed presentation leaves the copied pixels ready for the next presentation. A size-changing failure does not replace the canvas or commit the requested geometry.</p>
+  <p>This method does not change visibility.</p></dd>
+  <dt><code>Redraw(Callback [, X, Y, Width, Height])</code></dt>
+  <dd><p>Builds a private target-sized canvas, passes that canvas to <em>Callback</em>, then presents its pixels and geometry together. The callback's return value is ignored and it may draw only; changing overlay state inside it raises an error. A callback error leaves the current frame unchanged. A failed presentation does not replace the canvas or commit the requested geometry.</p></dd>
 </dl>
 
 <h2 id="OnEvent">OnEvent</h2>
 <pre class="Syntax">Surface.<span class="func">OnEvent</span>(EventName, Callback <span class="optional">, AddRemove := 1</span>)</pre>
-<p>Registers a mouse-event callback, in the style of <a href="GuiOnEvent.htm">Gui.OnEvent</a>. <em>EventName</em> is one of <code class="no-highlight">Click</code> (left button), <code class="no-highlight">DoubleClick</code>, <code class="no-highlight">ContextMenu</code> (right button) or <code class="no-highlight">MouseMove</code>. The callback receives <code class="no-highlight">(Surface, X, Y)</code> with coordinates local to the overlay, in the same units the drawing methods use, so drawn content can be hit-tested without conversion. <em>AddRemove</em> 1 calls the function after previously registered functions, -1 before them, and 0 unregisters it.</p>
-<p>The overlay must not be click-through to receive mouse input: set <code>ClickThrough := false</code>, or the events never fire and input passes through to the windows beneath. Events also require a backing with a client-side window (<code>Hwnd</code> is non-zero); a compositor-drawn surface cannot receive input. Registered handlers keep the script running; <code>Destroy</code> removes them all.</p>
+<p>Registers a mouse-event callback in the style of <a href="GuiOnEvent.htm">Gui.OnEvent</a>. <em>EventName</em> is <code class="no-highlight">Click</code>, <code class="no-highlight">DoubleClick</code>, <code class="no-highlight">ContextMenu</code> or <code class="no-highlight">MouseMove</code>. The callback receives <code class="no-highlight">(Surface, X, Y)</code> in overlay-local native units. <em>AddRemove</em> 1 appends, -1 prepends and 0 unregisters the callback.</p>
+<p>Set <code>ClickThrough := false</code> to receive pointer events. Registered handlers keep the script running; <code>Destroy</code> removes them.</p>
 
 <h2 id="Presentation">Presentation</h2>
 <dl>
   <dt><code>Show([X, Y, Width, Height])</code></dt><dd><p>Shows the surface, optionally changing its geometry.</p></dd>
   <dt><code>Move([X, Y, Width, Height])</code></dt><dd><p>Moves or resizes the surface.</p></dd>
   <dt><code>Hide()</code></dt><dd><p>Hides the surface.</p></dd>
-  <dt><code>Destroy()</code></dt><dd><p>Destroys the native surface.</p></dd>
+  <dt><code>Destroy()</code></dt><dd><p>Destroys the native surface and invalidates its canvas.</p></dd>
 </dl>
 
 <h2 id="Properties">Properties</h2>
 <table class="info">
   <tr><th>Property</th><th>Description</th></tr>
+  <tr><td><code>Canvas</code></td><td>The borrowed drawing Image. Reading it creates the canvas, so the overlay must already have a size.</td></tr>
   <tr><td><code>X</code>, <code>Y</code></td><td>Get or set the native screen position.</td></tr>
-  <tr><td><code>Width</code>, <code>Height</code></td><td>Get or set the display rectangle without discarding the canvas.</td></tr>
-  <tr><td><code>Opacity</code></td><td>Gets or sets surface opacity.</td></tr>
+  <tr><td><code>Width</code>, <code>Height</code></td><td>Get or set the display rectangle without discarding the canvas. Set either to 0 to use the canvas dimension.</td></tr>
+  <tr><td><code>Opacity</code></td><td>Gets or sets opacity from 0 to 255.</td></tr>
   <tr><td><code>ClickThrough</code></td><td>Gets or sets whether pointer input passes through the surface.</td></tr>
   <tr><td><code>Visible</code></td><td>Read-only visibility state.</td></tr>
-  <tr><td><code>Hwnd</code></td><td>The native surface handle or identifier.</td></tr>
+  <tr><td><code>Hwnd</code></td><td>The native surface handle or identifier, or 0 when the backing has none.</td></tr>
 </table>
 
 <h2 id="Remarks">Remarks</h2>
 <p><code>Highlight</code> and, on Linux and macOS, <a href="ToolTip.htm">ToolTip</a> use the same overlay facility.</p>
 <h3 id="Linux">Linux</h3>
-<p>Some compositor-drawn Wayland backings remain click-through even when <code>ClickThrough</code> is false.</p>
+<p><strong>Wayland:</strong> On GNOME and Cinnamon, setting <code>ClickThrough</code> to false replaces the passive compositor actor with a positioned client window that can receive events.</p>
 
 <h2 id="Examples">Examples</h2>
 <pre>#Import "Ks" { Overlay }
 
 Surface := Overlay(100, 100, 300, 120)
-Surface.FillRoundRect(0, 0, 300, 120, 12, "0xC0202040")
-Surface.DrawText("Working…", 24, 36, "White", "s18 bold", "Sans")
+Surface.Canvas.FillRoundRect(0, 0, 300, 120, 12, "0xC0202040")
 Surface.Show()
 
-<em>; An interactive overlay: receive clicks instead of passing them through.</em>
+Loop 100 {
+    Surface.Canvas.Clear()
+    Surface.Canvas.DrawText("Frame " A_Index, 24, 36, "White", "s18 bold", "Sans")
+    Surface.Present()
+    Sleep(16)
+}
+
 Surface.ClickThrough := false
 Surface.OnEvent("Click", (Ov, X, Y) => ToolTip("Clicked at " X "," Y))</pre>
 
