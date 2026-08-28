@@ -22,15 +22,15 @@
 
   <dt>Value</dt>
   <dd>
-    <p>Type: <a href="Task.htm">Task</a>, <a href="RealThread.htm">RealThread</a> or <a href="Clr.htm">Clr</a> task</p>
-    <p>The work to wait for. Anything which does not finish later raises a <a href="Error.htm#TypeError">TypeError</a>; this is deliberately not lenient, so that <code class="no-highlight">Await(MyFunc)</code> &mdash; the missing-parentheses mistake &mdash; is reported rather than quietly returning the function object.</p>
-    <p>A <a href="RealThread.htm">RealThread</a> reports a failing body on its own thread, like a timer or hotkey body, so awaiting one yields its <a href="RealThread.htm#Result">Result</a> &mdash; empty if it failed &mdash; and never rethrows; check its <a href="RealThread.htm#Status">Status</a> instead. <code>RealThread.Main</code> and adopted threads have no body to wait for and raise a <a href="Error.htm#TargetError">TargetError</a>.</p>
+    <p>Type: <a href="Task.htm">Task</a>, <a href="RealThread.htm">RealThread</a>, <a href="Clr.htm">Clr</a> task or an <a href="../Objects.htm#__Await">awaitable object</a></p>
+    <p>The work to wait for. A script object may expose work through a zero-argument <a href="../Objects.htm#__Await">__Await()</a> method. Anything which does not finish later raises a <a href="Error.htm#TypeError">TypeError</a>; this is deliberately not lenient, so that <code class="no-highlight">Await(MyFunc)</code> &mdash; the missing-parentheses mistake &mdash; is reported rather than quietly returning the function object.</p>
+    <p>A <a href="RealThread.htm">RealThread</a> reports a failing body on its own thread, like a timer or hotkey body, so awaiting one yields its <a href="RealThread.htm#Result">Result</a> &mdash; empty if it failed &mdash; and never rethrows; check <a href="RealThread.htm#Failed">Failed</a> instead. <code>RealThread.Main</code> and adopted threads have no body to wait for and raise a <a href="Error.htm#TargetError">TargetError</a>.</p>
   </dd>
 
   <dt>Timeout</dt>
   <dd>
     <p>Type: <a href="../Concepts.htm#numbers">Integer</a></p>
-    <p>If omitted, it waits indefinitely. Otherwise, the number of milliseconds to wait before raising a <a href="Error.htm#TimeoutError">TimeoutError</a>. <a href="Task.htm#Wait">Task.Wait</a> is the form which reports a timeout without throwing.</p>
+    <p>If omitted, it waits indefinitely. Otherwise, the number of milliseconds to wait before raising a <a href="Error.htm#TimeoutError">TimeoutError</a>. A timeout stops only this wait and does not cancel the work. <a href="Task.htm#Wait">Task.Wait</a> is the form which reports a timeout without throwing.</p>
   </dd>
 
 </dl>
@@ -40,8 +40,8 @@
 <p>The value the work produced, or an empty string if it produced none.</p>
 
 <h2 id="Errors">Errors</h2>
-<p>A task's failure is rethrown as a catchable Keysharp error, so <code>try</code> around an <code>Await</code> works as it would around an ordinary call. (A <a href="RealThread.htm">RealThread</a> body's failure is the exception &mdash; see <em>Value</em> above.)</p>
-<p>A <a href="Error.htm#TimeoutError">TimeoutError</a> is raised if <em>Timeout</em> elapses first, and a <a href="Error.htm#TypeError">TypeError</a> if <em>Value</em> is not work which finishes later.</p>
+<p>A task's failure is rethrown as a catchable Keysharp error, so <code>try</code> around an <code>Await</code> works as it would around an ordinary call. It is the same Error object exposed by <a href="Task.htm#Error">Task.Error</a>. Canceled work raises a base <a href="Error.htm">Error</a>; cancellation is not failure, so Task.Error remains empty. (A <a href="RealThread.htm">RealThread</a> body's failure is the exception &mdash; see <em>Value</em> above.)</p>
+<p>A <a href="Error.htm#TimeoutError">TimeoutError</a> is raised if <em>Timeout</em> elapses first, and a <a href="Error.htm#TypeError">TypeError</a> if <em>Value</em> is not work which finishes later or its <code>__Await()</code> method returns a non-awaitable value.</p>
 
 <h2 id="Remarks">Remarks</h2>
 <p>This is Keysharp's equivalent of C#'s <code class="no-highlight">await</code>, but it does not suspend the way C#'s does. A Keysharp <a href="../misc/Threads.htm">script thread</a> runs to completion on its own frame, so instead of suspending, <code>Await</code> blocks the calling thread and pumps everything else &mdash; exactly as <a href="Sleep.htm">Sleep</a>, <a href="WinWait.htm">WinWait</a> and <a href="RealThread.htm#Wait">RealThread.Wait</a> do. Timers, hotkeys and the GUI stay alive throughout.</p>

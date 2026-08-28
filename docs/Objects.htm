@@ -56,6 +56,7 @@ ul.list_of_p li { margin: 1em 0; }
       <li><a href="#delegation">Delegation</a></li>
       <li><a href="#creating-a-base-object">Creating a Base Object</a></li>
       <li><a href="#Custom_Classes">Classes</a></li>
+      <li><a href="#__Await">__Await Method</a></li>
       <li><a href="#__Enum">__Enum Method</a></li>
       <li><a href="#__Item">__Item Property</a></li>
       <li><a href="#Custom_NewDelete">Construction and Destruction</a></li>
@@ -415,6 +416,19 @@ Method()
 <p>When defining only a getter, the braces and <code>get</code> can be omitted:</p>
 <pre>ShorterProperty[<i>Parameters</i>] =&gt; <i>Expression which calculates property value</i></pre>
 <p>In both cases, the square brackets must be omitted unless parameters are defined.</p>
+
+<h3 id="__Await">__Await Method</h3>
+<pre class="Syntax">__Await()</pre>
+<p>The __Await method lets an object expose work which finishes later without inheriting from <a href="lib/Task.htm">Task</a>. It takes no arguments and must return a Task, CLR Task or ValueTask, worker <a href="lib/RealThread.htm">RealThread</a>, or another object implementing <code>__Await()</code>. Protocol chains are followed until native work is reached; a cycle or invalid return raises an error.</p>
+<p><a href="lib/Await.htm">Await</a>, <code class="no-highlight">Task(Value)</code>, <a href="lib/Task.htm#Combinators">Task combinators</a>, work returned directly from either <a href="lib/Task.htm#Then">Then</a> callback, and values passed to the <a href="lib/Task.htm#Create">Task.Create</a> <code>Succeed</code> function recognize this method. The method is called synchronously each time an operation consumes the object, so cache stable work rather than creating a fresh operation on every call (especially for a ValueTask). An exception raised here is synchronous unless the method is being consumed through Then or Succeed, where it becomes that operation's outcome.</p>
+<pre>class Download {
+    __New(Url) {
+        this.Task := StartDownload(Url)
+    }
+    __Await() =&gt; this.Task
+}
+
+body := Await(Download("https://example.com"))</pre>
 
 <h3 id="__Enum">__Enum Method</h3>
 <pre class="Syntax">__Enum(NumberOfVars)</pre>

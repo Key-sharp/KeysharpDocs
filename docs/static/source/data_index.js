@@ -1,4 +1,5 @@
 indexData = [
+  ["__Await method","Objects.htm#__Await"],
   ["__Call meta-function","Objects.htm#Meta_Functions"],
   ["__Delete meta-function","Objects.htm#Custom_NewDelete"],
   ["__Enum method","Objects.htm#__Enum"],
@@ -1376,9 +1377,8 @@ indexData = [
   ["Target property (PropRef)","lib/PropRef.htm#Target",7],
   ["TargetError","lib/Error.htm#TargetError",6],
   ["Task","lib/Task.htm",6],
-  ["Task.Source","lib/Task.htm#Source",2],
+  ["Task.Create","lib/Task.htm#Create",2],
   ["Taskbar","lib/Taskbar.htm",6],
-  ["TaskSource","lib/Task.htm#Source",6],
   ["terminate a window","lib/WinKill.htm"],
   ["terminate script","lib/ExitApp.htm"],
   ["ternary operator (?:)","Variables.htm#ternary"],
