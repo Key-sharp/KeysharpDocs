@@ -39,6 +39,8 @@ docs\lib\Await.htm
 docs\lib\Clipboard.htm
 docs\lib\ClipCursor.htm
 docs\lib\Clr.htm
+docs\lib\_App.htm
+docs\lib\_TrayIcon.htm
 docs\lib\_CSharp.htm
 docs\lib\_Package.htm
 docs\lib\Collect.htm

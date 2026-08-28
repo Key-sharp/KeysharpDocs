@@ -44,7 +44,7 @@ Sum(from, to) {
 Worker := RealThread.<span class="func">Call</span>(Callback <span class="optional">, Arguments*</span>)</pre>
 <p>Starts <em>Callback</em> on a new real thread and returns its RealThread object. Any <em>Arguments</em> are passed to <em>Callback</em>.</p>
 <p>The thread ends when its body returns and it has nothing left to serve. A body that registers a timer, hotkey, callback or window event keeps its thread alive to serve them; use <a href="#Exit">Exit</a> to shut such a thread down.</p>
-<p class="note"><strong>Note:</strong> An uncaught error in <em>Callback</em> is reported on the thread where it happened, in the same way as an error in a timer or hotkey. It is not delivered to whoever calls <a href="#Wait">Wait</a>; <a href="#Failed">Failed</a> becomes true instead.</p>
+<p class="note"><strong>Note:</strong> An uncaught error in <em>Callback</em> is reported on the thread where it happened, in the same way as an error in a timer or hotkey. It is not delivered to whoever calls <a href="#Wait">Wait</a>; <a href="#IsFailed">IsFailed</a> becomes true instead.</p>
 
 <h2 id="Main">Main</h2>
 <pre class="Syntax">MainThread := RealThread.<span class="func">Main</span></pre>
@@ -74,7 +74,7 @@ Worker := RealThread.<span class="func">Call</span>(Callback <span class="option
 <pre class="Syntax">Worker.<span class="func">Exit</span>(<span class="optional">ExitCode</span>)</pre>
 <p>Asks the thread to shut down. Work already queued on it is abandoned, a script thread running on it unwinds when it next processes events, and its event loop then stops. This is cooperative and does not asynchronously abort running code. Shutting down a thread that has already ended is not an error.</p>
 <p>Called on the thread itself (<code>A_RealThread.Exit()</code>), the current script thread exits immediately and the call does not return.</p>
-<p>If Exit ends the worker before its body returns, <a href="#Canceled">Canceled</a> becomes true. If the body already returned successfully and only its persistent event loop remained, Exit preserves <a href="#Succeeded">Succeeded</a> and <a href="#Result">Result</a>.</p>
+<p>If Exit ends the worker before its body returns, <a href="#IsCanceled">IsCanceled</a> becomes true. If the body already returned successfully and only its persistent event loop remained, Exit preserves <a href="#IsSuccessful">IsSuccessful</a> and <a href="#Result">Result</a>.</p>
 <dl>
   <dt>ExitCode</dt>
   <dd>
@@ -90,22 +90,22 @@ Worker := RealThread.<span class="func">Call</span>(Callback <span class="option
     <p>Type: <a href="../Concepts.htm#numbers">Integer</a></p>
     <p>The managed ID of the backing operating-system thread.</p>
   </dd>
-  <dt id="Active">Active</dt>
+  <dt id="IsActive">IsActive</dt>
   <dd>
     <p>Type: <a href="Boolean.htm">Boolean</a></p>
-    <p>True while the thread has not finished. This tracks the same moment <a href="#Wait">Wait</a> waits for, so it remains true while a worker serves timers or callbacks after its body returned. It is also true before a <a href="#ContinueWith">ContinueWith</a> worker has started. The main and adopted kinds are always Active.</p>
+    <p>True while the thread has not finished. This tracks the same moment <a href="#Wait">Wait</a> waits for, so it remains true while a worker serves timers or callbacks after its body returned. It is also true before a <a href="#ContinueWith">ContinueWith</a> worker has started. For the main and adopted kinds, IsActive is always true.</p>
   </dd>
-  <dt id="Succeeded">Succeeded</dt>
+  <dt id="IsSuccessful">IsSuccessful</dt>
   <dd>
     <p>Type: <a href="Boolean.htm">Boolean</a></p>
     <p>True only after the worker finishes successfully.</p>
   </dd>
-  <dt id="Failed">Failed</dt>
+  <dt id="IsFailed">IsFailed</dt>
   <dd>
     <p>Type: <a href="Boolean.htm">Boolean</a></p>
     <p>True only after the worker finishes because of an error.</p>
   </dd>
-  <dt id="Canceled">Canceled</dt>
+  <dt id="IsCanceled">IsCanceled</dt>
   <dd>
     <p>Type: <a href="Boolean.htm">Boolean</a></p>
     <p>True only when Exit ends the worker before its body returns.</p>
@@ -122,7 +122,7 @@ Worker := RealThread.<span class="func">Call</span>(Callback <span class="option
 </dl>
 
 <h2 id="Remarks">Remarks</h2>
-<p>Exactly one of <a href="#Active">Active</a>, <a href="#Succeeded">Succeeded</a>, <a href="#Failed">Failed</a> and <a href="#Canceled">Canceled</a> is true. On the main and adopted kinds, Active remains true and the three terminal properties remain false.</p>
+<p>Exactly one of <a href="#IsActive">IsActive</a>, <a href="#IsSuccessful">IsSuccessful</a>, <a href="#IsFailed">IsFailed</a> and <a href="#IsCanceled">IsCanceled</a> is true. On the main and adopted kinds, IsActive remains true and the three terminal properties remain false.</p>
 <p>State shared between real threads requires synchronization. Use <a href="LockRun.htm">LockRun</a> or another appropriate design when callbacks mutate shared objects.</p>
 <p>Settings that are per script thread — <a href="CoordMode.htm">CoordMode</a>, <a href="SendMode.htm">SendMode</a>, <a href="SetKeyDelay.htm">SetKeyDelay</a>, <a href="../Variables.htm#LastError">A_LastError</a> and the rest — are also per real thread, so a worker starts from the script's defaults and its changes do not affect the main thread.</p>
 

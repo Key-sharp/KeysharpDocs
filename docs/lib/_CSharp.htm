@@ -49,7 +49,7 @@
 
 <h2 id="Visibility">What the script can see</h2>
 <p>At module scope, a <code class="no-highlight">public static</code> method becomes a script function within its declaring module, while public static fields and properties enter the module's variable store. Anything that is not <code class="no-highlight">public</code> is a C# helper which the script cannot call. A module-scope <code class="no-highlight">public</code> method which is not <code class="no-highlight">static</code> is rejected because a module has no instance.</p>
-<p>An explicit <code class="no-highlight">{ Name }</code> import can request any public static module method. Add <code class="no-highlight">[Export]</code> to include one in wildcard imports, matching the script <code class="no-highlight">export</code> keyword, or <code class="no-highlight">[Export(Default = true)]</code> to match <code class="no-highlight">export default</code> and bind it for a bare import. The attribute is valid only on public static methods at module scope.</p>
+<p>An explicit <code class="no-highlight">{ Name }</code> import can request any public static module method. Add <code class="no-highlight">[Export]</code> to include one in wildcard imports. The attribute is valid only on public static methods at module scope; default exports are not supported, and a bare import binds the module object.</p>
 <p>In a class-body block, public methods and public property accessors are script-visible. A private or protected accessor remains a C# helper, and an <code class="no-highlight">init</code> accessor is read-only after construction. A field is never script-visible, but it may hold C#-side state shared by that class's blocks.</p>
 
 <pre>#CSharp

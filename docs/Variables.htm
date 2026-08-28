@@ -492,7 +492,7 @@ sumfn := Sum</pre>
   </tr>
   <tr id="AhkVersion">
     <td>A_AhkVersion</td>
-    <td>Contains the AutoHotkey compatibility version targeted by the running Keysharp build, such as <code class="no-highlight">2.1-alpha.30</code>. It does not identify the Keysharp release; use <a href="#A_KsVersion">A_KsVersion</a> for that. The version string can be compared with <a href="lib/VerCompare.htm">VerCompare</a>, and <a href="lib/_Requires.htm">#Requires</a> selects the script's compatibility mode.</td>
+    <td>Contains the AutoHotkey compatibility version targeted by the running Keysharp build, such as <code class="no-highlight">2.1-alpha.31</code>. It does not identify the Keysharp release; use <a href="#A_KsVersion">A_KsVersion</a> for that. The version string can be compared with <a href="lib/VerCompare.htm">VerCompare</a>, and <a href="lib/_Requires.htm">#Requires</a> selects the script's compatibility mode.</td>
   </tr>
   <tr id="AhkPath">
     <td>A_AhkPath</td>
@@ -716,11 +716,11 @@ MsgBox ElapsedTime " milliseconds have elapsed."</pre>
   </tr>
   <tr id="IconFile">
     <td>A_IconFile</td>
-    <td>Blank unless a custom <a href="Program.htm#tray-icon">tray icon</a> has been specified via <a href="lib/TraySetIcon.htm">TraySetIcon</a> -- in which case it is the full path and name of the icon's file.</td>
+    <td>Blank while the script's embedded/default <a href="Program.htm#tray-icon">tray icon</a> is active, including one selected by <a href="lib/_TrayIcon.htm">#TrayIcon</a>. After <a href="lib/TraySetIcon.htm">TraySetIcon</a> selects a run-time custom icon, it is that icon file's full path and name.</td>
   </tr>
   <tr id="IconNumber">
     <td>A_IconNumber</td>
-    <td>Blank if A_IconFile is blank. Otherwise, it's the number of the icon in A_IconFile (typically 1).</td>
+    <td>1 while the script's embedded/default tray icon is active, including one selected by <a href="lib/_TrayIcon.htm">#TrayIcon</a>. Otherwise, it is the selector of the run-time custom icon in A_IconFile, and is also 1 when <a href="lib/TraySetIcon.htm">TraySetIcon</a> omitted that selector.</td>
   </tr>
 </table>
 <h3 id="User_Idle_Time">User Idle Time</h3>
@@ -1086,39 +1086,39 @@ VirtualHeight := <a href="lib/SysGet.htm">SysGet</a>(79)
   </tr>
   <tr id="A_AssemblyCompany">
     <td><span id="KS_A_AssemblyCompany">A_AssemblyCompany</span></td>
-    <td>The assembly company set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyCompany</a>, or blank if unset.</td>
+    <td>The assembly company set by the <a href="lib/_App.htm">#App</a> <code>Company</code> key, or blank if unset.</td>
   </tr>
   <tr id="A_AssemblyConfiguration">
     <td><span id="KS_A_AssemblyConfiguration">A_AssemblyConfiguration</span></td>
-    <td>The assembly configuration set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyConfiguration</a>, or blank if unset.</td>
+    <td>The assembly configuration set by the <a href="lib/_App.htm">#App</a> <code>Configuration</code> key, or blank if unset.</td>
   </tr>
   <tr id="A_AssemblyCopyright">
     <td><span id="KS_A_AssemblyCopyright">A_AssemblyCopyright</span></td>
-    <td>The assembly copyright set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyCopyright</a>, or blank if unset.</td>
+    <td>The assembly copyright set by the <a href="lib/_App.htm">#App</a> <code>Copyright</code> key, or blank if unset.</td>
   </tr>
   <tr id="A_AssemblyDescription">
     <td><span id="KS_A_AssemblyDescription">A_AssemblyDescription</span></td>
-    <td>The assembly description set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyDescription</a>, or blank if unset.</td>
+    <td>The assembly description set by the <a href="lib/_App.htm">#App</a> <code>Description</code> key, or blank if unset.</td>
   </tr>
   <tr id="A_AssemblyName">
     <td><span id="KS_A_AssemblyName">A_AssemblyName</span></td>
-    <td>The assembly's name, set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyName</a>. Unlike the other <code>A_Assembly*</code> variables this is the assembly's identity rather than an attribute, so it is never blank: without the directive it is the name the script was compiled under.</td>
+    <td>The assembly's name, set by the <a href="lib/_App.htm">#App</a> <code>Name</code> key. Unlike the other <code>A_Assembly*</code> variables this is the assembly's identity rather than an attribute, so it is never blank: without the directive it is the name the script was compiled under.</td>
   </tr>
   <tr id="A_AssemblyProduct">
     <td><span id="KS_A_AssemblyProduct">A_AssemblyProduct</span></td>
-    <td>The assembly product set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyProduct</a>, or blank if unset.</td>
+    <td>The assembly product set by the <a href="lib/_App.htm">#App</a> <code>Product</code> key, or blank if unset.</td>
   </tr>
   <tr id="A_AssemblyTitle">
     <td><span id="KS_A_AssemblyTitle">A_AssemblyTitle</span></td>
-    <td>The assembly title set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyTitle</a>, or blank if unset.</td>
+    <td>The assembly title set by the <a href="lib/_App.htm">#App</a> <code>Title</code> key, or blank if unset.</td>
   </tr>
   <tr id="A_AssemblyTrademark">
     <td><span id="KS_A_AssemblyTrademark">A_AssemblyTrademark</span></td>
-    <td>The assembly trademark set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyTrademark</a>, or blank if unset.</td>
+    <td>The assembly trademark set by the <a href="lib/_App.htm">#App</a> <code>Trademark</code> key, or blank if unset.</td>
   </tr>
   <tr id="A_AssemblyVersion">
     <td><span id="KS_A_AssemblyVersion">A_AssemblyVersion</span></td>
-    <td>The assembly file version set by <a href="lib/KeysharpDirectives.htm#Assembly">#AssemblyVersion</a>, or blank if unset.</td>
+    <td>The assembly file version set by the <a href="lib/_App.htm">#App</a> <code>Version</code> key, or blank if unset.</td>
   </tr>
   <tr id="A_ClipboardTimeout">
     <td><span id="KS_A_ClipboardTimeout">A_ClipboardTimeout</span></td>

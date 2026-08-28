@@ -13,7 +13,7 @@
 <h1>LockRun</h1>
 <p>Calls a function while holding a lock on an object.</p>
 <p>This function is exported by the <a href="../Modules.htm#KS">KS module</a>.</p>
-<pre class="Syntax">Result := <span class="func">LockRun</span>(LockObject, Callback <span class="optional">, Params*</span>)</pre>
+<pre class="Syntax">Result := <span class="func">LockRun</span>(LockObject, Callback <span class="optional">, Arguments*</span>)</pre>
 <p>Calls using the same <em>LockObject</em> execute their callbacks one at a time. The return value is the callback's return value.</p>
 <h2 id="Parameters">Parameters</h2>
 <dl>
@@ -26,7 +26,11 @@
   <dt>Callback</dt>
   <dd>
     <p>Type: <a href="../misc/Functor.htm">Function Object</a></p>
-    <p>The function to call while the lock is held. Any <em>Params</em> are passed to it.</p>
+    <p>The function to call while the lock is held.</p>
+  </dd>
+  <dt>Arguments</dt>
+  <dd>
+    <p>Any arguments to pass to <em>Callback</em>.</p>
   </dd>
 </dl>
 <p class="warning"><strong>Warning:</strong> A string is accepted but is a poor lock. Identical string literals are shared process-wide, so unrelated parts of a script which both lock on <code>""</code> serialize against each other.</p>

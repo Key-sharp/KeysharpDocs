@@ -285,8 +285,7 @@ tocData = [
   ["Modules","Modules.htm",
   [
     ["#Module","lib/_Module.htm"],
-    ["#Import","lib/_Import.htm"],
-    ["Export","lib/Export.htm"]
+    ["#Import","lib/_Import.htm"]
   ]],
   ["Monitor","lib/Monitor.htm",
   [
@@ -564,6 +563,7 @@ tocData = [
   ]],
   ["#Directives","",
   [
+    ["#App","lib/_App.htm"],
     ["#ClipboardTimeout","lib/_ClipboardTimeout.htm"],
     ["#CSharp","lib/_CSharp.htm"],
     ["#DllLoad","lib/_DllLoad.htm"],
@@ -583,6 +583,7 @@ tocData = [
     ["#SingleInstance","lib/_SingleInstance.htm"],
     ["#StructPack","lib/_StructPack.htm"],
     ["#SuspendExempt","lib/_SuspendExempt.htm"],
+    ["#TrayIcon","lib/_TrayIcon.htm"],
     ["#UseHook","lib/_UseHook.htm"],
     ["#Warn","lib/_Warn.htm"],
     ["#WinActivateForce","lib/_WinActivateForce.htm"]

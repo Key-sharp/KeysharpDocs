@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>#TrayIcon - Startup tray icon | Keysharp</title>
+<meta name="description" content="The #TrayIcon directive selects and embeds a script's startup tray icon, or restores the default icon." />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../static/theme.css" rel="stylesheet" type="text/css" />
+<link href="../static/dark.css" rel="stylesheet" type="text/css" media="(prefers-color-scheme: dark)" id="dark_css" />
+<script src="../static/content.js" type="text/javascript"></script>
+</head>
+<body>
+
+<h1>#TrayIcon <span class="ver">[Keysharp]</span></h1>
+
+<p>Selects and embeds the <a href="../Program.htm#tray-icon">tray icon</a> with which the script starts, or restores the script's default icon.</p>
+
+<pre class="Syntax"><span class="func">#TrayIcon</span>
+<span class="func">#TrayIcon</span> FileName <span class="optional">, IconNumber</span></pre>
+
+<h2 id="Parameters">Parameters</h2>
+<dl>
+  <dt>FileName</dt>
+  <dd>
+    <p>The path to an icon file or an icon-bearing module. It must be relative to the main script's directory (the program include root), even when #TrayIcon appears in an <a href="_Include.htm">#Include</a>d file. A rooted path is a compile-time error.</p>
+    <p>If omitted, the tray is made visible with the script's default icon: the <a href="_App.htm#Icon">#App Icon</a>, if present, or Keysharp's built-in icon.</p>
+  </dd>
+
+  <dt>IconNumber</dt>
+  <dd>
+    <p>If omitted, the first icon group is selected. A positive integer selects a 1-based icon group; a negative integer selects the icon whose resource ID is the absolute value. A nonnumeric quoted string selects a named icon resource from a managed .NET assembly.</p>
+    <p>Numeric icon selection from a native module is supported only on Windows.</p>
+  </dd>
+</dl>
+
+<h2 id="Remarks">Remarks</h2>
+<p>The compiler resolves <em>FileName</em> against the main script's directory, selects the icon, and embeds that selected icon in the script assembly as the tray default. This also happens for source and in-memory execution, so the original file is not read when the script runs. After <a href="TraySetIcon.htm">TraySetIcon</a> selects a run-time icon, <code>TraySetIcon("*")</code> restores this embedded default. While the default is active, <a href="../Variables.htm#IconFile">A_IconFile</a> is blank and <a href="../Variables.htm#IconNumber">A_IconNumber</a> is 1. Only the canonical relative logical path is retained; the resolved build-machine path is not serialized.</p>
+<p>#TrayIcon and <a href="_NoTrayIcon.htm">#NoTrayIcon</a> are applied in source order. Any #TrayIcon, with or without a file, cancels an earlier #NoTrayIcon and makes the tray visible. A later #NoTrayIcon hides an icon selected earlier. A bare #TrayIcon also discards an earlier custom selection and restores the default.</p>
+<p><a href="TraySetIcon.htm">TraySetIcon</a> can change the icon after the script starts, and <a href="../Variables.htm#IconHidden">A_IconHidden</a> can show or hide it at run time.</p>
+<p>Like other directives, #TrayIcon cannot be executed conditionally.</p>
+
+<h2 id="Related">Related</h2>
+<p><a href="_NoTrayIcon.htm">#NoTrayIcon</a>, <a href="_App.htm#Icon">#App Icon</a>, <a href="TraySetIcon.htm">TraySetIcon</a>, <a href="../Variables.htm#IconHidden">A_IconHidden</a>, <a href="../Program.htm#tray-icon">Tray Icon</a></p>
+
+<h2 id="Examples">Examples</h2>
+<div class="ex" id="ExBasic">
+<p><a class="ex_number" href="#ExBasic"></a> Selects the second icon group from a file relative to the main script.</p>
+<pre>#TrayIcon "assets/status.dll", 2</pre>
+</div>
+
+<div class="ex" id="ExPrecedence">
+<p><a class="ex_number" href="#ExPrecedence"></a> Restores the default icon and makes it visible after an earlier #NoTrayIcon.</p>
+<pre>#NoTrayIcon
+#TrayIcon</pre>
+</div>
+
+</body>
+</html>

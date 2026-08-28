@@ -10,7 +10,7 @@ runs the resulting .NET assembly.
 
 This repository began as the AutoHotkeyDocs `alpha` branch with permission
 from the AutoHotkey team. Its current compatibility target is AutoHotkey
-v2.1-alpha.30. That target defines intended language semantics; it does not
+v2.1-alpha.31. That target defines intended language semantics; it does not
 prove that every feature is implemented on every Keysharp platform.
 
 Windows currently has the broadest coverage. Linux support varies between X11
@@ -434,7 +434,8 @@ without a redirect.
 - Prefer a focused documentation commit over mixing generated churn,
   upstream ports, branding changes, and semantic edits.
 - After changing the AutoHotkey compatibility target, update the homepage,
-  shared compatibility banner, README, change page, and this guide together.
+  README, change page, every reference page which states the target, and this
+  guide together.
 
 ## Completion checklist
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <title>Keysharp Build Directives | Keysharp</title>
-<meta name="description" content="Directives for conditional compilation, build-time messages, hook isolation and compiled assembly metadata." />
+<meta name="description" content="Directives for conditional compilation, build-time messages, and the #App application manifest." />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <link href="../static/theme.css" rel="stylesheet" type="text/css" />
@@ -57,33 +57,18 @@
 <p>The message is free-form text taken verbatim to the end of the line, so quotes, commas, apostrophes and braces in it are literal. Both directives are permitted wherever a directive is, including inside a function, class, or block, and neither is reported when it lies in a branch which conditional compilation excluded.</p>
 <p><code>#Warning</code> is distinct from <a href="_Warn.htm">#Warn</a>, which configures the runtime's own warnings about the script; its <code>Off</code>, <code>StdOut</code> and <code>MsgBox</code> modes do not apply here. A <code>#Warning</code> is a message to whoever builds the script, so it is not carried into a compiled executable and does not reappear when that executable runs.</p>
 
-<h2 id="ConsoleApp">#ConsoleApp</h2>
-<pre class="Syntax"><span class="func">#ConsoleApp</span></pre>
-<p>Builds a <a href="../Program.htm#cmd">compiled executable</a> as a console application, so a shell waits for it and its standard streams are the terminal's. This is the equivalent of AutoHotkey's <a href="../misc/Ahk2ExeDirectives.htm#ConsoleApp">Ahk2Exe ConsoleApp directive</a>. A graphical application remains the default, so a double-clicked script never flashes a console window.</p>
-<pre>#ConsoleApp
-FileAppend "done`n", "*"</pre>
-<p>It is ignored when the script is interpreted or compiled to a <code class="no-highlight">.cks</code> file, since neither writes an executable.</p>
-<p class="note"><strong>Note:</strong> On Windows this sets the executable's PE subsystem, which is fixed before the process starts and cannot be changed at run time. On Linux and macOS executables have no subsystem and a shell always waits, so the directive has no effect.</p>
+<h2 id="App">#App</h2>
+<pre class="Syntax"><span class="func">#App</span> { Key: Value, ... }</pre>
+<p>Declares final application facts: identity and metadata, packaged assets, generated host shape, presentation defaults, and fixed integration identifiers. See <a href="_App.htm">#App</a> for the full key reference.</p>
+<p>Its blocks merge into one key/value map; no key acts as a source command or observes intermediate state. Standalone directives select compiler or execution policy, such as front-end diagnostics or launch behavior, or express source-ordered state transitions; internal transport does not determine their source syntax.</p>
 
-<h2 id="HookMutexName">#HookMutexName</h2>
-<pre class="Syntax"><span class="func">#HookMutexName</span> Name</pre>
-<p>Changes the name of mutex objects used to detect keyboard and mouse hooks in other scripts. The default is <code class="no-highlight">Keysharp</code>.</p>
-
-<h2 id="Assembly">Assembly Metadata</h2>
-<pre class="Syntax"><span class="func">#AssemblyTitle</span> Value
-<span class="func">#AssemblyDescription</span> Value
-<span class="func">#AssemblyConfiguration</span> Value
-<span class="func">#AssemblyCompany</span> Value
-<span class="func">#AssemblyProduct</span> Value
-<span class="func">#AssemblyCopyright</span> Value
-<span class="func">#AssemblyTrademark</span> Value
-<span class="func">#AssemblyVersion</span> Value
-<span class="func">#AssemblyName</span> Value</pre>
-<p>Sets the corresponding .NET assembly attribute on compiled output. <code>#AssemblyVersion</code> sets both the assembly and file version.</p>
-<p><code>#AssemblyName</code> is the exception: .NET has no <code>AssemblyNameAttribute</code>, so rather than emitting an attribute it sets the compiled assembly's <em>identity</em> — what <code>Assembly.GetName().Name</code> reports. It overrides the name otherwise taken from the script's file name. Each of these is readable at run time through the matching <a href="../Variables.htm#additional">A_Assembly* variable</a>.</p>
+<h2 id="TrayIcon">#TrayIcon</h2>
+<pre class="Syntax"><span class="func">#TrayIcon</span>
+<span class="func">#TrayIcon</span> FileName <span class="optional">, IconNumber</span></pre>
+<p>Selects and embeds the tray icon with which a script starts, or restores the default when no file is named. See <a href="_TrayIcon.htm">#TrayIcon</a> for path, selector and #NoTrayIcon precedence rules.</p>
 
 <h2 id="Related">Related</h2>
-<p><a href="../Program.htm#compile">Compiling a Script</a>, <a href="../Program.htm#cmd">command-line switches</a>, <a href="_Warn.htm">#Warn</a>, <a href="_HotIf.htm">#HotIf</a>, <a href="../Variables.htm#additional">assembly metadata variables</a></p>
+<p><a href="_App.htm">#App</a>, <a href="_TrayIcon.htm">#TrayIcon</a>, <a href="../Program.htm#compile">Compiling a Script</a>, <a href="../Program.htm#cmd">command-line switches</a>, <a href="_Warn.htm">#Warn</a>, <a href="_HotIf.htm">#HotIf</a>, <a href="../Variables.htm#additional">assembly metadata variables</a></p>
 
 </body>
 </html>

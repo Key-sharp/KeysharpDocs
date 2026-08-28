@@ -29,13 +29,13 @@
 
 <h2 id="Outcome">Outcome properties</h2>
 <dl>
-  <dt id="Active">Active</dt>
+  <dt id="IsActive">IsActive</dt>
   <dd><p>True until the task reaches a terminal outcome.</p></dd>
-  <dt id="Succeeded">Succeeded</dt>
+  <dt id="IsSuccessful">IsSuccessful</dt>
   <dd><p>True only after successful completion.</p></dd>
-  <dt id="Failed">Failed</dt>
+  <dt id="IsFailed">IsFailed</dt>
   <dd><p>True only after completion with an error.</p></dd>
-  <dt id="Canceled">Canceled</dt>
+  <dt id="IsCanceled">IsCanceled</dt>
   <dd><p>True only after cancellation.</p></dd>
 </dl>
 <p>Exactly one of these properties is true.</p>
@@ -52,7 +52,7 @@
 <h2 id="Wait">Wait</h2>
 <pre class="Syntax">Finished := TaskObj.<span class="func">Wait</span>(<span class="optional">Timeout</span>)</pre>
   <p>Waits for the task, returning 1 (true) if it finished or 0 (false) if <em>Timeout</em> elapsed first. <em>Timeout</em> is in milliseconds; omit it to wait indefinitely. Timing out stops only this wait and does not cancel the task.</p>
-<p>Like <a href="Await.htm">Await</a>, this pumps while it waits, so timers, hotkeys and the GUI stay responsive. Unlike Await it neither throws nor observes a failure; read <a href="#Failed">Failed</a> and <a href="#Error">Error</a> afterwards.</p>
+<p>Like <a href="Await.htm">Await</a>, this pumps while it waits, so timers, hotkeys and the GUI stay responsive. Unlike Await it neither throws nor observes a failure; read <a href="#IsFailed">IsFailed</a> and <a href="#Error">Error</a> afterwards.</p>
 <p>A RealThread cannot wait on itself through a Task wrapper; doing so throws <a href="Error.htm#TargetError">TargetError</a>.</p>
 
 <h2 id="Then">Then</h2>
@@ -62,7 +62,7 @@
 OnFailure(Error)</pre>
   <p><em>OnSuccess</em> receives the successful value, already unwrapped. <em>OnFailure</em> receives the same catchable Error exposed by <a href="#Error">Task.Error</a>; returning normally recovers the chain. Either callback may declare no parameter. Requiring more than one raises <a href="Error.htm#ValueError">ValueError</a> when its target signature can be resolved. Without <em>OnFailure</em>, the same failure propagates to <em>NextTask</em>. Cancellation invokes neither callback and propagates unchanged.</p>
 <p>The callback runs in its own <a href="../misc/Threads.htm">script thread</a> on the real thread where <code>Then</code> was called, so <code class="no-highlight">A_*</code> variables, <a href="Critical.htm">Critical</a> and GUI access all behave normally. A pending callback keeps that owner alive; if the owner is shut down first, the returned Task fails instead of waiting forever.</p>
-  <p>If the selected callback returns a Task, CLR task or ValueTask, <em>NextTask</em> recursively adopts that work's value, failure or cancellation. A directly returned object implementing <a href="../Objects.htm#__Await">__Await()</a> is adopted too. A returned <a href="RealThread.htm">RealThread</a> follows <a href="Await.htm">Await</a> semantics: the chain receives its Result, while a body error remains reported on that worker and is visible through its Failed property. This flattening lets asynchronous calls be chained without an extra Await inside the callback. Once the callback has returned, its background work does not by itself keep the script alive; a following <code>Then</code> registers its own pending callback and lifetime root.</p>
+  <p>If the selected callback returns a Task, CLR task or ValueTask, <em>NextTask</em> recursively adopts that work's value, failure or cancellation. A directly returned object implementing <a href="../Objects.htm#__Await">__Await()</a> is adopted too. A returned <a href="RealThread.htm">RealThread</a> follows <a href="Await.htm">Await</a> semantics: the chain receives its Result, while a body error remains reported on that worker and is visible through its IsFailed property. This flattening lets asynchronous calls be chained without an extra Await inside the callback. Once the callback has returned, its background work does not by itself keep the script alive; a following <code>Then</code> registers its own pending callback and lifetime root.</p>
 
 <h2 id="Combinators">Combinators</h2>
 <h3 id="WhenAll">WhenAll</h3>
@@ -90,7 +90,7 @@ Settled := <span class="func">Cancel</span>()                  <em>; finish as c
 <pre>cts := Clr.System.Threading.CancellationTokenSource()
 t := api.FooAsync(url, cts.Token)
 cts.Cancel()</pre>
-<p><a href="#Canceled">Canceled</a> then becomes true.</p>
+<p><a href="#IsCanceled">IsCanceled</a> then becomes true.</p>
 <p>There is likewise no <code>Delay</code>, <code>Completed</code> or <code>Run</code>. <code class="no-highlight">Clr.System.Threading.Tasks.Task.Delay(ms)</code> and <code class="no-highlight">.FromResult(value)</code> both come back as Tasks through the ordinary boundary &mdash; <code>Delay</code> in particular is what <a href="#WhenAny">WhenAny</a> races against for a timeout &mdash; and <a href="RealThread.htm">RealThread</a> runs script code on another thread, which a thread-pool task cannot do because a script function belongs on a thread owning a script-thread stack.</p>
 <p>A failure nobody ever looks at is reported as an ordinary script error when the task is collected. That is the same moment .NET reports an unobserved failure, which matters: a task you are about to <a href="Await.htm">Await</a> is never reported out from under you.</p>
 

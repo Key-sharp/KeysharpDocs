@@ -24,7 +24,7 @@
   <dd>
     <p>Type: <a href="Task.htm">Task</a>, <a href="RealThread.htm">RealThread</a>, <a href="Clr.htm">Clr</a> task or an <a href="../Objects.htm#__Await">awaitable object</a></p>
     <p>The work to wait for. A script object may expose work through a zero-argument <a href="../Objects.htm#__Await">__Await()</a> method. Anything which does not finish later raises a <a href="Error.htm#TypeError">TypeError</a>; this is deliberately not lenient, so that <code class="no-highlight">Await(MyFunc)</code> &mdash; the missing-parentheses mistake &mdash; is reported rather than quietly returning the function object.</p>
-    <p>A <a href="RealThread.htm">RealThread</a> reports a failing body on its own thread, like a timer or hotkey body, so awaiting one yields its <a href="RealThread.htm#Result">Result</a> &mdash; empty if it failed &mdash; and never rethrows; check <a href="RealThread.htm#Failed">Failed</a> instead. <code>RealThread.Main</code> and adopted threads have no body to wait for and raise a <a href="Error.htm#TargetError">TargetError</a>.</p>
+    <p>A <a href="RealThread.htm">RealThread</a> reports a failing body on its own thread, like a timer or hotkey body, so awaiting one yields its <a href="RealThread.htm#Result">Result</a> &mdash; empty if it failed &mdash; and never rethrows; check <a href="RealThread.htm#IsFailed">IsFailed</a> instead. <code>RealThread.Main</code> and adopted threads have no body to wait for and raise a <a href="Error.htm#TargetError">TargetError</a>.</p>
   </dd>
 
   <dt>Timeout</dt>
