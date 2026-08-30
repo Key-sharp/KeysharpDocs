@@ -47,6 +47,7 @@
       <li><a href="#SetIcon">SetIcon</a>: Gives the window an icon of its own, optionally at a chosen size.</li>
       <li><a href="#Show">Show</a>: Displays the window. It can also minimize, maximize, or move the window.</li>
       <li><a href="#Submit">Submit</a>: Collects values from named controls into an object and optionally hides the window.</li>
+      <li><a href="#ToClr">ToClr</a>: Returns the backing toolkit window as a Clr object.</li>
       <li><a href="#UseGroup">UseGroup</a>: Selects a GroupBox as the container for subsequently added controls.</li>
       <li><a href="#__Enum">__Enum</a>: Enumerates the window's controls.</li>
       <li><a href="#__New">__New</a>: Constructs a new Gui instance.</li>
@@ -613,6 +614,13 @@ MyGui.Show()</pre>
 <p>Also excluded: <a href="ListView.htm">ListView</a>, <a href="TreeView.htm">TreeView</a>, <a href="GuiControls.htm#ActiveX">ActiveX</a>, <a href="GuiControls.htm#Custom">Custom</a>.</p>
 </div>
 
+<div class="methodShort" id="ToClr">
+<h3>ToClr</h3>
+<p>Returns the backing toolkit window as an ordinary <a href="Clr.htm">Clr</a> object.</p>
+<pre class="Syntax">ClrForm := MyGui.<span class="func">ToClr</span>()</pre>
+<p>Its concrete type is platform-dependent and unspecified. Changes made through it bypass the Gui object's own state and event wiring. See <a href="Clr.htm#ToClr">ToClr on built-in objects</a>.</p>
+</div>
+
 <div class="methodShort" id="UseGroup">
 <h3>UseGroup</h3>
 <p>Selects a GroupBox as the container for subsequently added controls, or returns to the window itself.</p>
@@ -1132,7 +1140,7 @@ Gui_Size(thisGui, MinMax, Width, Height)
 </div>
 
 <div class="ex" id="ExWebBrowser">
-<p><a class="ex_number" href="#ExWebBrowser"></a> Creates a simple web browser using the <a href="https://learn.microsoft.com/dotnet/desktop/winforms/controls/webbrowser-control-windows-forms">WebBrowser control</a>. An address bar allows you to navigate to a specific webpage. <a href="ComObjConnect.htm">ComObjConnect</a> is used to handle the events exposed by the WebBrowser object.</p>
+<p><a class="ex_number" href="#ExWebBrowser"></a> Creates a simple web browser using the <a href="https://learn.microsoft.com/dotnet/desktop/winforms/controls/webbrowser-control-windows-forms">WebBrowser control</a>. An address bar allows you to navigate to a specific webpage. <a href="ComObjConnect.htm">ComObjConnect</a> is used to handle the events exposed by the WebBrowser object. This example is Windows-only; the <a href="GuiControls.htm#WebView">WebView</a> control does the same thing on every platform without COM.</p>
 <pre>MyGui := Gui()
 URL := MyGui.Add("Edit", "w930 r1", "https://example.com/")
 MyGui.Add("Button", "x+6 yp w44 Default", "Go").OnEvent("Click", ButtonGo)

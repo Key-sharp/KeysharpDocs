@@ -181,7 +181,7 @@ for p in MyFunc.Params
 
 <h2 id="Implementation">Implementation Remarks</h2>
 <p id="FuncObj">The underlying managed class is named <code class="no-highlight">FuncObj</code> because .NET already defines a type named Func. Compatibility type checks recognize both <code class="no-highlight">Value is Func</code> and <code class="no-highlight">Value is FuncObj</code>.</p>
-<p>Function objects can be obtained from a direct function reference or by passing a function name to <code class="no-highlight">Func()</code>. Most built-in functions can also be used as function objects.</p>
+<p>A function object is obtained from a direct function reference, as in <code>MyFunc</code>. A function's name in string form raises a <a href="Error.htm#TypeError">TypeError</a>; a name known only at run time is resolved with a <a href="../Variables.htm#deref">double-deref</a> first, as in <code>%"MyFunc"%</code>. A method is bound by name with <a href="ObjBindMethod.htm">ObjBindMethod</a>, and a <a href="Gui.htm#Call">Gui</a> built with an event sink takes one of that sink's method names in <a href="GuiOnEvent.htm">OnEvent</a>. Most built-in functions can also be used as function objects.</p>
 <p id="Performance">Calling a function object uses reflection and is slower than a direct function call. Prefer direct calls in performance-sensitive loops.</p>
 
 </body>

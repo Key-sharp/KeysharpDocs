@@ -35,6 +35,7 @@ docs\static\source\data_index.js
 docs\static\source\data_deprecate.js
 docs\KeysharpDifferences.htm
 docs\Platforms.htm
+docs\lib\App.htm
 docs\lib\Await.htm
 docs\lib\Clipboard.htm
 docs\lib\ClipCursor.htm
@@ -55,7 +56,6 @@ docs\lib\Highlight.htm
 docs\lib\Image.htm
 docs\lib\KeysharpDirectives.htm
 docs\lib\Lock.htm
-docs\lib\LockRun.htm
 docs\lib\Mail.htm
 docs\lib\ObjFree.htm
 docs\lib\Overlay.htm

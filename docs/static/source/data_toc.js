@@ -5,6 +5,7 @@ tocData = [
   ["Keysharp Extensions","",
   [
     ["Built-in Variables","Variables.htm#KS"],
+    ["App","lib/App.htm"],
     ["Conditional Compilation","lib/Preprocessor.htm"],
     ["Build Directives","lib/KeysharpDirectives.htm"],
     ["Capabilities and Permissions","",
@@ -46,7 +47,6 @@ tocData = [
       ["RealThread","lib/RealThread.htm"],
       ["Task","lib/Task.htm"],
       ["Await","lib/Await.htm"],
-      ["LockRun","lib/LockRun.htm"],
       ["Lock","lib/Lock.htm"],
       ["Collect","lib/Collect.htm"],
       ["ObjFree","lib/ObjFree.htm"],

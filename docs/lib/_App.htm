@@ -1,8 +1,8 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-<title>#App - Application manifest | Keysharp</title>
-<meta name="description" content="The #App directive declares one application manifest: assembly identity and metadata, the default icon, GUI theme, compiled executable subsystem, hook mutex name, and embedded files." />
+<title>#App - Application facts | Keysharp</title>
+<meta name="description" content="The #App directive declares final application facts: assembly identity and metadata, the default icon, GUI theme, compiled executable subsystem, hook mutex name, and embedded files." />
 <meta name="ahk:equiv-v1" content="index.htm" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,11 +16,13 @@
 
 <p>Declares final application facts: identity and metadata, packaged assets, generated host shape, presentation defaults, and fixed integration identifiers.</p>
 
+<p>See <a href="App.htm">App</a>, the class that reads them back.</p>
+
 <pre class="Syntax"><span class="func">#App</span> { Key: Value, ... }</pre>
 
 <pre>#App {
     Name: "MyTool",              <em>; assembly identity (Assembly.GetName().Name)</em>
-    Title: "My Tool",            <em>; assembly metadata, read back by A_Assembly*</em>
+    Title: "My Tool",            <em>; assembly metadata, read back by App.Title</em>
     Company: "Acme Corp",
     Version: "1.2.0",            <em>; assembly + file version; shown in Explorer properties</em>
     Icon: "assets/app.ico",      <em>; default window/tray icon AND the compiled executable's icon</em>
@@ -32,8 +34,8 @@
 <p>Key names are case-insensitive. Every value must be a compile-time constant: a quoted string, a number, <code>true</code>/<code>false</code>, a <code>.</code> concatenation of constants, or an array of them. An unknown key, a malformed value, or a missing <em>Icon</em>/<em>Files</em> path is a compile-time error.</p>
 <table class="info">
   <tr><th>Key</th><th>Value</th><th>Meaning</th></tr>
-  <tr><td>Name</td><td>String</td><td>The compiled assembly's identity &mdash; what <code>Assembly.GetName().Name</code> reports and <a href="../Variables.htm#additional">A_AssemblyName</a> reads. Overrides the name otherwise taken from the script's file name.</td></tr>
-  <tr><td>Title, Description, Configuration, Company, Product, Copyright, Trademark</td><td>String</td><td>The matching .NET assembly attribute on compiled output, readable at run time through the matching <a href="../Variables.htm#additional">A_Assembly* variable</a>.</td></tr>
+  <tr><td>Name</td><td>String</td><td>The compiled assembly's identity &mdash; what <code>Assembly.GetName().Name</code> reports and <a href="App.htm#Name">App.Name</a> reads. Overrides the name otherwise taken from the script's file name.</td></tr>
+  <tr><td>Title, Description, Configuration, Company, Product, Copyright, Trademark</td><td>String</td><td>The matching .NET assembly attribute on compiled output, readable at run time through the matching <a href="App.htm#Metadata">App property</a>.</td></tr>
   <tr><td>Version</td><td>String</td><td><code>"major.minor[.build[.revision]]"</code>, with 2 to 4 decimal components each from 0 through 65534. Sets both the assembly and the file version, so it also appears in a compiled executable's Explorer properties.</td></tr>
   <tr><td id="Icon">Icon</td><td>String</td><td>Relative path to a <code class="no-highlight">.ico</code> file. It becomes the script's default icon &mdash; the main window's and every GUI's icon, and the tray icon unless <a href="_TrayIcon.htm">#TrayIcon</a> selects another &mdash; with no startup flash of the Keysharp icon, and a <a href="../Program.htm#cmd">compiled executable</a> additionally wears it as its win32 icon. At run time, <a href="TraySetIcon.htm">TraySetIcon</a> overrides the tray icon; <code>TraySetIcon("*")</code> restores its embedded tray default, which is this icon unless #TrayIcon selected another.</td></tr>
   <tr><td id="GuiTheme">GuiTheme</td><td>String</td><td>A presentation default: <code>Classic</code>, <code>System</code> or <code>Dark</code> becomes the initial <code>A_GuiTheme</code>. The runtime applies it before creating its windows or dialogs, including an error dialog raised before or during the auto-execute section. It does not affect compile-time errors raised before the script runtime starts.</td></tr>
@@ -49,7 +51,7 @@
 <p><code>#App</code> keys independently state final application facts, and all blocks merge into one key/value map; no key acts as a source command or observes intermediate state. Standalone directives select compiler or execution policy, such as front-end diagnostics or launch behavior, or express source-ordered state transitions. <a href="_ErrorStdOut.htm">#ErrorStdOut</a> changes diagnostic routing when the parser reaches it; <a href="_SingleInstance.htm">#SingleInstance</a> selects launch behavior; and <a href="_TrayIcon.htm">#TrayIcon</a> and <a href="_NoTrayIcon.htm">#NoTrayIcon</a> transition startup tray state in source order. Startup controls may use the internal manifest resource when the runtime needs their final value before chrome exists, but transport does not determine source syntax and these directives are not <code>#App</code> keys.</p>
 
 <h2 id="Related">Related</h2>
-<p><a href="FileInstall.htm">FileInstall</a>, <a href="_TrayIcon.htm">#TrayIcon</a>, <a href="TraySetIcon.htm">TraySetIcon</a>, <a href="_SingleInstance.htm">#SingleInstance</a>, <a href="_NoTrayIcon.htm">#NoTrayIcon</a>, <a href="_ErrorStdOut.htm">#ErrorStdOut</a>, <a href="KeysharpDirectives.htm">Keysharp Build Directives</a>, <a href="../Program.htm#compile">Compiling a Script</a></p>
+<p><a href="App.htm">App</a>, <a href="FileInstall.htm">FileInstall</a>, <a href="_TrayIcon.htm">#TrayIcon</a>, <a href="TraySetIcon.htm">TraySetIcon</a>, <a href="_SingleInstance.htm">#SingleInstance</a>, <a href="_NoTrayIcon.htm">#NoTrayIcon</a>, <a href="_ErrorStdOut.htm">#ErrorStdOut</a>, <a href="KeysharpDirectives.htm">Keysharp Build Directives</a>, <a href="../Program.htm#compile">Compiling a Script</a></p>
 
 <h2 id="Examples">Examples</h2>
 <div class="ex" id="ExBasic">

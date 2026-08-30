@@ -113,10 +113,12 @@
   <tr><td><code>Copy()</code></td><td>Returns an independent copy.</td></tr>
   <tr><td><code>Save(Filename)</code></td><td>Applies pending operations and writes the image to a file.</td></tr>
   <tr><td><code>ToBitmap()</code></td><td>Applies pending operations and returns a native bitmap handle.</td></tr>
+  <tr><td><code>ToClr()</code></td><td>Applies pending operations and returns the underlying toolkit bitmap as a <a href="Clr.htm">Clr</a> object.</td></tr>
   <tr><td><code>Show([Title, Wait])</code></td><td>Shows a preview window. If <em>Wait</em> is non-zero, blocks until it closes.</td></tr>
   <tr><td><code>GetPixel(X, Y)</code></td><td>Returns the full <code class="no-highlight">0xAARRGGBB</code> pixel value.</td></tr>
   <tr><td><code>SetPixel(X, Y, Color)</code></td><td>Sets a pixel from an RGB or ARGB color.</td></tr>
 </table>
+<p><code>ToClr()</code> hands out the live underlying bitmap, not a copy: it goes stale once the image is next transformed or disposed. See <a href="Clr.htm#ToClr">ToClr on built-in objects</a>.</p>
 
 <h3 id="GetPixelData">GetPixelData</h3>
 <pre class="Syntax">Data := Picture.<span class="func">GetPixelData</span>(<span class="optional">BytesPerPixel := 1</span>)</pre>

@@ -24,8 +24,8 @@
   <dt>UnderlyingThreadState</dt>
   <dd>
     <p>Type: <a href="../Concepts.htm#numbers">Integer</a></p>
-    <p>If omitted, the <a href="../misc/Threads.htm">current thread</a> is paused. Otherwise, specify one of the following values:</p>
-    <p><code>1</code> or <code>True</code>: Marks the underlying thread as paused. The current thread is not paused and continues running. When the current thread finishes, the underlying thread resumes any interrupted function the underlying thread was running. Once the underlying thread finishes the function (if any), it enters a paused state. If there is no thread underneath the current thread, the script itself is paused, which prevents <a href="SetTimer.htm">timers</a> from running (this effect is the same as having used the menu item "Pause Script" while the script has no threads).</p>
+    <p>If omitted, the <a href="../misc/Threads.htm">current thread</a> is paused immediately: the call blocks there until something clears the flag. Otherwise, specify one of the following values:</p>
+    <p><code>1</code> or <code>True</code>: Marks the underlying thread as paused. The current thread is not paused and continues running. When the current thread finishes, the underlying thread resumes any interrupted function it was running. Once it finishes that function (if any), it observes the flag and enters a paused state. If there is no thread underneath the current thread, this has no effect.</p>
     <p><code>0</code> or <code>False</code>: Unpauses the underlying thread.</p>
     <p><code>-1</code>: Toggles the pause state of the underlying thread.</p>
   </dd>
@@ -33,37 +33,30 @@
 </dl>
 
 <h2 id="Remarks">Remarks</h2>
-<p>By default, the script can also be paused via its <a href="../Program.htm#tray-icon">tray icon</a> or <a href="../Program.htm#main-window">main window</a>.</p>
+<p class="note"><strong>Note:</strong> Pause acts on a <a href="../misc/Threads.htm">thread</a>, either the calling one or the one beneath it. Pausing the whole script is not supported, and there is no tray-menu Pause item. In AutoHotkey v2.1, <code>Pause 1</code> with no thread underneath pauses the script itself.</p>
 <p>Unlike <a href="Suspend.htm">Suspend</a> -- which disables <a href="../Hotkeys.htm">hotkeys</a> and <a href="../Hotstrings.htm">hotstrings</a> -- turning on pause will freeze the thread (the <a href="../misc/Threads.htm">current thread</a> if <em>UnderlyingThreadState</em> was omitted, otherwise the underlying thread). As a side-effect, any interrupted threads underneath it will lie dormant until the current thread is unpaused and finishes.</p>
-<p>Whenever any thread or the script itself is paused, <a href="SetTimer.htm">timers</a> will not run. By contrast, explicitly launched threads such as <a href="../Hotkeys.htm">hotkeys</a> and <a href="Menu.htm">menu items</a> can still be launched; but when their <a href="../misc/Threads.htm">threads</a> finish, the underlying thread will still be paused. In other words, each thread can be paused independently of the others.</p>
-<p>On platforms with a notification-area interface, the tray presentation may indicate that the current thread is paused. Its appearance varies by platform. An icon change can be avoided by freezing the icon with <code><a href="TraySetIcon.htm">TraySetIcon</a>(,, true)</code>.</p>
-<p>To disable <a href="SetTimer.htm">timers</a> without pausing the script, use <a href="Thread.htm#NoTimers">Thread NoTimers</a>.</p>
+<p>A paused thread keeps processing messages, so <a href="../Hotkeys.htm">hotkeys</a> and work posted from another <a href="RealThread.htm">real thread</a> still run and can unpause it. <a href="ExitApp.htm">ExitApp</a> releases it. <a href="SetTimer.htm">Timers</a> are suspended for as long as a thread is paused. Explicitly launched threads such as hotkeys and <a href="Menu.htm">menu items</a> can still be launched; when their threads finish, the underlying thread is still paused. In other words, each thread can be paused independently of the others.</p>
+<p>To disable <a href="SetTimer.htm">timers</a> without pausing a thread, use <a href="Thread.htm#NoTimers">Thread NoTimers</a>.</p>
 <p>A script is always halted (though not officially paused) while it is displaying any kind of <a href="Menu.htm">menu</a> (tray menu, menu bar, GUI context menu, etc.)</p>
-<p>The built-in variable <strong>A_IsPaused</strong> contains 1 if the thread immediately underneath the current thread is paused and 0 otherwise.</p>
+<p>The built-in variable <strong>A_IsPaused</strong> contains 1 if the thread immediately underneath the current thread is paused and 0 otherwise. Writing to it, and to <a href="Thread.htm#Paused">Thread.Paused</a>, sets the same flag <code>Pause 1</code> sets.</p>
 
 <h2 id="Related">Related</h2>
 <p><a href="Suspend.htm">Suspend</a>, <a href="Menu.htm">Menu object</a>, <a href="ExitApp.htm">ExitApp</a>, <a href="../misc/Threads.htm">Threads</a>, <a href="SetTimer.htm">SetTimer</a></p>
 
 <h2 id="Examples">Examples</h2>
 <div class="ex" id="ExHalt">
-<p><a class="ex_number" href="#ExHalt"></a> Use Pause to halt the script, such as to inspect variables.</p>
+<p><a class="ex_number" href="#ExHalt"></a> Use Pause to halt a thread, such as to inspect variables. A paused thread keeps processing messages, so a hotkey can release it.</p>
 <pre>ListVars
 Pause
-ExitApp <em>; This line will not execute until the user unpauses the script.</em></pre>
+ExitApp <em>; This line does not execute until the pause is cleared.</em>
+
+#p::Pause 0  <em>; Win+P unpauses the thread beneath it.</em></pre>
 </div>
 
 <div class="ex" id="ExHotkey">
-<p><a class="ex_number" href="#ExHotkey"></a> Press a hotkey once to pause the script. Press it again to unpause.</p>
+<p><a class="ex_number" href="#ExHotkey"></a> Press a hotkey once to pause the interrupted thread. Press it again to unpause.</p>
 <pre>Pause::Pause -1  <em>; The Pause/Break key.</em>
 #p::Pause -1  <em>; Win+P</em></pre>
-</div>
-
-<div class="ex" id="ExPostMessage">
-<p><a class="ex_number" href="#ExPostMessage"></a> Sends a Pause command to another script.</p>
-<pre>DetectHiddenWindows True
-WM_COMMAND := 0x0111
-ID_FILE_PAUSE := 65403
-<a href="PostMessage.htm">PostMessage</a> WM_COMMAND, ID_FILE_PAUSE,,, "C:\YourScript.ahk ahk_class AutoHotkey"</pre>
 </div>
 
 </body>

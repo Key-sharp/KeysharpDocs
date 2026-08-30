@@ -35,7 +35,7 @@
 
 <h2 id="Return_Value">Return Value</h2>
 <p>Type: Object</p>
-<p>Returns an object with one property per capability. Each value is <code class="no-highlight">"Granted"</code>, <code class="no-highlight">"Denied"</code>, <code class="no-highlight">"NotApplicable"</code> or <code class="no-highlight">"Unsupported"</code>. The <code>Granted</code> property is 1 only if every requested capability was granted or is not applicable.</p>
+<p>Returns an object with one property per capability. Each value is <code class="no-highlight">"Granted"</code>, <code class="no-highlight">"Denied"</code>, <code class="no-highlight">"NotApplicable"</code> or <code class="no-highlight">"Unsupported"</code>. The <code>IsGranted</code> property is 1 only if every requested capability was granted or is not applicable.</p>
 
 <h2 id="Remarks">Remarks</h2>
 <p>On Linux, input-related capabilities and ScreenCapture requested in the same call are batched into one <code class="no-highlight">keysharp-inputd</code> prompt.</p>
@@ -44,7 +44,7 @@
 <h2 id="Examples">Examples</h2>
 <pre>#Import "Ks" { RequestCapabilities }
 Caps := RequestCapabilities("InputMonitoring", "ScreenCapture")
-if Caps.Granted
+if Caps.IsGranted
     MsgBox "All permissions granted"
 MsgBox Caps.ScreenCapture
 

@@ -57,6 +57,7 @@ MsgBox users[1]</pre>
       <li><a href="#Remove">Remove</a>: Removes the first occurrence of a value.</li>
       <li><a href="#RemoveAt">RemoveAt</a>: Removes items from an array.</li>
       <li><a href="#Sort">Sort</a>: Sorts the Array in place.</li>
+      <li><a href="#ToClr">ToClr</a>: Returns the array as a Clr object.</li>
       <li><a href="#ToString">ToString</a>: Returns a string representation of the array.</li>
       <li><a href="#__New">__New</a>: Appends items. Equivalent to Push.</li>
       <li><a href="#__Enum">__Enum</a>: Enumerates array elements.</li>
@@ -284,6 +285,12 @@ Lowest := ArrayObj.<span class="func">MinIndex</span>()</pre>
 <p>Sorts the Array in place and returns the Array.</p>
 <pre class="Syntax">ArrayObj.<span class="func">Sort</span>(Callback)</pre>
 <p>The callback receives two values and should return a negative number when the first belongs before the second, zero when equal, or a positive number otherwise.</p>
+</div>
+
+<div class="methodShort" id="ToClr"><h3>ToClr</h3>
+<p>Returns the array as an ordinary <a href="Clr.htm">Clr</a> object, exposing its full CLR surface late-bound.</p>
+<pre class="Syntax">ClrArray := ArrayObj.<span class="func">ToClr</span>()</pre>
+<p>An array is itself a CLR <code class="no-highlight">IList</code>, so a CLR API declaring one accepts it directly; the wrapper is only needed to reach CLR members from script. See <a href="Clr.htm#ToClr">ToClr on built-in objects</a>.</p>
 </div>
 
 <div class="methodShort" id="ToString"><h3>ToString</h3>

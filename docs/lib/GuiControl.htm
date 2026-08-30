@@ -41,6 +41,7 @@
       <li><a href="#SetCue">SetCue</a> <span class="ver">[v2.1-alpha.7+]</span>: Sets the cue banner text of an Edit or ComboBox control.</li>
       <li><a href="#SetFont">SetFont</a>: Changes a control's font typeface, size, color, and/or style.</li>
       <li><a href="#SetTabIcon">SetTabIcon</a>: Changes the icon of a tab.</li>
+      <li><a href="#ToClr">ToClr</a>: Returns the backing toolkit control as a Clr object.</li>
     </ul>
   </li>
   <li><a href="#Properties">Properties</a>:
@@ -55,7 +56,6 @@
       <li><a href="#Hwnd">Hwnd</a>: Gets the window handle (HWND) of a control.</li>
       <li><a href="#Parent">Parent</a>: Gets or sets the container a control is placed in.</li>
       <li><a href="#Name">Name</a>: Gets or sets the explicit name of a control.</li>
-      <li><a href="#RichText">RichText</a>: Accesses the rich-text content of a RichEdit control.</li>
       <li><a href="#Text">Text</a>: Gets or sets the text/caption of a control.</li>
       <li><a href="#Type">Type</a>: Gets the type of a control.</li>
       <li><a href="#Value">Value</a>: Gets or sets the contents of a value-capable control.</li>
@@ -305,6 +305,13 @@ EditCtrl.<span class="func">SetCue</span>(NewText <span class="optional">, ShowW
 <p><em>TabIndex</em> identifies the tab and <em>ImageIndex</em> identifies an image in the tab control's image list. This provides a direct alternative to sending a native tab-control message.</p>
 </div>
 
+<div class="methodShort" id="ToClr">
+<h3>ToClr</h3>
+<p>Returns the backing toolkit control as an ordinary <a href="Clr.htm">Clr</a> object.</p>
+<pre class="Syntax">ClrCtrl := GuiCtrl.<span class="func">ToClr</span>()</pre>
+<p>Its concrete type is platform-dependent and unspecified. Changes made through it bypass the control object's own state and event wiring. See <a href="Clr.htm#ToClr">ToClr on built-in objects</a>.</p>
+</div>
+
 <h2 id="Properties">Properties</h2>
 <div class="methodShort" id="BackColor">
 <h3>BackColor</h3>
@@ -387,16 +394,6 @@ EditCtrl.<span class="func">SetCue</span>(NewText <span class="optional">, ShowW
 <p><em>CurrentName</em> is the control's current name, or an empty string if it has no name. The <a href="Gui.htm#var">V option</a> affects the initial setting.</p>
 <p><em>NewName</em> is the control's new name.</p>
 <p>This name can be used with <a href="Gui.htm#__Item">Gui.__Item</a> to retrieve the corresponding GuiControl object. For most input-capable controls, the name is also used by <a href="Gui.htm#Submit">Gui.Submit</a>.</p>
-</div>
-
-<div class="methodShort" id="RichText">
-<h3>RichText</h3>
-<p>Accesses the rich-text content of a <a href="GuiControls.htm#RichEdit">RichEdit</a> control.</p>
-<pre class="Syntax">CurrentText := GuiCtrl.<span class="func">RichText</span></pre>
-<pre class="Syntax">GuiCtrl.<span class="func">RichText</span> := NewRTF</pre>
-<p class="note"><strong>Note:</strong> Reading this property currently returns the displayed plain text, while assigning it expects Rich Text Format (RTF) data. Returning raw RTF on read is intended but not yet implemented.</p>
-<p>Use <a href="#Value">Value</a> to get or set the displayed plain text.</p>
-<p>Using this property with any control other than RichEdit throws an exception. If a RichEdit control has the <a href="Gui.htm#AltSubmit">AltSubmit option</a>, <a href="Gui.htm#Submit">Gui.Submit</a> retrieves its raw rich text.</p>
 </div>
 
 <div class="methodShort" id="Text">

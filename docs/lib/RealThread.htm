@@ -16,10 +16,9 @@
 <p>Runs callbacks on a real operating-system thread, each with its own event loop. This is distinct from the cooperative <a href="../misc/Threads.htm">script threads</a> that the rest of the language schedules, which are described by the <a href="Thread.htm#Object">Thread object</a>.</p>
 <p>This class is exported by the <a href="../Modules.htm#KS">KS module</a>.</p>
 
-<pre>#Import "Ks" { RealThread }
+<pre>#Import "Ks" { RealThread, Await }
 worker := RealThread(Sum, 1, 100)
-worker.Wait()
-MsgBox worker.Result
+MsgBox Await(worker.Task)
 
 Sum(from, to) {
     total := 0
@@ -28,15 +27,24 @@ Sum(from, to) {
     return total
 }</pre>
 
+<h2 id="Completions">Two completions</h2>
+<p>A worker has two completions, and they are not the same event. Each is a <a href="Task.htm">Task</a>, so <a href="Await.htm">Await</a> and <a href="Task.htm#Then">Then</a> apply to both.</p>
+<table class="info">
+  <tr><th>Property</th><th>Settles when</th></tr>
+  <tr><td><a href="#Task">Task</a></td><td>The entry function's body leaves, carrying its return value, its error, or cancellation if <a href="#Exit">Exit</a> ended it first.</td></tr>
+  <tr><td><a href="#Terminated">Terminated</a></td><td>The operating-system thread is gone.</td></tr>
+</table>
+<p>A body which registers a timer, hotkey, callback or window event keeps its thread alive to serve them after it has returned. <code>Await(worker.Task)</code> therefore returns while <a href="#IsAlive">worker.IsAlive</a> is still true, and <a href="#Exit">Exit</a> shuts such a worker down.</p>
+
 <h2 id="Kinds">Kinds of real thread</h2>
-<p>Three kinds of object share this class, and they differ only in whether there is a body to wait for:</p>
+<p>Three kinds of object share this class, and they differ only in whether there is a body and an end this class controls:</p>
 <table class="info">
   <tr><th>Obtained from</th><th>Description</th></tr>
-  <tr><td><code>RealThread(Callback, Arguments*)</code></td><td>A <em>worker</em> this class started. The only kind that can be waited on, continued or exited.</td></tr>
+  <tr><td><code>RealThread(Callback, Arguments*)</code></td><td>A <em>worker</em> this class started. The only kind with a body to wait for or a lifetime this class ends.</td></tr>
   <tr><td><a href="#Main">RealThread.Main</a></td><td>The script's main thread.</td></tr>
   <tr><td><a href="../Variables.htm#A_RealThread">A_RealThread</a></td><td>The thread the calling code is on: one of the above, or an <em>adopted</em> thread when script code runs on some other thread.</td></tr>
 </table>
-<p>On the main and adopted kinds, <a href="#Wait">Wait</a>, <a href="#ContinueWith">ContinueWith</a> and <a href="#Exit">Exit</a> throw <a href="Error.htm#TargetError">TargetError</a>, because there is no body of their own to wait for or unwind. Everything else behaves the same, which is what makes <code>RealThread.Main.Post(Callback)</code> the supported way to move work back onto the main thread.</p>
+<p>On the main and adopted kinds, <a href="#Task">Task</a>, <a href="#Terminated">Terminated</a> and <a href="#Exit">Exit</a> throw <a href="Error.htm#TargetError">TargetError</a>, because they have neither. Everything else behaves the same, so <code>RealThread.Main.Post(Callback)</code> and <code>RealThread.Main.Send(Callback)</code> are the supported ways to move work back onto the main thread.</p>
 <p>Exactly one object exists per real thread, so <code>==</code> identifies which kind one is: <code>A_RealThread == RealThread.Main</code> is true on the main thread.</p>
 
 <h2 id="Call">Call</h2>
@@ -44,7 +52,6 @@ Sum(from, to) {
 Worker := RealThread.<span class="func">Call</span>(Callback <span class="optional">, Arguments*</span>)</pre>
 <p>Starts <em>Callback</em> on a new real thread and returns its RealThread object. Any <em>Arguments</em> are passed to <em>Callback</em>.</p>
 <p>The thread ends when its body returns and it has nothing left to serve. A body that registers a timer, hotkey, callback or window event keeps its thread alive to serve them; use <a href="#Exit">Exit</a> to shut such a thread down.</p>
-<p class="note"><strong>Note:</strong> An uncaught error in <em>Callback</em> is reported on the thread where it happened, in the same way as an error in a timer or hotkey. It is not delivered to whoever calls <a href="#Wait">Wait</a>; <a href="#IsFailed">IsFailed</a> becomes true instead.</p>
 
 <h2 id="Main">Main</h2>
 <pre class="Syntax">MainThread := RealThread.<span class="func">Main</span></pre>
@@ -52,29 +59,25 @@ Worker := RealThread.<span class="func">Call</span>(Callback <span class="option
 <pre>RealThread.Main.Post(() => MsgBox("Shown on the main thread"))</pre>
 
 <h2 id="Post">Post</h2>
-<pre class="Syntax">Worker.<span class="func">Post</span>(Callback <span class="optional">, Arguments*</span>)</pre>
-<p>Queues <em>Callback</em> on the thread and returns immediately without waiting for it to run.</p>
+<pre class="Syntax">TaskObj := Worker.<span class="func">Post</span>(Callback <span class="optional">, Arguments*</span>)</pre>
+<p>Queues <em>Callback</em> on the thread and returns immediately with the <a href="Task.htm">Task</a> carrying its result. Ignore that task for fire-and-forget, <a href="Task.htm#Then">Then</a> it to react when the work finishes, or <a href="Await.htm">Await</a> it to wait for the value.</p>
+<pre>worker.Post(Log, "done")
+worker.Post(Compute, a, b).Then(Handle)
+value := Await(worker.Post(Compute, a, b))</pre>
+<p>The work is queued as a <a href="../misc/Threads.htm">thread</a> launch on the target, so a target which is <a href="Critical.htm">Critical</a> or has reached <a href="_MaxThreads.htm">#MaxThreads</a> <em>defers</em> it until launches are admitted again. Work discarded at the target's shutdown fails its task rather than leaving an Await waiting forever.</p>
+<p>Posting to a thread which is no longer alive raises an error, rather than returning an already-failed task.</p>
 
 <h2 id="Send">Send</h2>
 <pre class="Syntax">Result := Worker.<span class="func">Send</span>(Callback <span class="optional">, Arguments*</span>)</pre>
-<p>Runs <em>Callback</em> on the thread, waits for it, and returns its result. The calling thread keeps processing its own events while it waits.</p>
-<p>The target thread runs the callback the next time it processes events, so a thread busy in a long computation that never yields will not answer until it does. The callback runs as a <a href="../misc/Threads.htm">thread</a> of its own on the target, so a target which is <a href="Critical.htm">Critical</a> or has reached <a href="_MaxThreads.htm">#MaxThreads</a> refuses it and this raises an error, rather than waiting for the target to become interruptible.</p>
-
-<h2 id="Wait">Wait</h2>
-<pre class="Syntax">Finished := Worker.<span class="func">Wait</span>(<span class="optional">Timeout</span>)</pre>
-<p>Waits for the thread to finish, processing events while it waits, and returns 1 (true) if it finished or 0 (false) if <em>Timeout</em> elapsed first. <em>Timeout</em> is in milliseconds; omit it to wait indefinitely. Read <a href="#Result">Result</a> for the value the body returned.</p>
-<p>A thread cannot wait on itself; doing so throws <a href="Error.htm#TargetError">TargetError</a>.</p>
-
-<h2 id="ContinueWith">ContinueWith</h2>
-<pre class="Syntax">Continuation := Worker.<span class="func">ContinueWith</span>(Callback <span class="optional">, Arguments*</span>)</pre>
-<p>Starts <em>Callback</em> on a new real thread once this one finishes, and returns the continuation's RealThread object.</p>
-<p>Calling <a href="#Exit">Exit</a> on the continuation before it starts cancels it, so its callback is not run.</p>
+<p>Runs <em>Callback</em> on the thread, waits for it, and returns its result. An error raised there is re-thrown here. The calling thread keeps processing its own events while it waits.</p>
+<p>A call to the calling thread's own real thread is a direct call, and the main thread is reached through the GUI toolkit's own marshalling. The request is served past queued work whose launch is parked, but a target which is <a href="Critical.htm">Critical</a> or has reached <a href="_MaxThreads.htm">#MaxThreads</a> refuses it and this raises an error, where <a href="#Post">Post</a> would have deferred it.</p>
+<p>Use <code>Send</code> when a busy target should fail fast and <code>Await(worker.Post(...))</code> when it should be waited for. Sending to a thread which is no longer alive raises an error.</p>
 
 <h2 id="Exit">Exit</h2>
-<pre class="Syntax">Worker.<span class="func">Exit</span>(<span class="optional">ExitCode</span>)</pre>
-<p>Asks the thread to shut down. Work already queued on it is abandoned, a script thread running on it unwinds when it next processes events, and its event loop then stops. This is cooperative and does not asynchronously abort running code. Shutting down a thread that has already ended is not an error.</p>
-<p>Called on the thread itself (<code>A_RealThread.Exit()</code>), the current script thread exits immediately and the call does not return.</p>
-<p>If Exit ends the worker before its body returns, <a href="#IsCanceled">IsCanceled</a> becomes true. If the body already returned successfully and only its persistent event loop remained, Exit preserves <a href="#IsSuccessful">IsSuccessful</a> and <a href="#Result">Result</a>.</p>
+<pre class="Syntax">TaskObj := Worker.<span class="func">Exit</span>(<span class="optional">ExitCode</span>)</pre>
+<p>Asks the thread to shut down and returns the same task as <a href="#Terminated">Terminated</a>, so <code>Await(worker.Exit())</code> stops the worker and waits for it. Work already queued on it is abandoned, a script thread running on it unwinds when it next processes events, and its event loop then stops. This is cooperative and does not asynchronously abort running code. Shutting down a thread that has already ended is not an error.</p>
+<p>Called on the thread itself (<code>A_RealThread.Exit()</code>), the current script thread exits immediately and the call does not return, so its task is unobservable there.</p>
+<p>If Exit ends the worker before its body returns, <a href="#Task">Task</a> is canceled. A body which already returned settled its own task, and a later Exit does not change that outcome.</p>
 <dl>
   <dt>ExitCode</dt>
   <dd>
@@ -90,29 +93,21 @@ Worker := RealThread.<span class="func">Call</span>(Callback <span class="option
     <p>Type: <a href="../Concepts.htm#numbers">Integer</a></p>
     <p>The managed ID of the backing operating-system thread.</p>
   </dd>
-  <dt id="IsActive">IsActive</dt>
+  <dt id="IsAlive">IsAlive</dt>
   <dd>
     <p>Type: <a href="Boolean.htm">Boolean</a></p>
-    <p>True while the thread has not finished. This tracks the same moment <a href="#Wait">Wait</a> waits for, so it remains true while a worker serves timers or callbacks after its body returned. It is also true before a <a href="#ContinueWith">ContinueWith</a> worker has started. For the main and adopted kinds, IsActive is always true.</p>
+    <p>True while the operating-system thread has not terminated. This is the thread's lifetime, not its body's: a worker whose entry function has returned is still alive while it serves the timers or hotkeys that function registered. <code><a href="#Task">Task</a>.<a href="Task.htm#IsPending">IsPending</a></code> is the question about the body. For the main and adopted kinds, IsAlive is true while that thread is running.</p>
   </dd>
-  <dt id="IsSuccessful">IsSuccessful</dt>
+  <dt id="Task">Task</dt>
   <dd>
-    <p>Type: <a href="Boolean.htm">Boolean</a></p>
-    <p>True only after the worker finishes successfully.</p>
+    <p>Type: <a href="Task.htm">Task</a></p>
+    <p>The entry function's eventual result, settling the moment the body leaves, whether or not the thread stays up afterwards. It succeeds with the body's return value, fails with the body's error, or is canceled if <a href="#Exit">Exit</a> ended the body first; <a href="Task.htm#Status">Status</a> and the <code>Is*</code> predicates report which.</p>
+    <p>A body's error rethrows when this task is awaited, and is reported as an unobserved failure if nothing ever observes it. Workers only: this throws <a href="Error.htm#TargetError">TargetError</a> on <code>RealThread.Main</code> and adopted threads.</p>
   </dd>
-  <dt id="IsFailed">IsFailed</dt>
+  <dt id="Terminated">Terminated</dt>
   <dd>
-    <p>Type: <a href="Boolean.htm">Boolean</a></p>
-    <p>True only after the worker finishes because of an error.</p>
-  </dd>
-  <dt id="IsCanceled">IsCanceled</dt>
-  <dd>
-    <p>Type: <a href="Boolean.htm">Boolean</a></p>
-    <p>True only when Exit ends the worker before its body returns.</p>
-  </dd>
-  <dt id="Result">Result</dt>
-  <dd>
-    <p>The value the thread's body returned after successful completion. An empty string otherwise.</p>
+    <p>Type: <a href="Task.htm">Task</a></p>
+    <p>Completes when the operating-system thread is gone, carrying no value. Reading it asks nothing of the thread, so it is how to wait for a worker that ends on its own; <a href="#Exit">Exit</a> requests shutdown and returns this same task. Workers only: this throws <a href="Error.htm#TargetError">TargetError</a> on <code>RealThread.Main</code> and adopted threads.</p>
   </dd>
   <dt id="Threads">Threads</dt>
   <dd>
@@ -122,9 +117,11 @@ Worker := RealThread.<span class="func">Call</span>(Callback <span class="option
 </dl>
 
 <h2 id="Remarks">Remarks</h2>
-<p>Exactly one of <a href="#IsActive">IsActive</a>, <a href="#IsSuccessful">IsSuccessful</a>, <a href="#IsFailed">IsFailed</a> and <a href="#IsCanceled">IsCanceled</a> is true. On the main and adopted kinds, IsActive remains true and the three terminal properties remain false.</p>
-<p>State shared between real threads requires synchronization. Use <a href="LockRun.htm">LockRun</a> or another appropriate design when callbacks mutate shared objects.</p>
-<p>Settings that are per script thread — <a href="CoordMode.htm">CoordMode</a>, <a href="SendMode.htm">SendMode</a>, <a href="SetKeyDelay.htm">SetKeyDelay</a>, <a href="../Variables.htm#LastError">A_LastError</a> and the rest — are also per real thread, so a worker starts from the script's defaults and its changes do not affect the main thread.</p>
+<p>A thread cannot wait on its own entry function: <code>Await(A_RealThread.Task)</code> from inside the body throws <a href="Error.htm#TargetError">TargetError</a>. Once the body has returned, a timer or callback still running on that worker may await it.</p>
+<p>State shared between real threads requires synchronization. Use a <a href="Lock.htm">Lock</a> when callbacks mutate shared objects.</p>
+<p class="warning"><strong>Warning:</strong> Do not hold a <a href="Lock.htm">Lock</a> across <code>Worker.Send(Callback)</code> or <code>Await(Worker.Post(Callback))</code> when <em>Callback</em> wants that same lock. The two threads then wait on each other: until the Await's timeout, or indefinitely for a Send, which has no timeout.</p>
+<p>Awaiting a <a href="#Post">Post</a> aimed at the calling thread's own real thread while the current script thread is <a href="Critical.htm">Critical</a> throws <a href="Error.htm#TargetError">TargetError</a> rather than hanging, because the posted work needs the thread launch which Critical refuses. Outside Critical, <code>Await(A_RealThread.Post(Callback))</code> works.</p>
+<p>Settings that are per script thread &mdash; <a href="CoordMode.htm">CoordMode</a>, <a href="SendMode.htm">SendMode</a>, <a href="SetKeyDelay.htm">SetKeyDelay</a>, <a href="../Variables.htm#LastError">A_LastError</a> and the rest &mdash; are also per real thread, so a worker starts from the script's defaults and its changes do not affect the main thread.</p>
 
 <h2 id="Examples">Examples</h2>
 
@@ -150,16 +147,18 @@ Report(total) {
 </div>
 
 <div class="ex" id="ExService">
-<p><a class="ex_number" href="#ExService"></a> A long-lived worker that serves requests until it is shut down.</p>
-<pre>#Import "Ks" { RealThread }
+<p><a class="ex_number" href="#ExService"></a> A long-lived worker that serves requests until it is shut down. Its body returns at once, so <code>Task</code> settles long before <code>Terminated</code> does.</p>
+<pre>#Import "Ks" { RealThread, A_RealThread, Await }
 
 service := RealThread(Serve)
+
+Await(service.Task)         <em>; the body has returned</em>
+MsgBox service.IsAlive      <em>; 1, the thread is still serving its timer</em>
 
 <em>; Send runs on the worker and returns its value.</em>
 MsgBox service.Send(() => "answered by thread " A_RealThread.Id)
 
-service.Exit()
-service.Wait()
+Await(service.Exit())       <em>; shut it down and wait for the thread to go</em>
 
 Serve() {
     <em>; Keeps the worker's event loop alive so Post and Send have somewhere to land.</em>
@@ -169,7 +168,7 @@ Serve() {
 </div>
 
 <h2 id="Related">Related</h2>
-<p><a href="Thread.htm#Object">Thread object</a>, <a href="LockRun.htm">LockRun</a>, <a href="../misc/Threads.htm">Threads</a>, <a href="../Variables.htm#KS">KS module variables</a></p>
+<p><a href="Task.htm">Task</a>, <a href="Await.htm">Await</a>, <a href="Lock.htm">Lock</a>, <a href="Thread.htm#Object">Thread object</a>, <a href="../misc/Threads.htm">Threads</a>, <a href="../Variables.htm#KS">KS module variables</a></p>
 
 </body>
 </html>

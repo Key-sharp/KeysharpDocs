@@ -124,13 +124,15 @@ Clipboard.<span class="func">All</span> := Saved</pre>
 <p>Carries the same surface as a <a href="WinEvent.htm">WinEvent</a> hook.</p>
 <table class="info">
   <tr><th style="width:12em">Member</th><th abbr="Descr">Description</th></tr>
-  <tr><td>Stop()</td><td>Cancels the subscription so the callback no longer fires.</td></tr>
+  <tr><td>Stop()</td><td>Cancels the subscription so the callback no longer fires. This is permanent.</td></tr>
   <tr><td>Pause(<span class="optional">NewState</span>)</td><td>Pauses (1), unpauses (0) or toggles (-1) this hook, returning the resulting state. A paused hook stays registered but does not fire.</td></tr>
-  <tr><td>Paused</td><td>Gets or sets whether the hook is paused.</td></tr>
-  <tr><td>IsActive</td><td>True while the subscription is still receiving events.</td></tr>
+  <tr><td>Paused</td><td>Gets or sets this hook's own pause switch. A stopped hook reports false and ignores writes.</td></tr>
+  <tr><td>Status</td><td>The effective state: <code class="no-highlight">"Active"</code>, <code class="no-highlight">"Paused"</code> or <code class="no-highlight">"Stopped"</code>.</td></tr>
+  <tr><td>IsActive</td><td>Whether the hook is firing. A paused hook is <strong>not</strong> active.</td></tr>
   <tr><td>Count</td><td>Remaining number of times the callback will fire; -1 means unlimited.</td></tr>
   <tr><td>Callback</td><td>The function this hook calls.</td></tr>
 </table>
+<p><code>Status</code> separates the three states a hook can be in, where <code>IsActive</code> only answers whether it is firing and so is false while the hook is paused as well as after it is stopped. See <a href="WinEvent.htm#Hook">WinEvent subscription members</a>.</p>
 <p>The subscription also stops when the hook is collected, but garbage-collection timing is unpredictable; call <code class="no-highlight">Stop()</code> when the exact moment matters.</p>
 
 <h2 id="Platform">Platform Support</h2>

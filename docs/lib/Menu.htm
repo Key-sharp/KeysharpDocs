@@ -45,6 +45,7 @@
       <li><a href="#SetForeColor">SetForeColor</a>: Changes the menu's text color.</li>
       <li><a href="#SetIcon">SetIcon</a>: Sets the icon to be displayed next to a menu item.</li>
       <li><a href="#Show">Show</a>: Displays the menu.</li>
+      <li><a href="#ToClr">ToClr</a>: Returns the backing toolkit menu as a Clr object.</li>
       <li><a href="#ToggleCheck">ToggleCheck</a>: Toggles the checkmark next to a menu item.</li>
       <li><a href="#ToggleEnable">ToggleEnable</a>: Enables or disables a menu item.</li>
       <li><a href="#Uncheck">Uncheck</a>: Removes the checkmark (if there is one) from a menu item.</li>
@@ -164,10 +165,10 @@ MyMenuBar := MenuBar.<span class="func">Call</span>()
   <tr><td>&amp;Edit Script</td><td>6</td><td></td></tr>
   <tr><td><div class="fake-sep"></div></td><td>7</td><td></td></tr>
   <tr><td>&amp;Suspend Hotkeys</td><td>8</td><td>1</td></tr>
-  <tr><td>&amp;Pause Script</td><td>9</td><td>2</td></tr>
-  <tr><td>E&amp;xit</td><td>10</td><td>3</td></tr>
+  <tr><td>E&amp;xit</td><td>9</td><td>2</td></tr>
 </table>
-<p>Compiled scripts include only the last three by default. <code class="no-highlight">&amp;Open</code> is included only if <a href="../Variables.htm#AllowMainWindow">A_AllowMainWindow</a> is 1 when AddStandard is called (in that case, add 1 to the positions shown in the third column). If the tray menu contains standard items, <code class="no-highlight">&amp;Open</code> is inserted or removed whenever <a href="../Variables.htm#AllowMainWindow">A_AllowMainWindow</a> is changed. For other menus, <code class="no-highlight">&amp;Open</code> has no effect if <a href="../Variables.htm#AllowMainWindow">A_AllowMainWindow</a> is 0.</p>
+<p>There is no <code class="no-highlight">&amp;Pause Script</code> item, because <a href="Pause.htm#Remarks">pausing the whole script</a> is not supported. In AutoHotkey v2.1, the tray menu has one at position 9.</p>
+<p>Compiled scripts include only the last two by default. <code class="no-highlight">&amp;Open</code> is included only if <a href="../Variables.htm#AllowMainWindow">A_AllowMainWindow</a> is 1 when AddStandard is called (in that case, add 1 to the positions shown in the third column). If the tray menu contains standard items, <code class="no-highlight">&amp;Open</code> is inserted or removed whenever <a href="../Variables.htm#AllowMainWindow">A_AllowMainWindow</a> is changed. For other menus, <code class="no-highlight">&amp;Open</code> has no effect if <a href="../Variables.htm#AllowMainWindow">A_AllowMainWindow</a> is 0.</p>
 <p>Standard items can be modified or deleted like custom menu items. AddStandard detects existing standard items by their displayed names because the managed menu backend does not expose the native IDs used by the original implementation.</p>
 <p>Adding the <code class="no-highlight">&amp;Open</code> item to the tray menu causes it to become the default item if there wasn't one already.</p>
 </div>
@@ -360,6 +361,13 @@ MyMenuBar := MenuBar.<span class="func">Call</span>()
 <h4 id="Show_Remarks">Remarks</h4>
 <p>Displaying the menu allows the user to select an item with arrow keys, menu shortcuts (underlined letters), or the mouse.</p>
 <p>Any popup menu can be shown, including submenus and the tray menu. However, an exception is thrown if <em>MyMenu</em> is a MenuBar object.</p>
+</div>
+
+<div class="methodShort" id="ToClr">
+<h3>ToClr</h3>
+<p>Returns the backing toolkit menu as an ordinary <a href="Clr.htm">Clr</a> object.</p>
+<pre class="Syntax">ClrMenu := MyMenu.<span class="func">ToClr</span>()</pre>
+<p>Its concrete type is platform-dependent and unspecified. Changes made through it bypass the Menu object's own state and event wiring. See <a href="Clr.htm#ToClr">ToClr on built-in objects</a>.</p>
 </div>
 
 <div class="methodShort" id="ToggleCheck">

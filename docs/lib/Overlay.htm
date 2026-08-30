@@ -64,7 +64,7 @@ Surface.Present()</pre>
   <tr><td><code>Width</code>, <code>Height</code></td><td>Get or set the display rectangle without discarding the canvas. Set either to 0 to use the canvas dimension.</td></tr>
   <tr><td><code>Opacity</code></td><td>Gets or sets opacity from 0 to 255.</td></tr>
   <tr><td><code>ClickThrough</code></td><td>Gets or sets whether pointer input passes through the surface.</td></tr>
-  <tr><td><code>Visible</code></td><td>Read-only visibility state.</td></tr>
+  <tr><td><code>IsVisible</code></td><td>Whether the overlay is currently on screen. This property is read-only; use <code>Show</code> and <code>Hide</code> to change it.</td></tr>
   <tr><td><code>Hwnd</code></td><td>The native surface handle or identifier, or 0 when the backing has none.</td></tr>
 </table>
 

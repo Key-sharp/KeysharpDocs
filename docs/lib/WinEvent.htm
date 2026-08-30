@@ -47,19 +47,28 @@ Hook := WinEvent.<span class="func">CaretMove</span>(Callback <span class="optio
 <pre class="Syntax">NewState := WinEvent.<span class="func">Pause</span>(<span class="optional">NewState := 1</span>)
 Paused := WinEvent.<span class="func">Paused</span>
 WinEvent.<span class="func">Paused</span> := NewState</pre>
-<p>Pause (1), resume (0) or toggle (-1) every subscription. Pause returns the resulting state.</p>
+<p>Pause (1), resume (0) or toggle (-1) every subscription. Pause returns the resulting state. While this switch is on, every hook reports <code>Status</code> <code class="no-highlight">"Paused"</code> and <code>IsActive</code> false.</p>
 
 <h2 id="Hook">Subscription Members</h2>
 <table class="info">
   <tr><th>Member</th><th>Description</th></tr>
-  <tr><td><code>Stop()</code></td><td>Cancels the subscription.</td></tr>
+  <tr><td><code>Stop()</code></td><td>Cancels the subscription. This is permanent.</td></tr>
   <tr><td><code>Pause([NewState := 1])</code></td><td>Pauses, resumes or toggles this subscription and returns its new state.</td></tr>
-  <tr><td><code>Paused</code></td><td>Gets or sets whether this subscription is paused.</td></tr>
-  <tr><td><code>IsActive</code></td><td>Whether it is still registered to receive events.</td></tr>
+  <tr><td><code>Paused</code></td><td>Gets or sets this hook's own pause switch. A stopped hook reports false and ignores writes.</td></tr>
+  <tr><td><code>Status</code></td><td>The effective state: <code class="no-highlight">"Active"</code>, <code class="no-highlight">"Paused"</code> or <code class="no-highlight">"Stopped"</code>.</td></tr>
+  <tr><td><code>IsActive</code></td><td>Whether the hook is firing. A paused hook is <strong>not</strong> active.</td></tr>
   <tr><td><code>EventType</code></td><td>The event name.</td></tr>
   <tr><td><code>Count</code></td><td>Remaining callback count, or -1 for unlimited.</td></tr>
 </table>
+<p>A hook is in exactly one of three states, which <code>Status</code> separates: <code class="no-highlight">"Active"</code> while it fires, <code class="no-highlight">"Paused"</code> while dispatch is suppressed by its own <code>Paused</code> or by the global <a href="#Global">WinEvent.Paused</a>, and <code class="no-highlight">"Stopped"</code> once <code>Stop()</code> has run. <code>IsActive</code> only answers whether it is firing, so it is false in both of the other two states.</p>
+<p><code class="no-highlight">"Stopped"</code> is permanent. A stopped hook cannot be paused or resumed, so <code>Paused</code> reads false there and writing to it does nothing.</p>
+<pre>hook := WinEvent.Active(OnActive)
+hook.Pause()
+MsgBox hook.Status "  " hook.IsActive   <em>; Paused  0</em>
+hook.Stop()
+MsgBox hook.Status "  " hook.Paused     <em>; Stopped  0</em></pre>
 <p>The subscription stops during <code>__Delete</code>, but garbage collection is non-deterministic. Call <code>Stop()</code> when the subscription is no longer needed.</p>
+<p><a href="Clipboard.htm#ClipboardHook">ClipboardHook</a> and the <a href="Monitor.htm#OnChange">Monitor.OnChange</a> subscription carry the same three members with the same meanings, minus the global switch.</p>
 
 <h2 id="Remarks">Platform Remarks</h2>
 <p>Every event type is available on every platform. What differs is the source each one is read from, and the permissions or helpers that source needs.</p>

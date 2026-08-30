@@ -68,8 +68,9 @@ Count := Monitor.<span class="func">Count</span></pre>
   <tr id="Primary"><td><code>Monitor.Primary</code></td><td>The primary monitor.</td></tr>
   <tr id="All"><td><code>Monitor.All</code></td><td>An <a href="Array.htm">Array</a> of every monitor, in number order, built from one enumeration. Prefer this to a loop of <code>Monitor(A_Index)</code>, which re-enumerates per monitor and can have the numbering shift under it if a display is attached midway through.</td></tr>
   <tr id="Count"><td><code>Monitor.Count</code></td><td>The number of monitors; the same value as <a href="MonitorGetCount.htm">MonitorGetCount</a>.</td></tr>
+  <tr id="VirtualScreen"><td><code>Monitor.VirtualScreen</code></td><td>The whole desktop &mdash; the union of every monitor &mdash; as an object with <code>X</code>, <code>Y</code>, <code>Width</code> and <code>Height</code>, in native screen coordinates. <code>X</code> and <code>Y</code> are negative when a display sits left of or above the primary.</td></tr>
   <tr id="FromPoint"><td><code>Monitor.FromPoint(X, Y)</code></td><td>The monitor containing a point in native screen coordinates, or the nearest monitor when the point lies in a gap between displays.</td></tr>
-  <tr id="FromMouse"><td><code>Monitor.FromMouse()</code></td><td>The monitor the mouse cursor is on.</td></tr>
+  <tr id="FromMouse"><td><code>Monitor.FromMouse()</code></td><td>The monitor the mouse cursor is on. On Wayland, this explicit cursor query requests permanent pointer-observation authorization through <code class="no-highlight">keysharp-desktop</code>; an existing <code class="no-highlight">keysharp-input</code> pointer-observation grant is reused.</td></tr>
   <tr id="FromWindow"><td><code>Monitor.FromWindow(WinTitle, ...)</code></td><td>The monitor a window overlaps most, matching how the platform decides which monitor owns a window. Criteria use ordinary <a href="../misc/WinTitle.htm">WinTitle matching</a>.</td></tr>
   <tr id="FromId"><td><code>Monitor.FromId(Id)</code></td><td>The monitor whose <a href="#Id">Id</a> matches, or the empty string when that monitor is not currently attached. Matching is case-insensitive. Unlike the other factories this must resolve metadata for every attached display, because an id is not part of the layout snapshot.</td></tr>
 </table>
@@ -103,7 +104,7 @@ Count := Monitor.<span class="func">Count</span></pre>
   <tr id="Orientation"><td><code>Orientation</code></td><td>Clockwise rotation of the desktop content in degrees: 0, 90, 180 or 270.</td></tr>
   <tr id="Refresh"><td><code>Refresh()</code></td><td>Re-reads this monitor's layout and metadata in place and returns the same object, so it can be chained. The monitor is matched by name first, so it is still tracked after the display order changes, falling back to its number. Returns an empty string &mdash; which is falsy &mdash; when the monitor is no longer attached, leaving the object's last-known values untouched.</td></tr>
 </table>
-<p class="warning"><strong>Note:</strong> <code>Scale</code> is not a screen-coordinate conversion factor and must never be applied to absolute positions. <a href="../Variables.htm#A_ScreenScale">A_ScreenScale</a> reports the same value for the primary monitor.</p>
+<p class="warning"><strong>Note:</strong> <code>Scale</code> is not a screen-coordinate conversion factor and must never be applied to absolute positions.</p>
 
 <h3 id="Control">Brightness and DDC/CI</h3>
 <pre class="Syntax">Percent := M.<span class="func">Brightness</span>
@@ -137,12 +138,14 @@ M.<span class="func">SetVCP</span>(Code, Value)</pre>
 <p>A notification which turns out to have changed nothing observable does not call back, so the redundant notifications the underlying platforms emit are not passed on to the script.</p>
 <table class="info">
   <tr><th>Subscription member</th><th>Description</th></tr>
-  <tr><td><code>Stop()</code></td><td>Cancels the subscription.</td></tr>
+  <tr><td><code>Stop()</code></td><td>Cancels the subscription. This is permanent.</td></tr>
   <tr><td><code>Pause([NewState := 1])</code></td><td>Pauses (1), resumes (0) or toggles (-1) this subscription and returns its new state. A paused subscription stays registered but does not fire.</td></tr>
-  <tr><td><code>Paused</code></td><td>Gets or sets whether this subscription is paused.</td></tr>
-  <tr><td><code>IsActive</code></td><td>Whether it is still registered to receive events.</td></tr>
+  <tr><td><code>Paused</code></td><td>Gets or sets this subscription's own pause switch. A stopped subscription reports false and ignores writes.</td></tr>
+  <tr><td><code>Status</code></td><td>The effective state: <code class="no-highlight">"Active"</code>, <code class="no-highlight">"Paused"</code> or <code class="no-highlight">"Stopped"</code>.</td></tr>
+  <tr><td><code>IsActive</code></td><td>Whether the subscription is firing. A paused subscription is <strong>not</strong> active.</td></tr>
   <tr><td><code>Count</code></td><td>Remaining callback count, or -1 for unlimited.</td></tr>
 </table>
+<p><code>Status</code> separates the three states a subscription can be in, where <code>IsActive</code> only answers whether it is firing and so is false while the subscription is paused as well as after it is stopped. This is the surface a <a href="WinEvent.htm#Hook">WinEvent hook</a> carries, minus that class's global pause switch.</p>
 <p>The subscription stops during <code>__Delete</code>, but garbage collection is non-deterministic. Call <code>Stop()</code> when it is no longer needed.</p>
 
 <h2 id="MonitorPlatforms">Platform Remarks</h2>

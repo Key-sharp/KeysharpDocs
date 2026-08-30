@@ -43,13 +43,14 @@
   <li><a href="#Picture">Picture</a></li>
   <li><a href="#Progress">Progress</a></li>
   <li><a href="#Radio">Radio</a></li>
+  <li><a href="#RichEdit">RichEdit</a></li>
   <li><a href="#Slider">Slider</a></li>
   <li><a href="#StatusBar">StatusBar</a></li>
   <li><a href="#Tab">Tab</a></li>
   <li><a href="#Text">Text</a></li>
   <li><a href="#TreeView">TreeView</a></li>
   <li><a href="#UpDown">UpDown</a></li>
-  <li><a href="#WebBrowser">WebBrowser</a></li>
+  <li><a href="#WebView">WebView</a></li>
 </ul>
 
 <h2 id="ActiveX">ActiveX</h2>
@@ -79,7 +80,7 @@
 <p>When the control is created, the ActiveX object can be retrieved via <a href="GuiControl.htm#Value">GuiControl.Value</a>.</p>
 <p>To handle the events exposed by the ActiveX object, use <a href="ComObjConnect.htm">ComObjConnect</a>.</p>
 <p>To determine the type of the ActiveX object, use <a href="ComObjType.htm">ComObjType</a>.</p>
-<p><a href="Gui.htm#ExWebBrowser">Gui example #10</a> demonstrates a simple web browser created via the <a href="https://learn.microsoft.com/dotnet/desktop/winforms/controls/webbrowser-control-windows-forms">WebBrowser control</a>.</p>
+<p><a href="Gui.htm#ExWebBrowser">Gui example #10</a> demonstrates a simple web browser created via the <a href="https://learn.microsoft.com/dotnet/desktop/winforms/controls/webbrowser-control-windows-forms">WebBrowser control</a>. For a cross-platform browser control which needs no COM, use <a href="#WebView">WebView</a> instead.</p>
 
 <h2 id="Button">Button</h2>
 <p>A pushbutton, which can be pressed to trigger an action.</p>
@@ -399,17 +400,273 @@ MyGui.Show("h70")</pre>
 MyEdit.Value := FileRead("C:\My File.txt")</pre>
 
 <h2 id="RichEdit">RichEdit</h2>
-<p>A rich-text editor is created by passing <code>"RichEdit"</code> to <a href="Gui.htm#Add">Gui.Add</a>. It supports the same general options as <a href="#Edit">Edit</a>, with the following differences:</p>
-<ul>
-  <li>Multi-line mode is enabled by default.</li>
-  <li><code>WantReturn</code> and <code>Password</code> are not supported.</li>
-  <li><code>Uppercase</code> and <code>Lowercase</code> affect typed characters but not pasted text.</li>
-  <li><code>GuiCtrl.Value</code> reads or writes only the displayed plain text.</li>
-  <li><code>GuiCtrl.RichText</code> reads or writes the raw rich-text content. Accessing RichText on any other control type throws an exception.</li>
-  <li><code>Gui.Submit()</code> returns plain text, or raw rich text when the control has <code>AltSubmit</code>.</li>
-</ul>
-<pre>Rich := MyGui.Add("RichEdit", "w400 h200")
-Rich.RichText := "{\rtf1\ansi\b Bold text\b0}"</pre>
+<p>An editable area of formatted text, in which every range of characters has a font, a text color, a background color and a paragraph of its own.</p>
+<p>This control type has no AutoHotkey counterpart.</p>
+<p>Syntax:</p>
+<pre class="Syntax Indent"><a href="GuiControl.htm">GuiCtrl</a> := MyGui.<span class="func">Add</span>("RichEdit", Options, Text)
+<a href="GuiControl.htm">GuiCtrl</a> := MyGui.<span class="func">AddRichEdit</span>(Options, Text)</pre>
+<p>Example:</p>
+<pre>MyGui := Gui()
+Rich := MyGui.Add("RichEdit", "w400 h200 -Wrap", "The quick brown fox")
+Rich.SetFormat(5, 5, "cBlue bold")   <em>; "quick"</em>
+MyGui.Show()</pre>
+
+<h3 id="RichEdit_Parameters">RichEdit Parameters</h3>
+<dl>
+  <dt>Options</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#strings">String</a></p>
+    <p>The same options an <a href="#Edit">Edit</a> takes, with these differences: multi-line mode is on by default; <code>WantReturn</code> and <code>Password</code> are not supported; and <code>Uppercase</code> and <code>Lowercase</code> affect typed characters but not pasted text. See also <a href="Gui.htm#Add_Options">general options and styles</a>.</p>
+    <p><code>-Wrap</code> turns word wrapping off, so that a line and a displayed row stay the same thing.</p>
+  </dd>
+  <dt>Text</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#strings">String</a></p>
+    <p>The plain text to start with. Assigning <a href="GuiControl.htm#Value">Value</a> later replaces the text <em>and</em> its formatting; <a href="#RichEdit_Append">Append</a> and <a href="#RichEdit_Replace">Replace</a> do not.</p>
+  </dd>
+</dl>
+
+<h3 id="RichEdit_Positions">Character Positions</h3>
+<p>Every position this control takes or returns is 1-based and indexes exactly the string <a href="GuiControl.htm#Value">Value</a> returns, each line break counting as one character. A position found with <code>InStr(Rich.Value, ...)</code> or <a href="RegExMatch.htm">RegExMatch</a> can therefore be passed straight to <a href="#RichEdit_SetFormat">SetFormat</a>.</p>
+<p>Wherever a range is asked for, a <em>Start</em> of 0 or an omitted one means the current selection instead. Positions and lengths outside the text are clamped rather than rejected.</p>
+
+<h3 id="RichEdit_Platforms">RichEdit Platform Support</h3>
+<p>The control, its text, its selection and its character formatting work on every platform. Only the Win32 control serves the whole surface below.</p>
+<table class="info">
+  <tr><th>Platform</th><th>What is missing</th></tr>
+  <tr><td>Windows</td><td>Nothing.</td></tr>
+  <tr><td>Linux</td><td>GTK's text widget knows nothing of RTF, so <a href="#RichEdit_RichText">RichText</a> and the RTF form of <a href="#RichEdit_LoadFile">LoadFile</a>/<a href="#RichEdit_SaveFile">SaveFile</a> throw an <a href="Error.htm">Error</a>, as do the members listed for macOS.</td></tr>
+  <tr><td>macOS</td><td><a href="#RichEdit_SelectedRichText">SelectedRichText</a>, <a href="#RichEdit_SetParagraph">SetParagraph</a>/<a href="#RichEdit_GetParagraph">GetParagraph</a>, <a href="#RichEdit_PosFromPoint">PosFromPoint</a>/<a href="#RichEdit_PointFromPos">PointFromPos</a> and <a href="#RichEdit_FirstVisibleLine">FirstVisibleLine</a> throw an <a href="Error.htm">Error</a> naming the member. There is no undo history, so <a href="#RichEdit_CanUndo">CanUndo</a> and <a href="#RichEdit_CanRedo">CanRedo</a> are 0 and <a href="#RichEdit_Undo">Undo</a>/<a href="#RichEdit_Redo">Redo</a> do nothing. <a href="#RichEdit_DetectUrls">DetectUrls</a> and <a href="#RichEdit_HideSelection">HideSelection</a> read back as 0. <a href="#RichEdit_Zoom">Zoom</a> scales the control's font instead of magnifying. <a href="#RichEdit_GetFormat">GetFormat</a> reports the formatting where the range starts instead of detecting variation across it.</td></tr>
+</table>
+<p class="note"><strong>Note:</strong> The macOS behavior of this control is unverified.</p>
+
+<h3 id="RichEdit_Properties">RichEdit Properties</h3>
+<p>In addition to the standard <a href="GuiControl.htm">GuiControl</a> properties, a RichEdit has the following.</p>
+<dl>
+  <dt id="RichEdit_RichText">RichText</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#strings">String</a></p>
+    <p>Retrieves or sets the whole contents as an RTF document. Assigning something which is not valid RTF throws a <a href="Error.htm#ValueError">ValueError</a> and leaves the contents unchanged.</p>
+    <p>If the control has the <a href="Gui.htm#AltSubmit">AltSubmit</a> option, <a href="Gui.htm#Submit">Gui.Submit</a> collects this instead of the plain text.</p>
+  </dd>
+  <dt id="RichEdit_SelectedText">SelectedText</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#strings">String</a></p>
+    <p>Retrieves or sets the selected text, without its formatting. Assigning replaces the selection, which is one undoable edit.</p>
+  </dd>
+  <dt id="RichEdit_SelectedRichText">SelectedRichText</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#strings">String</a></p>
+    <p>Retrieves or sets the selection as an RTF document, which is how formatted text is inserted without rewriting the whole control. Windows only.</p>
+  </dd>
+  <dt id="RichEdit_TextLength">TextLength</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#numbers">Integer</a></p>
+    <p>Retrieves how many characters the control holds, counting each line break as one. Read-only.</p>
+  </dd>
+  <dt id="RichEdit_LineCount">LineCount</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#numbers">Integer</a></p>
+    <p>Retrieves how many lines the control holds. Read-only. Lines are the ones the text has, not the ones word wrapping draws, so a trailing line break leaves an empty last line.</p>
+  </dd>
+  <dt id="RichEdit_Modified">Modified</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#boolean">Boolean</a></p>
+    <p>Retrieves or sets whether the contents have been edited since this was last cleared. Applying formatting does not set it.</p>
+  </dd>
+  <dt id="RichEdit_ReadOnly">ReadOnly</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#boolean">Boolean</a></p>
+    <p>Retrieves or sets whether the user can edit the text. A read-only control can still be changed by the script.</p>
+  </dd>
+  <dt id="RichEdit_WordWrap">WordWrap</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#boolean">Boolean</a></p>
+    <p>Retrieves or sets whether a line too long to fit is wrapped instead of scrolled to, as the <code>Wrap</code> option sets when the control is created.</p>
+  </dd>
+  <dt id="RichEdit_DetectUrls">DetectUrls</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#boolean">Boolean</a></p>
+    <p>Retrieves or sets whether URLs in the text become clickable links, which raise the <a href="GuiOnEvent.htm#LinkClick">LinkClick</a> event. Windows only; elsewhere it reads back as 0 and assigning it does nothing.</p>
+  </dd>
+  <dt id="RichEdit_HideSelection">HideSelection</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#boolean">Boolean</a></p>
+    <p>Retrieves or sets whether the selection stops being highlighted while the control does not have focus. Set it to 0 to keep a search hit visible while the user types in a search box. Windows only; elsewhere it reads back as 0 and assigning it does nothing.</p>
+  </dd>
+  <dt id="RichEdit_Zoom">Zoom</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#numbers">Float</a></p>
+    <p>Retrieves or sets how much the text is magnified, 1 being unmagnified. A value outside 1/64 to 64 throws a <a href="Error.htm#ValueError">ValueError</a>.</p>
+    <p>Off Windows this scales the control's own font rather than magnifying what is drawn, so text sized by <a href="#RichEdit_SetFormat">SetFormat</a> keeps that size.</p>
+  </dd>
+  <dt id="RichEdit_SelectionStart">SelectionStart</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#numbers">Integer</a></p>
+    <p>Retrieves or sets where the selection starts, 1-based. Assigning moves the caret there and selects nothing.</p>
+  </dd>
+  <dt id="RichEdit_SelectionLength">SelectionLength</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#numbers">Integer</a></p>
+    <p>Retrieves or sets how many characters are selected. Assigning extends the selection from where it already starts.</p>
+  </dd>
+  <dt id="RichEdit_CurrentLine">CurrentLine</dt>
+  <dt id="RichEdit_CurrentCol">CurrentCol</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#numbers">Integer</a></p>
+    <p>Retrieves the 1-based line and column the caret is on. Read-only. Column 1 is the start of a line. Use them with the <a href="GuiOnEvent.htm#SelectionChange">SelectionChange</a> event to keep a status bar in step with the caret.</p>
+  </dd>
+  <dt id="RichEdit_FirstVisibleLine">FirstVisibleLine</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#numbers">Integer</a></p>
+    <p>Retrieves or sets the 1-based line scrolled to the top of the control. Assigning scrolls there without moving the caret. Windows only; use <a href="#RichEdit_Select">Select</a> with <a href="#RichEdit_ScrollCaret">ScrollCaret</a> to bring a line into view portably.</p>
+  </dd>
+</dl>
+
+<h3 id="RichEdit_Methods">RichEdit Methods</h3>
+<dl>
+  <dt id="RichEdit_Select">Select</dt>
+  <dd>
+    <p><code>GuiCtrl.Select(Start [, Length])</code></p>
+    <p>Selects <em>Length</em> characters starting at the 1-based <em>Start</em>. A <em>Length</em> of 0 or an omitted one just moves the caret there.</p>
+  </dd>
+  <dt id="RichEdit_SelectAll">SelectAll</dt>
+  <dd>
+    <p><code>GuiCtrl.SelectAll()</code></p>
+    <p>Selects everything.</p>
+  </dd>
+  <dt id="RichEdit_ScrollCaret">ScrollCaret</dt>
+  <dd>
+    <p><code>GuiCtrl.ScrollCaret()</code></p>
+    <p>Scrolls so that the caret is visible.</p>
+  </dd>
+  <dt id="RichEdit_GetLine">GetLine</dt>
+  <dt id="RichEdit_LineLength">LineLength</dt>
+  <dd>
+    <p><code>Text := GuiCtrl.GetLine(Line)</code>, <code>Len := GuiCtrl.LineLength(Line)</code></p>
+    <p>Retrieves the text of the 1-based <em>Line</em>, or its length. Neither includes the line break. A <em>Line</em> outside the text is clamped to the first or last one.</p>
+  </dd>
+  <dt id="RichEdit_LineFromPos">LineFromPos</dt>
+  <dt id="RichEdit_PosFromLine">PosFromLine</dt>
+  <dd>
+    <p><code>Line := GuiCtrl.LineFromPos(Pos)</code>, <code>Pos := GuiCtrl.PosFromLine(Line)</code></p>
+    <p>Converts between a 1-based character position and the 1-based line it is on. <code>PosFromLine</code> returns the position of the line's first character.</p>
+  </dd>
+  <dt id="RichEdit_PosFromPoint">PosFromPoint</dt>
+  <dd>
+    <p><code>Pos := GuiCtrl.PosFromPoint(X, Y)</code></p>
+    <p>Retrieves the 1-based position of the character nearest the control-relative point <em>X</em>, <em>Y</em>, which is where a click there would leave the caret. Windows only.</p>
+  </dd>
+  <dt id="RichEdit_PointFromPos">PointFromPos</dt>
+  <dd>
+    <p><code>Pt := GuiCtrl.PointFromPos(Pos)</code></p>
+    <p>Retrieves the top left of the 1-based <em>Pos</em> as an object with <code>X</code> and <code>Y</code> properties, in the control's own coordinates. Windows only.</p>
+  </dd>
+  <dt id="RichEdit_Append">Append</dt>
+  <dd>
+    <p><code>GuiCtrl.Append(Text)</code></p>
+    <p>Adds <em>Text</em> to the end, formatted like the text already there. Cheaper than assigning <a href="GuiControl.htm#Value">Value</a>, which rewrites and reformats everything.</p>
+  </dd>
+  <dt id="RichEdit_Replace">Replace</dt>
+  <dd>
+    <p><code>GuiCtrl.Replace(Start, Length, Text)</code></p>
+    <p>Replaces <em>Length</em> characters at the 1-based <em>Start</em> with <em>Text</em>, which takes on the formatting of what it replaced. This is one undoable edit.</p>
+  </dd>
+  <dt id="RichEdit_Find">Find</dt>
+  <dd>
+    <p><code>Pos := GuiCtrl.Find(Needle [, Start, Options])</code></p>
+    <p>Retrieves the 1-based position of <em>Needle</em>, or 0 when it is not there. <em>Start</em> defaults to the beginning of the text, or its end when searching in reverse.</p>
+    <p><em>Options</em> may contain any of <code>MatchCase</code>, <code>WholeWord</code> and <code>Reverse</code>, separated by spaces. Anything else throws a <a href="Error.htm#ValueError">ValueError</a>.</p>
+    <p>The selection is left alone, so showing a hit is up to the caller:</p>
+    <pre>if (Pos := Rich.Find(SearchBox.Value, Rich.SelectionStart + 1)) {
+    Rich.Select(Pos, StrLen(SearchBox.Value))
+    Rich.ScrollCaret()
+}</pre>
+  </dd>
+  <dt id="RichEdit_Cut">Cut</dt>
+  <dt id="RichEdit_Copy">Copy</dt>
+  <dt id="RichEdit_Paste">Paste</dt>
+  <dd>
+    <p><code>GuiCtrl.Cut()</code>, <code>GuiCtrl.Copy()</code>, <code>GuiCtrl.Paste()</code></p>
+    <p>Moves or copies the selection to the clipboard, or replaces the selection with the clipboard's contents. On Windows the formatting travels with the text; elsewhere only the plain text does. Cutting or copying nothing leaves the clipboard alone.</p>
+  </dd>
+  <dt id="RichEdit_Undo">Undo</dt>
+  <dt id="RichEdit_Redo">Redo</dt>
+  <dt id="RichEdit_ClearUndo">ClearUndo</dt>
+  <dd>
+    <p><code>GuiCtrl.Undo()</code>, <code>GuiCtrl.Redo()</code>, <code>GuiCtrl.ClearUndo()</code></p>
+    <p>Undoes or redoes the last edit, or forgets the history so that the current contents cannot be undone away. <code>Undo</code> and <code>Redo</code> do nothing when there is nothing to undo or redo. Windows only; elsewhere the widget keeps no history and all three do nothing.</p>
+  </dd>
+  <dt id="RichEdit_CanUndo">CanUndo</dt>
+  <dt id="RichEdit_CanRedo">CanRedo</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#boolean">Boolean</a></p>
+    <p>Retrieves 1 when there is an edit to undo or redo. Read-only, and always 0 off Windows. <a href="#RichEdit_Undo">Undo</a> and <a href="#RichEdit_Redo">Redo</a> check for themselves, so these are for enabling and disabling menu items.</p>
+  </dd>
+  <dt id="RichEdit_SetFormat">SetFormat</dt>
+  <dd>
+    <p><code>GuiCtrl.SetFormat(Start, Length [, Options, FontName])</code></p>
+    <p>Applies character formatting to <em>Length</em> characters at the 1-based <em>Start</em>, or to the current selection when <em>Start</em> is 0.</p>
+    <p><em>Options</em> is a <a href="Gui.htm#SetFont">Gui.SetFont</a> option string — <code>s<i>N</i></code>, <code>w<i>N</i></code>, <code>c<i>Color</i></code>, <code>bold</code>, <code>italic</code>, <code>underline</code>, <code>strike</code>, <code>norm</code> — extended with <code>Background<i>Colour</i></code> and <code>BackgroundDefault</code>. A <a href="Font.htm">Font</a> object is accepted in its place. An unrecognized option throws a <a href="Error.htm#ValueError">ValueError</a>.</p>
+    <p><em>FontName</em> is the font family, which <em>Options</em> has no token for, as in <a href="Gui.htm#SetFont">Gui.SetFont</a>.</p>
+    <p>Anything the options do not mention is left as it was, so a token can be colored without also deciding its size or weight:</p>
+    <pre>Rich.SetFormat(Pos, Len, "c0000FF bold")
+Rich.SetFormat(Pos, Len, "BackgroundFFFF00")  <em>; leaves the text color alone</em></pre>
+    <p>The selection is left where it was, so formatting never moves the caret or scrolls the view.</p>
+  </dd>
+  <dt id="RichEdit_GetFormat">GetFormat</dt>
+  <dd>
+    <p><code>FontObj := GuiCtrl.GetFormat([Start, Length])</code></p>
+    <p>Retrieves the font of a range as a <a href="Font.htm">Font</a> object, whose <code>Color</code> is the text color. The arguments name the range as for <a href="#RichEdit_SetFormat">SetFormat</a>; omitting them reads the current selection.</p>
+    <p>An attribute which is not the same throughout the range comes back as <code>""</code>, as an unset one does on any other Font, so what is read from one range can be applied to another unchanged. Off Windows the widget cannot report variation, and the formatting where the range starts is returned instead.</p>
+  </dd>
+  <dt id="RichEdit_GetBackColor">GetBackColor</dt>
+  <dd>
+    <p><code>Colour := GuiCtrl.GetBackColor([Start, Length])</code></p>
+    <p>Retrieves the background color of a range as a 6-digit RRGGBB string, or <code>""</code> when the range is not all one color or is drawn on the control's own background. This is separate from <a href="#RichEdit_GetFormat">GetFormat</a> because a <a href="Font.htm">Font</a> carries no background.</p>
+  </dd>
+  <dt id="RichEdit_SetParagraph">SetParagraph</dt>
+  <dd>
+    <p><code>GuiCtrl.SetParagraph(Start, Length [, Options])</code></p>
+    <p>Applies paragraph formatting to every paragraph the range touches. <em>Options</em> may contain any of <code>Left</code>, <code>Center</code>, <code>Right</code>, <code>Indent<i>N</i></code>, <code>HangingIndent<i>N</i></code>, <code>RightIndent<i>N</i></code>, <code>Bullet</code> and <code>-Bullet</code>; the indents are in the same units as every other size given to a control. Windows only.</p>
+  </dd>
+  <dt id="RichEdit_GetParagraph">GetParagraph</dt>
+  <dd>
+    <p><code>Options := GuiCtrl.GetParagraph([Start, Length])</code></p>
+    <p>Retrieves the paragraph formatting where the range starts, as an option string <a href="#RichEdit_SetParagraph">SetParagraph</a> accepts. Windows only.</p>
+  </dd>
+  <dt id="RichEdit_BeginUpdate">BeginUpdate</dt>
+  <dt id="RichEdit_EndUpdate">EndUpdate</dt>
+  <dd>
+    <p><code>GuiCtrl.BeginUpdate()</code>, <code>GuiCtrl.EndUpdate()</code></p>
+    <p>Stops the control redrawing until the matching <code>EndUpdate</code>, restoring what was selected and scrolled to. Pairs nest, and only the outermost one does anything; an unmatched <code>EndUpdate</code> throws an <a href="Error.htm">Error</a>.</p>
+    <p>Wrap a whole highlighting pass in one pair. Without it each formatted range repaints the control, which flickers and is far slower.</p>
+  </dd>
+  <dt id="RichEdit_LoadFile">LoadFile</dt>
+  <dt id="RichEdit_SaveFile">SaveFile</dt>
+  <dd>
+    <p><code>GuiCtrl.LoadFile(Path [, Format])</code>, <code>GuiCtrl.SaveFile(Path [, Format])</code></p>
+    <p>Replaces the contents with a file's, or writes the contents to a file. <em>Format</em> is <code>"RTF"</code> or <code>"Text"</code>; omitted, it is taken from the file's extension, where only <code>.rtf</code> means RTF. Anything else throws a <a href="Error.htm#ValueError">ValueError</a>, and a file which cannot be read or written throws an <a href="Error.htm">Error</a> naming it.</p>
+  </dd>
+</dl>
+
+<h3 id="RichEdit_Events">RichEdit Events</h3>
+<p>A RichEdit raises <a href="GuiOnEvent.htm#Change">Change</a> whenever the text changes &mdash; applying formatting is not a change &mdash; plus <a href="GuiOnEvent.htm#SelectionChange">SelectionChange</a> and <a href="GuiOnEvent.htm#LinkClick">LinkClick</a>, which no other control raises. Like <a href="#Edit">Edit</a>, it has its own context menu and so does not raise <a href="GuiOnEvent.htm#ContextMenu">ContextMenu</a>.</p>
+
+<h3 id="RichEdit_Highlighting">Syntax Highlighting</h3>
+<p>A highlighting pass is a loop over the text which calls <a href="#RichEdit_SetFormat">SetFormat</a> for each token, wrapped in one <a href="#RichEdit_BeginUpdate">BeginUpdate</a>/<a href="#RichEdit_EndUpdate">EndUpdate</a> pair. Format the whole text back to the default first, since <code>SetFormat</code> changes only what its options name and a token's leftover color would otherwise survive.</p>
+<pre>Recolor(Rich) {
+    Text := Rich.Value
+    Rich.BeginUpdate()
+    Rich.SetFormat(1, StrLen(Text), "cBlack norm BackgroundDefault")
+    Pos := 1
+    while (Pos := RegExMatch(Text, "i)\b(if|else|while|return)\b", &amp;M, Pos)) {
+        Rich.SetFormat(Pos, M.Len, "c0000FF bold")
+        Pos += M.Len
+    }
+    Rich.EndUpdate()
+}</pre>
+<p>For a large document, start a short <a href="SetTimer.htm">SetTimer</a> from the <a href="GuiOnEvent.htm#Change">Change</a> event rather than re-running the pass on every keystroke.</p>
 
 <h2 id="GroupBox">GroupBox</h2>
 <p>A rectangular border/frame, often used around other controls to indicate they are related.</p>
@@ -997,14 +1254,14 @@ MyTab.UseTab("Name", true)  <em>; Same as above but requires exact match (not ca
 <p id="Tab2_Issues"><strong>Known issues with Tab2:</strong></p>
 <ul>
   <li><a href="Gui.htm#BackgroundTrans">BackgroundTrans</a> has no effect inside a Tab2 control.</li>
-  <li><a href="#ActiveX">WebBrowser</a> controls do not redraw correctly.</li>
+  <li><a href="#ActiveX">ActiveX</a> browser controls do not redraw correctly.</li>
   <li>AnimateWindow and possibly other Win32 API calls can cause the tab's controls to disappear.</li>
 </ul>
 <p id="Tab1_Issues"><strong>Known issues with Tab1:</strong></p>
 <ul>
   <li>Activating a GUI window by clicking certain parts of its controls, such as scrollbars, might redraw improperly.</li>
   <li><a href="Gui.htm#BackgroundTrans">BackgroundTrans</a> has no effect if the Tab1 control contains a ListView.</li>
-  <li><a href="#ActiveX">WebBrowser</a> controls are invisible.</li>
+  <li><a href="#ActiveX">ActiveX</a> browser controls are invisible.</li>
 </ul>
 
 <h2 id="Text">Text</h2>
@@ -1090,12 +1347,18 @@ MyUD := MyGui.Add("UpDown", "Range1-10", 5)</pre>
 <p>Whenever the user clicks one of the arrow buttons or presses an arrow key on the keyboard, the <a href="GuiOnEvent.htm#Change">Change</a> event is raised.</p>
 <p>Use the <code>Increment</code> and <code>Hex</code> options above instead of native messages.</p>
 
-<h2 id="WebBrowser">WebBrowser</h2>
-<p>Displays a webpage in the platform's managed web-view control.</p>
+<h2 id="WebView">WebView</h2>
+<p>Displays a webpage, and lets the script drive it and be driven by it.</p>
+<p>This control type has no AutoHotkey counterpart.</p>
 <p>Syntax:</p>
-<pre class="Syntax Indent"><a href="GuiControl.htm">GuiCtrl</a> := MyGui.<span class="func">Add</span>("WebBrowser", Options, URL)
-<a href="GuiControl.htm">GuiCtrl</a> := MyGui.<span class="func">AddWebBrowser</span>(Options, URL)</pre>
-<h3 id="WebBrowser_Parameters">WebBrowser Parameters</h3>
+<pre class="Syntax Indent"><a href="GuiControl.htm">GuiCtrl</a> := MyGui.<span class="func">Add</span>("WebView", Options, URL)
+<a href="GuiControl.htm">GuiCtrl</a> := MyGui.<span class="func">AddWebView</span>(Options, URL)</pre>
+<p>Example:</p>
+<pre>MyGui := Gui()
+Browser := MyGui.AddWebView("w800 h600", "https://www.keysharp.org/")
+MyGui.Show()</pre>
+
+<h3 id="WebView_Parameters">WebView Parameters</h3>
 <dl>
   <dt>Options</dt>
   <dd>
@@ -1105,10 +1368,122 @@ MyUD := MyGui.Add("UpDown", "Range1-10", 5)</pre>
   <dt>URL</dt>
   <dd>
     <p>Type: <a href="../Concepts.htm#strings">String</a></p>
-    <p>The URL to navigate to when the control is created.</p>
+    <p>If omitted, the control starts empty. Otherwise the page to load, as for <a href="#WebView_Url">Url</a> below.</p>
   </dd>
 </dl>
+
+<h3 id="WebView_Engine">WebView Browser Engine</h3>
+<p>The page is rendered by a browser engine the control does not ship, so the same page can look and behave differently on each platform. <a href="#WebView_EngineProp">Engine</a> reports which one a control got.</p>
+<table class="info">
+  <tr><th>Platform</th><th>Engine</th></tr>
+  <tr><td>Windows</td><td><strong>Edge</strong>, through WebView2, when the script has asked for it as described below. Otherwise <strong>Internet Explorer</strong>, through the WinForms browser control, which runs pages in a legacy document mode: a site built for a current browser may render incorrectly or not at all.</td></tr>
+  <tr><td>Linux</td><td><strong>WebKitGTK</strong>. The control cannot be created unless <code>libwebkit2gtk-4.1</code> or <code>libwebkit2gtk-4.0</code> is installed; without it, <a href="Gui.htm#Add">Gui.Add</a> throws an <a href="Error.htm">Error</a> naming the requirement.</td></tr>
+  <tr><td>macOS</td><td><strong>WKWebView</strong>, which is part of the operating system.</td></tr>
+</table>
+<p class="note"><strong>Note:</strong> The macOS behavior of this control is unverified.</p>
+
+<h4 id="WebView_Edge">Asking for Edge on Windows</h4>
+<p>Keysharp ships none of WebView2, so a script which wants Edge brings it:</p>
+<pre>#Package "Microsoft.Web.WebView2"</pre>
+<p>Edge is then used automatically, with no other change to the script. Both the resolved package and the machine's Edge WebView2 Runtime are required; the runtime ships with Windows 11 and with Microsoft Edge on Windows 10. If either is missing, the control falls back to Internet Explorer rather than failing and writes the reason through <a href="OutputDebug.htm">OutputDebug</a>.</p>
+<p>The control's own surface does not change with the engine. Internet Explorer may not render a modern page correctly, cannot receive a message posted while a document is still parsing, and reports a less exact URL for <a href="GuiOnEvent.htm#OpenNewWindow">OpenNewWindow</a>.</p>
 <p>For direct access to a Windows ActiveX browser object and its COM events, use an <a href="#ActiveX">ActiveX</a> control instead.</p>
+
+<h3 id="WebView_Properties">WebView Properties</h3>
+<p>In addition to the standard <a href="GuiControl.htm">GuiControl</a> properties, a WebView has the following. <a href="GuiControl.htm#Text">Text</a> and <a href="GuiControl.htm#Value">Value</a> are not meaningful for a browser: <code>Text</code> is always <code>""</code> and ignored when assigned.</p>
+<dl>
+  <dt id="WebView_Url">Url</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#strings">String</a></p>
+    <p>Retrieves or sets the address of the page being shown; <code>""</code> when nothing has been loaded. Assigning navigates to it, which the <a href="GuiOnEvent.htm#DocumentLoading">DocumentLoading</a> event can cancel.</p>
+    <p>A value which is not already a complete URL is taken as a file path and resolved against the current working directory, so <code>"page.html"</code> loads a local file rather than a website. Assigning <code>""</code> does nothing.</p>
+  </dd>
+  <dt id="WebView_DocumentTitle">DocumentTitle</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#strings">String</a></p>
+    <p>Retrieves the title of the page being shown, or <code>""</code> if it has none. Read-only.</p>
+  </dd>
+  <dt id="WebView_CanGoBack">CanGoBack</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#boolean">Boolean</a></p>
+    <p>Retrieves 1 if the control has a previous page in its history and 0 otherwise. Read-only.</p>
+  </dd>
+  <dt id="WebView_CanGoForward">CanGoForward</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#boolean">Boolean</a></p>
+    <p>Retrieves 1 if the control has a next page in its history and 0 otherwise. Read-only.</p>
+  </dd>
+  <dt id="WebView_BrowserContextMenuEnabled">BrowserContextMenuEnabled</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#boolean">Boolean</a></p>
+    <p>Retrieves or sets whether right-clicking the page shows the browser's own context menu. Defaults to 1.</p>
+  </dd>
+  <dt id="WebView_EngineProp">Engine</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#strings">String</a></p>
+    <p>Retrieves which browser is behind this control: <code>"Edge"</code>, <code>"InternetExplorer"</code> or <code>"WebKit"</code>. Read-only. See <a href="#WebView_Engine">WebView Browser Engine</a>.</p>
+  </dd>
+</dl>
+
+<h3 id="WebView_Methods">WebView Methods</h3>
+<dl>
+  <dt id="WebView_GoBack">GoBack / GoForward</dt>
+  <dd>
+    <p><code>GuiCtrl.GoBack()</code>, <code>GuiCtrl.GoForward()</code></p>
+    <p>Moves one page back or forward through the control's history, or does nothing when there is no such page. <a href="#WebView_CanGoBack">CanGoBack</a> and <a href="#WebView_CanGoForward">CanGoForward</a> are therefore only needed to enable or disable a button.</p>
+  </dd>
+  <dt id="WebView_Stop">Stop</dt>
+  <dd>
+    <p><code>GuiCtrl.Stop()</code></p>
+    <p>Stops loading the page currently being fetched.</p>
+  </dd>
+  <dt id="WebView_Reload">Reload</dt>
+  <dd>
+    <p><code>GuiCtrl.Reload()</code></p>
+    <p>Loads the current page again.</p>
+  </dd>
+  <dt id="WebView_ExecuteScript">ExecuteScript</dt>
+  <dd>
+    <p><code>Result := GuiCtrl.ExecuteScript(Script)</code></p>
+    <p>Runs <em>Script</em> as JavaScript in the current page and returns its result as a string, or <code>""</code> if it produced none.</p>
+    <p><em>Script</em> runs as the body of a function, so it may use <code>return</code> to produce a value:</p>
+    <pre>Title := Browser.ExecuteScript("return document.title;")</pre>
+    <p>There is no page to run script in until a document has loaded, so this returns <code>""</code> before the first <a href="GuiOnEvent.htm#DocumentLoaded">DocumentLoaded</a> event.</p>
+  </dd>
+  <dt id="WebView_ExecuteScriptAsync">ExecuteScriptAsync</dt>
+  <dd>
+    <p><code>TaskObj := GuiCtrl.ExecuteScriptAsync(Script)</code></p>
+    <p>The same as <a href="#WebView_ExecuteScript">ExecuteScript</a>, but returns a <a href="Task.htm">Task</a> carrying the result instead of waiting for it.</p>
+  </dd>
+  <dt id="WebView_LoadHtml">LoadHtml</dt>
+  <dd>
+    <p><code>GuiCtrl.LoadHtml(Html [, BaseUrl])</code></p>
+    <p>Shows the HTML in <em>Html</em> instead of navigating to an address.</p>
+    <p>If <em>BaseUrl</em> is omitted, relative links and resources in <em>Html</em> do not resolve. Otherwise it is the URL or directory they resolve against, in the same form <a href="#WebView_Url">Url</a> accepts.</p>
+  </dd>
+  <dt id="WebView_ShowPrintDialog">ShowPrintDialog</dt>
+  <dd>
+    <p><code>GuiCtrl.ShowPrintDialog()</code></p>
+    <p>Shows the browser's print dialog for the current page.</p>
+  </dd>
+</dl>
+
+<h3 id="WebView_Events">WebView Events</h3>
+<p>A WebView raises <a href="GuiOnEvent.htm#Navigated">Navigated</a>, <a href="GuiOnEvent.htm#DocumentLoading">DocumentLoading</a>, <a href="GuiOnEvent.htm#DocumentLoaded">DocumentLoaded</a>, <a href="GuiOnEvent.htm#DocumentTitleChanged">DocumentTitleChanged</a>, <a href="GuiOnEvent.htm#OpenNewWindow">OpenNewWindow</a> and <a href="GuiOnEvent.htm#MessageReceived">MessageReceived</a>. It raises none of the events other controls do, because a click inside it belongs to the page; registering one throws a <a href="Error.htm#ValueError">ValueError</a>.</p>
+<p>Register them before loading a page: an event which has already happened is not replayed.</p>
+
+<h3 id="WebView_Messages">WebView Two-way Communication</h3>
+<p><a href="#WebView_ExecuteScript">ExecuteScript</a> sends values into the page. To send one back out, the page calls <code>window.eto.postMessage()</code>, which raises <a href="GuiOnEvent.htm#MessageReceived">MessageReceived</a> with the string it was given.</p>
+<pre>MyGui := Gui()
+Browser := MyGui.AddWebView("w400 h300")
+Browser.OnEvent("MessageReceived", Received)
+Browser.LoadHtml("
+(
+&lt;button onclick="window.eto.postMessage('clicked')"&gt;Send&lt;/button&gt;
+)")
+MyGui.Show()
+
+Received(GuiCtrlObj, Message) =&gt; MsgBox("The page said: " . Message)</pre>
 
 <h2 id="Related">Related</h2>
 <p><a href="ListView.htm">ListView</a>, <a href="TreeView.htm">TreeView</a>, <a href="Gui.htm#Call">Gui()</a>, <a href="Gui.htm">Gui object</a>, <a href="GuiControl.htm">GuiControl object</a>, <a href="Menu.htm">Menu object</a></p>

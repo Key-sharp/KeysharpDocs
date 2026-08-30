@@ -41,6 +41,7 @@ MsgBox A_DirSeparator</pre>
 <h3 id="KS_Classes">Classes</h3>
 <table class="info">
   <tr><th>Export</th><th>Description</th></tr>
+  <tr id="KS_App"><td><a href="lib/App.htm">App</a></td><td>The running application: its assembly identity and metadata, the command line it was launched with, and the exit in progress.</td></tr>
   <tr id="KS_Boolean"><td><a href="lib/Boolean.htm">Boolean</a></td><td>The type of a truth value, so that a boolean can be told apart from the Integer 1 or 0.</td></tr>
   <tr id="KS_Clipboard"><td><a href="lib/Clipboard.htm">Clipboard</a></td><td>Reads and writes the system clipboard as text, images, files, HTML, RTF or a native format.</td></tr>
   <tr id="KS_ClipboardHook"><td><a href="lib/Clipboard.htm#ClipboardHook">ClipboardHook</a></td><td>The subscription returned by <a href="lib/Clipboard.htm#OnChange">Clipboard.OnChange</a>.</td></tr>
@@ -56,7 +57,7 @@ MsgBox A_DirSeparator</pre>
   <tr id="KS_MonitorHook"><td><a href="lib/Monitor.htm#OnChange">MonitorHook</a></td><td>The subscription returned by <a href="lib/Monitor.htm#OnChange">Monitor.OnChange</a>.</td></tr>
   <tr id="KS_NamedArgs"><td><a href="lib/NamedArgs.htm">NamedArgs</a></td><td>Carries the <a href="Language.htm#named-parameters">named arguments</a> of one call, for building or inspecting them at run time.</td></tr>
   <tr id="KS_Overlay"><td><a href="lib/Overlay.htm">Overlay</a></td><td>Draws a click-through, always-on-top surface over the screen.</td></tr>
-  <tr id="KS_RealThread"><td><a href="lib/RealThread.htm">RealThread</a></td><td>Runs a script on a real operating-system thread.</td></tr>
+  <tr id="KS_RealThread"><td><a href="lib/RealThread.htm">RealThread</a></td><td>Runs a callback on a real operating-system thread, and marshals work to and from it.</td></tr>
   <tr id="KS_StringBuffer"><td><a href="lib/StringBuffer.htm">StringBuffer</a></td><td>A mutable text buffer for building large strings efficiently.</td></tr>
   <tr id="KS_Task"><td><a href="lib/Task.htm">Task</a></td><td>Work that finishes later, such as the result of an asynchronous .NET call.</td></tr>
   <tr id="KS_Taskbar"><td><a href="lib/Taskbar.htm">Taskbar</a></td><td>Draws a badge and a progress bar on a window's taskbar button.</td></tr>
@@ -81,7 +82,6 @@ MsgBox A_DirSeparator</pre>
   <tr id="KS_GetKeyboardLayout"><td><a href="lib/KeyboardLayout.htm#GetKeyboardLayout">GetKeyboardLayout</a></td><td>Returns the keyboard layout of a window or thread.</td></tr>
   <tr id="KS_GetKeyInfo"><td><a href="lib/KeyboardLayout.htm#GetKeyInfo">GetKeyInfo</a></td><td>Returns the characters a key produces under a keyboard layout.</td></tr>
   <tr id="KS_Join"><td><a href="Scripts.htm#Join">Join</a></td><td>Concatenates values with a separator.</td></tr>
-  <tr id="KS_LockRun"><td><a href="lib/LockRun.htm">LockRun</a></td><td>Runs a program while holding a named lock, preventing concurrent runs.</td></tr>
   <tr id="KS_Mail"><td><a href="lib/Mail.htm">Mail</a></td><td>Sends an email message over SMTP.</td></tr>
   <tr id="KS_NormalizeEol"><td><a href="lib/StringFunctions.htm#NormalizeEol">NormalizeEol</a></td><td>Converts line endings in a string to a single form.</td></tr>
   <tr id="KS_OutputDebugLine"><td><a href="lib/OutputDebug.htm#OutputDebugLine">OutputDebugLine</a></td><td>Writes a line to the system debug output.</td></tr>

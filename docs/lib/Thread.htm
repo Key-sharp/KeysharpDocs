@@ -120,7 +120,7 @@ MsgBox "This thread has run for " A_Thread.Elapsed " ms"</pre>
   <dt id="Paused">Paused</dt>
   <dd>
     <p>Type: <a href="../Concepts.htm#boolean">Boolean</a></p>
-    <p>Whether this thread is paused. Can be read and set. <a href="../Variables.htm#IsPaused">A_IsPaused</a> is this property on <a href="#Underlying">Under</a>, because <a href="Pause.htm">Pause</a> targets the thread beneath the one calling it.</p>
+    <p>Whether this thread is paused. Can be read and set; setting it takes effect when that thread next resumes, which is the same flag <code>Pause 1</code> sets. <a href="../Variables.htm#IsPaused">A_IsPaused</a> is this property on <a href="#Underlying">Under</a>, because <a href="Pause.htm">Pause</a> targets the thread beneath the one calling it.</p>
   </dd>
   <dt id="IsInterruptible">IsInterruptible</dt>
   <dd>

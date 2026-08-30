@@ -15,7 +15,7 @@
 <pre class="NoIndent">class Lock extends Object</pre>
 <p>A mutual-exclusion lock for code shared between <a href="RealThread.htm">real threads</a>.</p>
 <p>This class is exported by the <a href="../Modules.htm#KS">KS module</a>.</p>
-<p><a href="LockRun.htm">LockRun</a> is the way to hold a lock for the duration of one call, and is not duplicated here. This class covers the two things <code>LockRun</code> cannot express: acquiring with a timeout, and holding a lock across several statements. A Lock is itself an object, so <code>LockRun</code> accepts one and the two forms exclude each other.</p>
+<p>Only a Lock can be locked on. Create one for the purpose and share that same object between the real threads which must not run the guarded code concurrently.</p>
 
 <h2 id="Call">Call</h2>
 <pre class="Syntax">LockObj := <span class="func">Lock</span>()</pre>
@@ -30,6 +30,17 @@
 <pre class="Syntax">LockObj.<span class="func">Release</span>()</pre>
 <p>Releases the lock once. Must be called by the real thread that acquired it, once per successful <a href="#Acquire">Acquire</a>. Releasing a lock this thread does not hold is an error.</p>
 
+<h2 id="Scoped">Holding a lock for one call</h2>
+<p>To hold a lock for the duration of one call, release it from a <code>finally</code> so that it is released even if the callback throws:</p>
+<pre>LockedCall(lock, callback, args*)
+{
+    lock.Acquire()
+    try
+        return callback(args*)
+    finally
+        lock.Release()
+}</pre>
+
 <h2 id="Remarks">Remarks</h2>
 <p>The lock belongs to a real thread, not to a script thread, and it is reentrant: the same real thread may acquire it repeatedly and must release it once per acquisition.</p>
 <p class="warning"><strong>Warning:</strong> Because ownership is per real thread, a thread that interrupts a lock holder on the same real thread &mdash; a <a href="SetTimer.htm">timer</a> or <a href="../Hotkeys.htm">hotkey</a> &mdash; counts as the same owner. It can re-enter the lock, and a <a href="#Release">Release</a> there releases the interrupted thread's acquisition. Keep guarded sections short and do not let one span a point where the thread can be interrupted, or make the interrupting thread <a href="Critical.htm">Critical</a>.</p>
@@ -37,7 +48,7 @@
 <h2 id="Examples">Examples</h2>
 <div class="ex" id="ExTimeout">
 <p><a class="ex_number" href="#ExTimeout"></a> Giving up rather than stalling the main thread.</p>
-<pre>#Import "Ks" { RealThread, Lock }
+<pre>#Import "Ks" { RealThread, Lock, Await }
 
 global stateLock := Lock(), state := 0
 
@@ -51,7 +62,7 @@ if stateLock.Acquire(100) {
 } else
     MsgBox "worker is still busy; try again later"
 
-worker.Wait()
+Await(worker.Task)
 
 Produce() {
     stateLock.Acquire()
@@ -65,7 +76,7 @@ Produce() {
 </div>
 
 <h2 id="Related">Related</h2>
-<p><a href="LockRun.htm">LockRun</a>, <a href="RealThread.htm">RealThread</a>, <a href="../misc/Threads.htm">Threads</a></p>
+<p><a href="RealThread.htm">RealThread</a>, <a href="Await.htm">Await</a>, <a href="Critical.htm">Critical</a>, <a href="../misc/Threads.htm">Threads</a></p>
 
 </body>
 </html>

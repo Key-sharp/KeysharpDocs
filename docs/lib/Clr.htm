@@ -47,6 +47,16 @@ System.IO.File.SetUnixFileMode(Path, 0o600)</pre>
 Name := Clr.<span class="func">GetTypeName</span>(ManagedType)</pre>
 <p>Returns the underlying full namespace or type name.</p>
 
+<h2 id="ToClr">ToClr on built-in objects</h2>
+<p>Built-in objects which stand in front of a CLR object expose it with a uniform <code class="no-highlight">ToClr()</code> method, returning it as an ordinary Clr object with the member-access semantics described above: <a href="Task.htm#ToClr">Task</a> (the underlying CLR task, so a worker's body is reached as <code class="no-highlight"><a href="RealThread.htm#Task">worker.Task</a>.ToClr()</code>), <a href="Gui.htm#ToClr">Gui</a>, <a href="GuiControl.htm#ToClr">Gui.Control</a> and <a href="Menu.htm#ToClr">Menu</a> (the backing toolkit object, whose concrete type is platform-dependent and unspecified), and <a href="Image.htm">Image</a> (the live underlying bitmap, with pending drawing applied first).</p>
+<p><a href="Map.htm#ToClr">Map</a> and <a href="Array.htm#ToClr">Array</a> are themselves CLR objects &mdash; a Map is a CLR <code class="no-highlight">IDictionary&lt;object, object&gt;</code> and an Array an <code class="no-highlight">IList</code>, so a CLR API declaring one accepts them directly &mdash; and their <code class="no-highlight">ToClr()</code> exposes their full CLR surface late-bound.</p>
+<p>Changes made through the wrapper bypass the owning class's own state and event wiring.</p>
+<pre>#Import "Ks" { RealThread, Await }
+worker := RealThread(() =&gt; 42)
+Await(worker.Task)
+MsgBox worker.Task.ToClr().IsCompleted</pre>
+<p>Inline C# (<a href="_CSharp.htm">#CSharp</a>) holding a ManagedInstance reads the raw wrapped object from its <code class="no-highlight">Native</code> property. Script member access on a wrapper always dispatches to the wrapped object, so <code class="no-highlight">Native</code> is unreachable from script.</p>
+
 <h2 id="Examples">Examples</h2>
 <pre>#Import "Ks" { Clr }
 System := Clr.Load("System")

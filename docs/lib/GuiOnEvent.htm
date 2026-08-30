@@ -101,6 +101,22 @@
   <tr><td><a href="#ItemFocus">ItemFocus</a></td><td>The focused item changes in a ListView.</td></tr>
   <tr><td><a href="#ItemSelect">ItemSelect</a></td><td>A ListView or TreeView item is selected, or a ListView item is deselected.</td></tr>
 </table>
+<p>The following events are raised only by <a href="GuiControls.htm#WebView">WebView</a> controls, which raise none of the events above:</p>
+<table class="info">
+  <tr><th>Event</th><th>Raised when...</th></tr>
+  <tr><td><a href="#Navigated">Navigated</a></td><td>The browser has committed to a new page and begun loading it.</td></tr>
+  <tr><td><a href="#DocumentLoading">DocumentLoading</a></td><td>A page is about to be loaded. The load can be cancelled.</td></tr>
+  <tr><td><a href="#DocumentLoaded">DocumentLoaded</a></td><td>A page has finished loading.</td></tr>
+  <tr><td><a href="#DocumentTitleChanged">DocumentTitleChanged</a></td><td>The page's title changes, through navigation or through script.</td></tr>
+  <tr><td><a href="#OpenNewWindow">OpenNewWindow</a></td><td>The page asks for a link to be opened in a new window.</td></tr>
+  <tr><td><a href="#MessageReceived">MessageReceived</a></td><td>The page calls <code>window.eto.postMessage()</code>.</td></tr>
+</table>
+<p>The following events are raised only by <a href="GuiControls.htm#RichEdit">RichEdit</a> controls, which also raise the control events above:</p>
+<table class="info">
+  <tr><th>Event</th><th>Raised when...</th></tr>
+  <tr><td><a href="#SelectionChange">SelectionChange</a></td><td>The caret moves or the selection changes.</td></tr>
+  <tr><td><a href="#LinkClick">LinkClick</a></td><td>A link the control detected in the text is clicked.</td></tr>
+</table>
 
 <h2 id="Window_Events">Window Events</h2>
 
@@ -222,7 +238,8 @@ MyGui.Show()</pre>
   </dd>
 </dl>
 <p>To retrieve the control's new value, use <a href="GuiControl.htm#Value">GuiCtrlObj.Value</a>.</p>
-<p>Applies to: <a href="GuiControls.htm#DropDownList">DropDownList</a>, <a href="GuiControls.htm#ComboBox">ComboBox</a>, <a href="GuiControls.htm#ListBox">ListBox</a>, <a href="GuiControls.htm#Edit">Edit</a>, <a href="GuiControls.htm#DateTime">DateTime</a>, <a href="GuiControls.htm#MonthCal">MonthCal</a>, <a href="GuiControls.htm#Hotkey">Hotkey</a>, <a href="GuiControls.htm#UpDown">UpDown</a>, <a href="GuiControls.htm#Slider">Slider</a>, <a href="GuiControls.htm#Tab">Tab</a>.</p>
+<p>Applies to: <a href="GuiControls.htm#DropDownList">DropDownList</a>, <a href="GuiControls.htm#ComboBox">ComboBox</a>, <a href="GuiControls.htm#ListBox">ListBox</a>, <a href="GuiControls.htm#Edit">Edit</a>, <a href="GuiControls.htm#RichEdit">RichEdit</a>, <a href="GuiControls.htm#DateTime">DateTime</a>, <a href="GuiControls.htm#MonthCal">MonthCal</a>, <a href="GuiControls.htm#Hotkey">Hotkey</a>, <a href="GuiControls.htm#UpDown">UpDown</a>, <a href="GuiControls.htm#Slider">Slider</a>, <a href="GuiControls.htm#Tab">Tab</a>.</p>
+<p>A RichEdit raises this only when the text changes; applying formatting does not.</p>
 
 <h3 id="Click">Click</h3>
 <p>Raised when the control is clicked.</p>
@@ -316,6 +333,53 @@ TreeView_<span class="func">ItemSelect</span>(GuiCtrlObj, Item)</pre>
 <p>Applies to: <a href="ListView.htm">ListView</a>, <a href="TreeView.htm">TreeView</a>.</p>
 <p>ListView: This event is raised once for each item being deselected or selected, so can be raised multiple times in response to a single action by the user.</p>
 
+
+<h2 id="WebView_Events">WebView Events</h2>
+<p>These events have no AutoHotkey counterpart. They apply only to <a href="GuiControls.htm#WebView">WebView</a> controls, and registering any other event name on one throws a <a href="Error.htm#ValueError">ValueError</a>.</p>
+<p>Every <em>Url</em> parameter below is a string, and is <code>""</code> when the browser does not report one.</p>
+
+<h3 id="Navigated">Navigated</h3>
+<p>Raised when the browser has committed to a new page and begun loading it. <a href="#DocumentLoaded">DocumentLoaded</a> follows once the page is fully loaded.</p>
+<pre class="Syntax">WebView_<span class="func">Navigated</span>(GuiCtrlObj, Url)</pre>
+
+<h3 id="DocumentLoading">DocumentLoading</h3>
+<p>Raised when a page is about to be loaded, before <a href="#Navigated">Navigated</a>.</p>
+<pre class="Syntax">WebView_<span class="func">DocumentLoading</span>(GuiCtrlObj, Url, IsMainFrame)</pre>
+<p><em>IsMainFrame</em> is 1 when the load is for the page itself and 0 when it is for a frame within it.</p>
+<p>Returning a non-empty value cancels the load and prevents any remaining callbacks from being called. Returning nothing, or <code>""</code>, allows it and passes the event to the next callback.</p>
+
+<h3 id="DocumentLoaded">DocumentLoaded</h3>
+<p>Raised when a page has finished loading. This is the point at which <a href="GuiControls.htm#WebView_ExecuteScript">ExecuteScript</a> can reach the document.</p>
+<pre class="Syntax">WebView_<span class="func">DocumentLoaded</span>(GuiCtrlObj, Url)</pre>
+
+<h3 id="DocumentTitleChanged">DocumentTitleChanged</h3>
+<p>Raised when the page's title changes, through navigation or through script. May be raised more than once while a page loads.</p>
+<pre class="Syntax">WebView_<span class="func">DocumentTitleChanged</span>(GuiCtrlObj, Title)</pre>
+
+<h3 id="OpenNewWindow">OpenNewWindow</h3>
+<p>Raised when the page asks for a link to be opened in a new window, such as an anchor whose target is <code>_blank</code>.</p>
+<pre class="Syntax">WebView_<span class="func">OpenNewWindow</span>(GuiCtrlObj, Url, TargetName)</pre>
+<p>Returning a non-empty value suppresses the new window and prevents any remaining callbacks from being called. Returning nothing leaves the browser to do whatever it would have done without a handler.</p>
+<p>On the Internet Explorer engine, <em>Url</em> is read back from the element the user activated and is not always the address that would have been opened. <em>TargetName</em> is <code>""</code> on both Windows engines.</p>
+
+<h3 id="MessageReceived">MessageReceived</h3>
+<p>Raised when script in the page calls <code>window.eto.postMessage(<i>string</i>)</code>, which is how a page hands a value back to the hosting script.</p>
+<pre class="Syntax">WebView_<span class="func">MessageReceived</span>(GuiCtrlObj, Message)</pre>
+<p>On the Internet Explorer engine, <code>window.eto</code> is installed once the document has loaded, so a page cannot post from script which runs while the document is still being parsed; post from an event handler, a timer, or anything else which runs after load. The Edge and WebKit engines install it before the page's own script runs, so a page may post at any time.</p>
+
+<h2 id="RichEdit_Events">RichEdit Events</h2>
+<p>These events have no AutoHotkey counterpart. They apply only to <a href="GuiControls.htm#RichEdit">RichEdit</a> controls; registering either on any other control throws a <a href="Error.htm#ValueError">ValueError</a>. A RichEdit also raises <a href="#Change">Change</a> and the other control events, except <a href="#Ctrl-ContextMenu">ContextMenu</a>, which it handles itself as <a href="GuiControls.htm#Edit">Edit</a> does.</p>
+
+<h3 id="SelectionChange">SelectionChange</h3>
+<p>Raised when the caret moves or the selection changes, whether by the user or by the script.</p>
+<pre class="Syntax">RichEdit_<span class="func">SelectionChange</span>(GuiCtrlObj, Start, Length)</pre>
+<p><em>Start</em> is the 1-based position the selection begins at and <em>Length</em> is how many characters are selected, the same values <a href="GuiControls.htm#RichEdit_SelectionStart">SelectionStart</a> and <a href="GuiControls.htm#RichEdit_SelectionLength">SelectionLength</a> report.</p>
+<p>Only a change to what is selected raises this, so the several notifications a single click produces arrive as one event. Formatting applied inside a <a href="GuiControls.htm#RichEdit_BeginUpdate">BeginUpdate</a>/<a href="GuiControls.htm#RichEdit_EndUpdate">EndUpdate</a> pair raises nothing.</p>
+
+<h3 id="LinkClick">LinkClick</h3>
+<p>Raised when the user clicks a link the control found in its text. Links are only detected while <a href="GuiControls.htm#RichEdit_DetectUrls">DetectUrls</a> is on, which makes this a Windows-only event.</p>
+<pre class="Syntax">RichEdit_<span class="func">LinkClick</span>(GuiCtrlObj, Text, Start, Length)</pre>
+<p><em>Text</em> is the link as it appears in the document, and <em>Start</em> and <em>Length</em> locate it in the text. The control does not open the link; pass <em>Text</em> to <a href="Run.htm">Run</a> to do that.</p>
 
 <h2 id="Other_Events">Other Events</h2>
 <p>Other types of GUI events can be detected and acted upon via <a href="GuiOnNotify.htm">OnNotify</a>, <a href="GuiOnCommand.htm">OnCommand</a>, <a href="OnMessage.htm">OnMessage function</a> or in <span class="ver">[v2.1-alpha.7+]</span> <a href="GuiOnMessage.htm">OnMessage method</a>. For example, a script can display context-sensitive help via ToolTip whenever the user moves the mouse over particular controls in the window. This is demonstrated in the <a href="Gui.htm#ExToolTip">GUI ToolTip example</a>.</p>
