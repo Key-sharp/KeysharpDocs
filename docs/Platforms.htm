@@ -28,46 +28,52 @@
 
 <h2 id="Linux">Linux</h2>
 
-<p>Linux support varies by display server, compositor and whether the privileged helpers were installed. The <a href="howto/Install.htm#Linux">Linux installer</a> can install <code class="no-highlight">keysharp-inputd</code>, <code class="no-highlight">keysharp-helper</code> and desktop extensions.</p>
+<p>Linux support varies by display server, compositor and whether the independent <code class="no-highlight">keysharp-input</code> and <code class="no-highlight">keysharp-desktop</code> components are installed. The <a href="howto/Install.htm#Linux">Linux setup resolver</a> downloads each project's own release and reuses compatible system installations.</p>
 
 <table class="info">
   <tr>
     <th>Backend</th>
-    <th>Without root-installed helpers</th>
-    <th>Helpers add or enable</th>
+    <th>Without native components</th>
+    <th>Components add or enable</th>
     <th>Remarks</th>
   </tr>
   <tr>
     <td><strong>X11</strong></td>
-    <td>Window management and screen capture; partial X11 input hooks, synthesis and hotkeys/hotstrings.</td>
-    <td>Full input hooks and synthesis, <code>BlockInput</code>, and reliable hotkeys/hotstrings through <code class="no-highlight">keysharp-inputd</code>.</td>
-    <td>Root installation primarily upgrades input control.</td>
+    <td>Core runtime and script-owned GTK/Eto windows; native desktop and global-input operations are unavailable.</td>
+    <td><code class="no-highlight">keysharp-desktop</code> supplies foreign-window automation, clipboard, capture, cursor, keyboard-layout, modifier and lock-state queries; <code class="no-highlight">keysharp-input</code> supplies full input hooks and synthesis, <code>BlockInput</code>, and reliable hotkeys/hotstrings.</td>
+    <td>X11 cannot technically enforce capture authorization, so the desktop broker is an awareness gate there.</td>
   </tr>
   <tr>
     <td><strong>Wayland — GNOME</strong></td>
-    <td>Window management and mouse synthesis through the GNOME Shell extension.</td>
-    <td>Keyboard synthesis, hooks, <code>BlockInput</code> and hotkeys/hotstrings through <code class="no-highlight">keysharp-inputd</code>; authorized screen capture through <code class="no-highlight">keysharp-helper</code>.</td>
-    <td>The shell extension requires a logout after installation. The helper is required for capture authorization.</td>
+    <td>Core runtime; permission-scoped input and desktop operations are unavailable.</td>
+    <td>The <code class="no-highlight">keysharp-desktop</code> Shell provider supplies window automation and brokered capture; <code class="no-highlight">keysharp-input</code> supplies keyboard synthesis, hooks, <code>BlockInput</code> and hotkeys/hotstrings.</td>
+    <td>Enabling a newly installed Shell extension can require logging out and back in.</td>
   </tr>
   <tr>
     <td><strong>Wayland — Cinnamon</strong></td>
-    <td>Window management, mouse synthesis and push window events through the Cinnamon extension, with an Eval fallback if the extension is absent.</td>
-    <td>Keyboard synthesis, hooks, <code>BlockInput</code> and hotkeys/hotstrings through <code class="no-highlight">keysharp-inputd</code>.</td>
-    <td>The installer asks a running Cinnamon session to load or reload the extension. A manual installation can require a Cinnamon restart or logout.</td>
+    <td>Core runtime; permission-scoped input and desktop operations are unavailable.</td>
+    <td>The <code class="no-highlight">keysharp-desktop</code> provider supplies push window events, window actions, mouse synthesis and brokered capture; <code class="no-highlight">keysharp-input</code> supplies reliable keyboard input.</td>
+    <td>A Cinnamon restart or logout can be needed after first installing the provider.</td>
   </tr>
   <tr>
     <td><strong>Wayland — KWin/KDE Plasma</strong></td>
-    <td>Window management through KWin scripting and mouse synthesis through FakeInput.</td>
-    <td>Screen capture through <code class="no-highlight">keysharp-helper</code>; keyboard synthesis, hooks, <code>BlockInput</code> and hotkeys/hotstrings through <code class="no-highlight">keysharp-inputd</code>.</td>
-    <td>The capture helper must be root-owned and setuid, with its desktop file installed.</td>
+    <td>Core runtime; permission-scoped input and desktop operations are unavailable.</td>
+    <td>Authorized screen capture and window integration through <code class="no-highlight">keysharp-desktop</code>; keyboard synthesis, hooks, <code>BlockInput</code> and hotkeys/hotstrings through <code class="no-highlight">keysharp-input</code>.</td>
+    <td>The desktop component owns the KWin-restricted desktop entry and its socket-activated broker; no setuid executable is used.</td>
   </tr>
   <tr>
     <td><strong>Other Wayland compositors</strong><br>Sway, Hyprland, COSMIC, Wayfire, labwc and others</td>
-    <td>Protocol-dependent window listing, active-window detection, activation and screen capture.</td>
-    <td>Input synthesis, hooks, <code>BlockInput</code> and hotkeys/hotstrings through <code class="no-highlight">keysharp-inputd</code>.</td>
+    <td>Core runtime; permission-scoped input and desktop operations are unavailable.</td>
+    <td>Desktop authorization and capture through <code class="no-highlight">keysharp-desktop</code>; input synthesis, hooks, <code>BlockInput</code> and hotkeys/hotstrings through <code class="no-highlight">keysharp-input</code>.</td>
     <td>Window and capture behavior depends on foreign-toplevel and screencopy protocol support.</td>
   </tr>
 </table>
+
+<h3 id="Linux_Permissions">Permissions</h3>
+<p><code class="no-highlight">keysharp-input</code> owns the privileged input service. A system installation of <code class="no-highlight">keysharp-desktop</code> owns the per-user desktop service and a root authority. Applications use stable client libraries rather than the private socket protocols. When a permanent per-application grant is missing, the responsible system component asks polkit to authenticate the active user. Denials and cancellations are not stored.</p>
+<p>The system components are independently installable and share the root-owned grant store under <code class="no-highlight">/var/lib/keysharp-permissions/v1</code>. InputControl is shared and can be managed by either component; InputMonitoring belongs to <code class="no-highlight">keysharp-input</code>, and the desktop capabilities belong to <code class="no-highlight">keysharp-desktop</code>. Cursor position, modifier state and lock-toggle state are ungated. List grants with <code class="no-highlight">keysharp-input permissions list</code> or <code class="no-highlight">keysharp-desktop permissions list</code>. Revoke one with <code class="no-highlight">keysharp-input permissions revoke --hash &lt;hash&gt; input-monitoring</code> or <code class="no-highlight">keysharp-desktop permissions revoke --hash &lt;hash&gt; screen-capture</code>; each command's help lists its other targets and scopes.</p>
+<p>A source-built per-user <code class="no-highlight">keysharp-desktop</code> installation instead uses a local dialog and a private user grant store. It records consent but cannot isolate its grants from other processes running as that user, does not authorize the system <code class="no-highlight">keysharp-input</code> service, and yields to a running system desktop authority.</p>
+<p>Joystick discovery and state reads do not use <code class="no-highlight">keysharp-input</code>. They access evdev directly and can require membership in the <code class="no-highlight">input</code> group.</p>
 
 <h3 id="Linux_Controls">Controls and accessibility automation</h3>
 <p>Control functions operate on controls belonging to windows created by the current script. Linux desktops do not expose foreign application controls through the same model as Windows.</p>

@@ -77,8 +77,8 @@ MsgBox hook.Status "  " hook.Paused     <em>; Stopped  0</em></pre>
 <p>Window events come from SetWinEventHook. <code>CaretMove</code> uses the MSAA caret, and its rectangle is read from the same GUITHREADINFO source as <a href="CaretGetPos.htm">CaretGetPos</a>, so the two always agree.</p>
 
 <h3 id="Linux">Linux</h3>
-<p><strong>X11/XWayland:</strong> Window events come from a GDK/X11 filter running on the UI thread.</p>
-<p><strong>Wayland:</strong> Window events come from the compositor, through the GNOME Shell, KWin, Cinnamon or wlroots foreign-toplevel source available in the session.</p>
+<p><strong>X11:</strong> Window events come from the <code class="no-highlight">keysharp-desktop</code> native X11 event stream.</p>
+<p><strong>Wayland:</strong> Window events come from the compositor through <code class="no-highlight">keysharp-desktop</code> when a push event source is available, and otherwise from changes between broker window snapshots.</p>
 <p><code>CaretMove</code> is not a display-server event on either backend: it comes from the AT-SPI <code>object:text-caret-moved</code> signal, which is why a caret subscription works the same way under X11 and Wayland. It requires accessibility to be enabled for the session; with no AT-SPI bridge running, no caret events arrive.</p>
 
 <h3 id="macOS">macOS</h3>
