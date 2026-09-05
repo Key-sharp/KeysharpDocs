@@ -18,7 +18,7 @@
 <pre class="Syntax"><span class="func">BlockInput</span> OnOff
 <span class="func">BlockInput</span> SendMouse
 <span class="func">BlockInput</span> MouseMove</pre>
-<p class="note"><strong>Note:</strong> On Linux, reliable blocking on X11 and all blocking on Wayland require <code class="no-highlight">keysharp-inputd</code>. <em>MouseMove</em> is enforced by the existing mouse-hook decision and therefore preserves button and wheel input; all-input mode uses the daemon's block facility. X11 can otherwise use an <code class="no-highlight">xinput</code> fallback, but that fallback disables the whole mouse device. On macOS, blocking uses event taps and requires Input Monitoring permission.</p>
+<p class="note"><strong>Note:</strong> On Linux, blocking requires <code class="no-highlight">keysharp-input</code> and the <code>InputControl</code> grant. <em>MouseMove</em> also requires the mouse hook and <code>InputMonitoring</code>; it suppresses movement while preserving button and wheel input. See <a href="../Platforms.htm#Linux">Linux Platform Support</a>. On macOS, blocking uses event taps and requires Input Monitoring permission.</p>
 <h2 id="Parameters">Parameters</h2>
 <dl>
 

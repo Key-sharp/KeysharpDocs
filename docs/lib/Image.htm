@@ -56,6 +56,7 @@
 <h3 id="FromDesktop">FromDesktop</h3>
 <pre class="Syntax">Picture := Image.<span class="func">FromDesktop</span>()</pre>
 <p>Captures the whole virtual desktop.</p>
+<p class="note"><strong>Note:</strong> On Linux, screen and window capture factories require <code class="no-highlight">keysharp-desktop</code>, the <code>ScreenCapture</code> grant and a backend which supports the requested capture. This applies on X11 and Wayland. A whole-desktop portal screenshot can supply a screen rectangle only when its pixels map consistently to desktop coordinates; it does not provide occluded-window capture. See <a href="../Platforms.htm#Linux">Linux Platform Support</a>.</p>
 
 <h3 id="FromMonitor">FromMonitor</h3>
 <pre class="Syntax">Picture := Image.<span class="func">FromMonitor</span>(<span class="optional">MonitorNumber</span>)</pre>
@@ -67,7 +68,7 @@
 
 <h3 id="FromWindow">FromWindow</h3>
 <pre class="Syntax">Picture := Image.<span class="func">FromWindow</span>(WinTitle <span class="optional">, Options, WinText, ExcludeTitle, ExcludeText</span>)</pre>
-<p>Captures the whole matching window, including its title bar. Occluded windows are captured correctly except on compositors which expose only foreign-toplevel information.</p>
+<p>Captures the matching window. The included decorations and ability to capture an occluded window depend on the backend. On X11, the desktop component uses an XComposite window pixmap when available; the direct X-image fallback can be affected by occlusion. GNOME, Cinnamon and KWin provide dedicated window-capture paths. Generic Wayland foreign-toplevel information alone does not provide window capture.</p>
 <p><em>Options</em> can be a capture-mode number or an object. On Windows, modes 0 and 1 use GetDC with BitBlt, modes 2 and 3 use PrintWindow, and mode 4 (the default) uses PrintWindow with PW_RENDERFULLCONTENT for hardware-accelerated windows. Mode 5 (UWP capture) is not implemented.</p>
 <p><code>{decorations: false}</code> requests client-area-only capture on a platform which can honor it, such as KWin. Other platforms ignore this property.</p>
 

@@ -34,7 +34,7 @@ Hook := WinEvent.<span class="func">CaretMove</span>(Callback <span class="optio
   <tr><td><code>Active</code></td><td>The foreground window changed, or the active window's title changed.</td></tr>
   <tr><td><code>Exist</code></td><td>A matching window was created, shown or changed title to match. Fires once per window and forces hidden-window detection.</td></tr>
   <tr><td><code>NotExist</code></td><td>A matching window was destroyed, hidden/cloaked when hidden detection is off, or changed title so it no longer matches.</td></tr>
-  <tr><td><code>Move</code></td><td>A window moved or resized. Events are not coalesced.</td></tr>
+  <tr><td><code>Move</code></td><td>A window moved or resized. A backend using polling reports changes observed between queries.</td></tr>
   <tr><td><code>Minimize</code></td><td>A window was minimized.</td></tr>
   <tr><td><code>Restore</code></td><td>A window was restored.</td></tr>
   <tr><td><code>TitleChange</code></td><td>A window title changed.</td></tr>
@@ -71,14 +71,15 @@ MsgBox hook.Status "  " hook.Paused     <em>; Stopped  0</em></pre>
 <p><a href="Clipboard.htm#ClipboardHook">ClipboardHook</a> and the <a href="Monitor.htm#OnChange">Monitor.OnChange</a> subscription carry the same three members with the same meanings, minus the global switch.</p>
 
 <h2 id="Remarks">Platform Remarks</h2>
-<p>Every event type is available on every platform. What differs is the source each one is read from, and the permissions or helpers that source needs.</p>
+<p>Event availability depends on the platform source, the window properties it exposes and its permissions.</p>
 
 <h3 id="Windows">Windows</h3>
 <p>Window events come from SetWinEventHook. <code>CaretMove</code> uses the MSAA caret, and its rectangle is read from the same GUITHREADINFO source as <a href="CaretGetPos.htm">CaretGetPos</a>, so the two always agree.</p>
 
 <h3 id="Linux">Linux</h3>
-<p><strong>X11/XWayland:</strong> Window events come from a GDK/X11 filter running on the UI thread.</p>
-<p><strong>Wayland:</strong> Window events come from the compositor, through the GNOME Shell, KWin, Cinnamon or wlroots foreign-toplevel source available in the session.</p>
+<p>Window subscriptions require <code class="no-highlight">keysharp-desktop</code> and the <code>WindowMonitoring</code> grant. See <a href="../Platforms.htm#Linux">Linux Platform Support</a>.</p>
+<p><strong>X11:</strong> Window events use the desktop component's XCB property and structure subscriptions. When the window manager supplies no EWMH client list, subscriptions fall back to polling window queries.</p>
+<p><strong>Wayland:</strong> GNOME Shell and Cinnamon supply push events through their extensions. KWin and generic Wayland backends use polling, limited to the window properties their APIs expose. Polling can miss changes which occur between queries.</p>
 <p><code>CaretMove</code> is not a display-server event on either backend: it comes from the AT-SPI <code>object:text-caret-moved</code> signal, which is why a caret subscription works the same way under X11 and Wayland. It requires accessibility to be enabled for the session; with no AT-SPI bridge running, no caret events arrive.</p>
 
 <h3 id="macOS">macOS</h3>

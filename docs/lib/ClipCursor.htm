@@ -41,7 +41,7 @@
 <p>Cursor confinement is available through the low-level mouse hook and requires no additional setup.</p>
 
 <h3 id="Linux">Linux</h3>
-<p>Cursor confinement requires the <code class="no-highlight">keysharp-inputd</code> mouse hook and a desktop backend which can both query and move the cursor. If either is unavailable, the function throws an <a href="Error.htm#OSError">OSError</a>. See <a href="../howto/Install.htm#Linux">Installing on Linux</a> and <a href="../Platforms.htm#Linux">Linux Platform Support</a>.</p>
+<p>Cursor confinement requires the <code class="no-highlight">keysharp-input</code> mouse hook and a <code class="no-highlight">keysharp-desktop</code> backend which can both query and move the cursor. If either is unavailable, the function throws an <a href="Error.htm#OSError">OSError</a>. See <a href="../howto/Install.htm#Linux">Installing on Linux</a> and <a href="../Platforms.htm#Linux">Linux Platform Support</a>.</p>
 
 <h3 id="macOS">macOS</h3>
 <p>Cursor confinement is implemented by monitoring and suppressing out-of-bounds physical movement. It requires both Input Monitoring and Accessibility permission. If the global mouse hook cannot be activated, the function throws an <a href="Error.htm#OSError">OSError</a>. See <a href="../Platforms.htm#macOS_Permissions">macOS Permissions</a>.</p>
