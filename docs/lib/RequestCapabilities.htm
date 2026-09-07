@@ -19,26 +19,30 @@
 <h2 id="Parameters">Parameters</h2>
 <dl>
   <dt>Capabilities</dt>
-  <dd><p>Zero or more capability-name strings. Each string can contain names separated by commas or spaces. If no capability is specified, the function returns the current state of every capability without prompting.</p></dd>
+  <dd><p>Zero or more capability-name strings. Each string can contain names separated by commas or spaces; arrays of names are also accepted. If no capability is specified, the function returns the current state of every capability without prompting.</p></dd>
 </dl>
 
 <h2 id="Names">Capability Names</h2>
 <table class="info">
-  <tr><th>Name</th><th>Aliases</th><th>Purpose</th></tr>
-  <tr><td><code>InputMonitoring</code></td><td><code>hook</code>, <code>inputhook</code></td><td>Monitor keyboard and mouse input, including hotkeys and hotstrings.</td></tr>
-  <tr><td><code>InputInjection</code></td><td><code>synthinput</code>, <code>sendinput</code></td><td>Synthesize keyboard and mouse input with Send, Click and related APIs.</td></tr>
-  <tr><td><code>BlockInput</code></td><td></td><td>Suppress input events.</td></tr>
-  <tr><td><code>ScreenCapture</code></td><td><code>capture</code>, <code>imagecapture</code></td><td>Capture pixels with PixelGetColor, ImageSearch or Image.</td></tr>
-  <tr><td><code>AccessibilityAutomation</code></td><td><code>accessibility</code>, <code>automation</code></td><td>Access accessibility trees, including AT-SPI on Linux.</td></tr>
+  <tr><th>Name</th><th>Purpose</th></tr>
+  <tr><td><code>InputMonitoring</code></td><td>Monitor keyboard and mouse input, including hotkeys and hotstrings.</td></tr>
+  <tr><td><code>InputControl</code></td><td>Synthesize or suppress input with Send, Click, BlockInput and related APIs.</td></tr>
+  <tr><td><code>WindowMonitoring</code></td><td>Inspect windows and subscribe to window events.</td></tr>
+  <tr><td><code>WindowControl</code></td><td>Change windows, including moving, activating and closing them.</td></tr>
+  <tr><td><code>ScreenCapture</code></td><td>Capture pixels with PixelGetColor, ImageSearch or Image.</td></tr>
+  <tr><td><code>AudioCapture</code></td><td>Reserved permission scope; granting it does not enable an audio-capture API.</td></tr>
+  <tr><td><code>CameraCapture</code></td><td>Reserved permission scope; granting it does not enable a camera-capture API.</td></tr>
+  <tr><td><code>ClipboardMonitoring</code></td><td>Read or observe the clipboard through a supported backend.</td></tr>
 </table>
-<p>Names and aliases are case-insensitive.</p>
+<p>Names are case-insensitive. Aliases are not accepted.</p>
 
 <h2 id="Return_Value">Return Value</h2>
 <p>Type: Object</p>
 <p>Returns an object with one property per capability. Each value is <code class="no-highlight">"Granted"</code>, <code class="no-highlight">"Denied"</code>, <code class="no-highlight">"NotApplicable"</code> or <code class="no-highlight">"Unsupported"</code>. The <code>IsGranted</code> property is 1 only if every requested capability was granted or is not applicable.</p>
 
 <h2 id="Remarks">Remarks</h2>
-<p>On Linux, input-related capabilities and ScreenCapture requested in the same call are batched into one <code class="no-highlight">keysharp-inputd</code> prompt.</p>
+<h3 id="Linux">Linux</h3>
+<p>On Linux, scopes handled by the same native authority are requested together. Input and desktop requests may need separate prompts, and system installations share the <code>InputControl</code> grant. Grants belong to the host executable, so scripts using the same interpreter share them; a later request for additional scopes may prompt again. These rules apply on X11 and Wayland. See <a href="../Platforms.htm#Linux_Permissions">Linux permissions</a>.</p>
 <p>Use <a href="_Requires.htm#Capability"><code>#Requires capability</code></a> when permissions are needed from startup. Use RequestCapabilities when a script needs to choose when to prompt or inspect individual results.</p>
 
 <h2 id="Examples">Examples</h2>

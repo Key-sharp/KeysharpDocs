@@ -15,7 +15,7 @@
 
 <p>Clicks a mouse button at the specified coordinates. It can also hold down a mouse button, turn the mouse wheel, or move the mouse.</p>
 <pre class="Syntax"><span class="func">Click</span> <span class="optional">Coords, WhichButton, ClickCount, DownOrUp, Relative, Options</span></pre>
-<p class="note"><strong>Note:</strong> On Wayland, input requires a supported compositor backend or <code class="no-highlight">keysharp-inputd</code>. On macOS, it requires Accessibility permission.</p>
+<p class="note"><strong>Note:</strong> On Linux, button input requires <code class="no-highlight">keysharp-input</code> and the <code>InputControl</code> grant. Moving to a specified screen position also requires a supported <code class="no-highlight">keysharp-desktop</code> cursor backend. See <a href="../Platforms.htm#Linux">Linux Platform Support</a>. On macOS, it requires Accessibility permission.</p>
 
 <h2 id="Parameters">Parameters</h2>
 <dl>

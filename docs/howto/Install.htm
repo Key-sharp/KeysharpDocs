@@ -59,7 +59,7 @@
        data-arm64="https://github.com/keysharp-org/Keysharp/releases/download/v0.0.0.16/keysharp-0.0.0.16-linux-arm64.tar.gz">Portable tarball</a></p>
   </div>
 </div>
-<p class="dl-status">Keysharp <!--ksver-->0.0.0.16<!--/ksver-->. Other architectures, every package and <code class="no-highlight">SHA256SUMS</code> are on the <a href="https://github.com/keysharp-org/Keysharp/releases/latest">release page</a>.</p>
+<p class="dl-status">Keysharp <!--ksver-->0.0.0.16<!--/ksver-->. Other architectures and individual packages are on the <a href="https://github.com/keysharp-org/Keysharp/releases/latest">release page</a>.</p>
 
 <p>Keysharp needs the <a href="https://dotnet.microsoft.com/download/dotnet/10.0">.NET 10 runtime</a>. The Windows and Linux installers offer to install it for you; on macOS, install it yourself if it is missing.</p>
 
@@ -97,22 +97,15 @@
 <p>The <code class="no-highlight">.pkg</code> is an alternative to the disk image: it installs both applications to <em>Applications</em>, then asks the same questions about terminal commands and the editor shim. Double-click it in Finder, or run <code class="no-highlight">sudo installer -pkg &lt;package&gt;.pkg -target /</code>.</p>
 
 <h2 id="Linux">Linux</h2>
-<p>Download <code class="no-highlight">keysharp-linux-setup.sh</code> and <code class="no-highlight">SHA256SUMS</code> from the Keysharp release. Verify the setup script with either command, then run it:</p>
-<pre class="no-highlight">sha256sum --check --ignore-missing SHA256SUMS
-gh attestation verify keysharp-linux-setup.sh --repo keysharp-org/Keysharp
-sudo sh ./keysharp-linux-setup.sh</pre>
-<p>This system-wide setup resolver carries no application payload. It downloads Keysharp, <code class="no-highlight">keysharp-input</code> and <code class="no-highlight">keysharp-desktop</code> from their own releases, verifies each download, and reuses an installed component when its client ABI is compatible. Debian and Ubuntu use packages; other supported systemd distributions use release archives.</p>
-<p>On Arch-based systems, the community-maintained <a href="https://aur.archlinux.org/packages/keysharp-git">keysharp-git AUR package</a> is also available.</p>
-<p class="note"><strong>Note:</strong> The package under <code class="no-highlight">/usr</code> and a root tar installation under <code class="no-highlight">/usr/local</code> are alternative system-wide channels. Uninstall one before switching to the other.</p>
-<p>A system installation creates the <code class="no-highlight">keysharp</code> command, associates <code class="no-highlight">.ks</code> and <code class="no-highlight">.cks</code> files, and installs or reuses two independently versioned components:</p>
-<ul>
-  <li><code class="no-highlight">keysharp-input</code> provides the evdev/uinput service used by hotkeys, hotstrings, input synthesis and <code>BlockInput</code>.</li>
-  <li><code class="no-highlight">keysharp-desktop</code> provides the per-user desktop broker, its root authorization mode, and the GNOME/Cinnamon providers used for capture and desktop automation.</li>
-</ul>
-<p>Each component exposes a stable client library and has its own installation lifecycle. A compatible system installation is left untouched unless an upgrade is requested. GNOME and Cinnamon can require logging out and back in after installing or upgrading <code class="no-highlight">keysharp-desktop</code>.</p>
+<p>Download <a href="https://github.com/keysharp-org/Keysharp/releases/latest/download/keysharp-linux-setup.sh"><code class="no-highlight">keysharp-linux-setup.sh</code></a> from the release, then run it from the download directory:</p>
+<pre class="no-highlight">sudo sh ./keysharp-linux-setup.sh</pre>
+<p>Setup installs Keysharp and any missing or incompatible <code class="no-highlight">keysharp-input</code> and <code class="no-highlight">keysharp-desktop</code> components from their own releases. It uses Debian packages on Debian and Ubuntu, or archives on other supported systemd distributions. It creates the <code class="no-highlight">keysharp</code> command and file associations. GNOME or Cinnamon extension activation may require a logout; setup reports when this is needed.</p>
+<p>A healthy compatible native component is kept. To update the components too, rerun setup with <code class="no-highlight">--upgrade-components</code>. For a local installation report, run <code class="no-highlight">sh ./keysharp-linux-setup.sh --diagnose</code>. Component selection, requirements and repairs are covered in the <a href="https://github.com/keysharp-org/Keysharp/blob/master/docs/install-linux.md">Linux installation guide</a>.</p>
+<p>The individual Keysharp package or archive installs Keysharp alone. On Debian or Ubuntu, install it with <code class="no-highlight">sudo apt install ./keysharp-&lt;version&gt;-linux-x64.deb</code>; for an archive, extract it and run <code class="no-highlight">sudo bash ./install.sh</code>. Install the native components separately when using these routes. See <a href="../Platforms.htm#Linux">Linux Platform Support</a> for their operations and permissions.</p>
 
 <h3 id="Linux_User">Installing without root</h3>
-<p>The combined setup resolver is system-wide and requires root when it changes the machine. To install only Keysharp for one user, download the standalone Keysharp archive and run its <code class="no-highlight">bash ./install.sh</code> without <code class="no-highlight">sudo</code>; it installs under <code class="no-highlight">$HOME/.local</code>. It does not install missing native components, although compatible components already present on the machine can still be used. <code class="no-highlight">keysharp-desktop</code> also has a separate source-build user mode; <code class="no-highlight">keysharp-input</code> remains a system service. See <a href="../Platforms.htm">Platform Support</a> for what each backend can do.</p>
+<p>Extract the Keysharp archive and run <code class="no-highlight">bash ./install.sh</code> without sudo to install under <code class="no-highlight">$HOME/.local</code>, or run <code class="no-highlight">app/Keysharp</code> directly. The .NET 10 runtime and native runtime libraries must already be available. This does not install either native component; an existing system installation of them can still be used.</p>
+<p>The desktop component also supports a <a href="https://github.com/keysharp-org/keysharp-desktop/blob/main/docs/install.md#install-for-one-user">user-owned authority</a>, whose consent dialogs require zenity or kdialog. Its grants record consent without protecting against other programs running as the same user, and are separate from system input grants. Input hooks and synthesis still require the system input component.</p>
 
 <h2 id="Verify">Verify the Installation</h2>
 <p>Save this as <code class="no-highlight">hello.ks</code>:</p>
@@ -134,7 +127,7 @@ ln -sf "$(command -v keysharp)" ~/.local/bin/AutoHotkey.exe</pre>
   <li><strong>Windows:</strong> uninstall Keysharp from <em>Settings &rarr; Apps</em>. The <code class="no-highlight">PATH</code> entry is removed with it.</li>
   <li><strong>macOS, disk image:</strong> open the <code class="no-highlight">.dmg</code> and double-click <strong>Uninstall.command</strong>.</li>
   <li><strong>macOS, PKG:</strong> run <code class="no-highlight">sudo keysharp-uninstall</code>.</li>
-  <li><strong>Linux:</strong> use <code class="no-highlight">sudo apt remove keysharp</code> for the package or the matching tarball's uninstall script for a tar installation. Removing Keysharp deliberately keeps <code class="no-highlight">keysharp-input</code>, <code class="no-highlight">keysharp-desktop</code> and their grants because other applications can use them; remove an unused component separately through its package manager or its own portable uninstaller.</li>
+  <li><strong>Linux:</strong> <code class="no-highlight">sudo apt remove keysharp</code>, or run the uninstall script from the tarball. This leaves the independently installed input and desktop components and their permission grants; remove them through their own installers when needed.</li>
 </ul>
 <p>On macOS the uninstaller cannot revoke privacy permissions; remove Keysharp and Keyview under <em>System Settings &rarr; Privacy &amp; Security</em>. If permissions misbehave after switching between differently signed builds, reset them:</p>
 <pre class="no-highlight">tccutil reset All org.keysharp.keysharp
@@ -143,7 +136,10 @@ tccutil reset All org.keysharp.keyview</pre>
 
 <h2 id="Build">Building from Source</h2>
 <p>Building requires the .NET 10 SDK. On Linux and macOS it also requires the Keysharp branch of <a href="https://github.com/keysharp-org/Eto/tree/Keysharp">the Keysharp Eto fork</a>, cloned beside the Keysharp repository:</p>
-<pre class="no-highlight">git clone -b Keysharp https://github.com/keysharp-org/Eto.git</pre>
+<p>From the Keysharp repository:</p>
+<pre class="no-highlight">git clone -b Keysharp https://github.com/keysharp-org/Eto.git ../Eto
+dotnet build Keysharp.sln -c Debug</pre>
+<p>See the <a href="https://github.com/keysharp-org/Keysharp/blob/master/docs/building.md">build guide</a> for runtime dependencies and launching the output. Packaging is a separate step:</p>
 <table class="info">
   <tr><th>Platform</th><th>Build and package</th><th>Output in <code class="no-highlight">dist/</code></th></tr>
   <tr>

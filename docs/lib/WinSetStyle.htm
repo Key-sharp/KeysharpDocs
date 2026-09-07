@@ -19,7 +19,7 @@
 <pre class="Syntax"><span class="func">WinSetStyle</span> Value <span class="optional">, WinTitle, WinText, ExcludeTitle, ExcludeText</span>
 <span class="func">WinSetExStyle</span> Value <span class="optional">, WinTitle, WinText, ExcludeTitle, ExcludeText</span></pre>
 
-<p class="note"><strong>Note:</strong> On X11 and macOS there is no way to write a Win32 style word: the call is accepted and does nothing for a window created by the script, and raises an OSError for a foreign window. Wayland maps only WS_CAPTION, to the compositor decoration state, and only for compositor-backed windows. WinSetExStyle has no effect on any of the three.</p>
+<p class="note"><strong>Note:</strong> On Linux, WinSetStyle maps WS_CAPTION for foreign windows to the decoration state exposed by <code class="no-highlight">keysharp-desktop</code>, on X11 and supported Wayland backends. Other Win32 style bits have no native equivalent. Windows created by the script use toolkit behavior. WinSetExStyle has no Linux equivalent. See <a href="../Platforms.htm#Linux">Linux Platform Support</a> and the <a href="#macOS">macOS remarks</a>.</p>
 
 <h2 id="Parameters">Parameters</h2>
 <dl>
