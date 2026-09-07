@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <title>Keysharp String Functions | Keysharp</title>
-<meta name="description" content="Base64, line-ending and joining functions exported by the KS module." />
+<meta name="description" content="Line-ending and joining functions exported by the KS module." />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <link href="../static/theme.css" rel="stylesheet" type="text/css" />
@@ -13,15 +13,7 @@
 
 <h1>Keysharp String Functions</h1>
 <p>These functions are exported by the <a href="../Modules.htm#KS">KS module</a>.</p>
-
-<h2 id="Base64Decode">Base64Decode</h2>
-<pre class="Syntax">Data := <span class="func">Base64Decode</span>(Text)</pre>
-<p>Decodes a Base64 string and returns a <a href="Buffer.htm">Buffer</a> containing the decoded bytes.</p>
-
-<h2 id="Base64Encode">Base64Encode</h2>
-<pre class="Syntax">Text := <span class="func">Base64Encode</span>(Value <span class="optional">, Encoding := "UTF-8"</span>)</pre>
-<p>Encodes a byte array, <a href="Buffer.htm">Buffer</a> or string as a Base64 string.</p>
-<p>A string is converted to bytes with <em>Encoding</em>, which defaults to UTF-8 — what any other tool means by the Base64 of a text. Name another encoding, as for <a href="FileEncoding.htm">FileEncoding</a>, to encode a different byte sequence; a name which cannot be resolved throws a <a href="Error.htm">ValueError</a>. A Buffer or Array is encoded exactly as it stands, so no encoding applies to it.</p>
+<p>Text codecs are classes rather than functions: see <a href="Base64.htm">Base64</a>, <a href="Url.htm">Url</a> and <a href="Json.htm">Json</a>.</p>
 
 <h2 id="NormalizeEol">NormalizeEol</h2>
 <pre class="Syntax">Text := <span class="func">NormalizeEol</span>(Text <span class="optional">, Eol</span>)</pre>
@@ -32,8 +24,7 @@
 <p>Converts each value to a string and joins the results with <em>Separator</em>. Expand an existing collection with <code class="no-highlight">Values*</code>.</p>
 
 <h2 id="Example">Example</h2>
-<pre>#Import "Ks" { Base64Decode, Base64Encode, NormalizeEol, Join }
-Encoded := Base64Encode(Buffer(4))
+<pre>#Import "Ks" { NormalizeEol, Join }
 Text := Join(", ", "red", "green", "blue")</pre>
 
 </body>

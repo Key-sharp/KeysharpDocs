@@ -17,6 +17,7 @@
 <p>This class is exported by the <a href="../Modules.htm#KS">KS module</a>.</p>
 
 <p class="note"><strong>Note:</strong> There is one clipboard per session, so this class has no instances and every member is used directly on the class. Calling <code class="no-highlight">Clipboard()</code> throws an <a href="Error.htm">Error</a>.</p>
+<p class="note"><strong>Note:</strong> Reading clipboard content, checking its formats or subscribing to changes can require ClipboardMonitoring. Writing, clearing and restoring clipboard content are ungated.</p>
 
 <p class="warning"><strong>Every getter returns an empty string when the clipboard does not hold that content.</strong> An empty string is falsy, so <code class="no-highlight">if (Files := Clipboard.Files)</code> is the intended pattern.</p>
 
@@ -118,10 +119,10 @@ Clipboard.<span class="func">All</span> := Saved</pre>
 <pre class="Syntax">Hook := Clipboard.<span class="func">OnChange</span>(Callback <span class="optional">, Count</span>)</pre>
 <p>Calls <em>Callback</em> whenever the clipboard's content changes, and returns a ClipboardHook object controlling the subscription.</p>
 <p>The callback is called as <code class="no-highlight">Callback(Hook, Type)</code>, where <em>Type</em> is 0 if the clipboard is now empty, 1 if it holds text or files, or 2 for anything else. <em>Count</em> defaults to -1 (unlimited); any other number stops the hook automatically after that many calls.</p>
-<p>Registrations made here and through <a href="OnClipboardChange.htm">OnClipboardChange</a> share one native clipboard monitor. Prefer this method when the callback is a closure or bound function: unregistering through <code class="no-highlight">OnClipboardChange</code> requires passing the identical function object back, whereas the hook can stop itself.</p>
+<p>Registrations made here and through <a href="OnClipboardChange.htm">OnClipboardChange</a> drive one native clipboard monitor, but are otherwise independent. A hook is not part of the <code class="no-highlight">OnClipboardChange</code> handler chain: its return value is discarded, so it cannot stop handlers registered there, and its callback runs on its own <a href="../misc/Threads.htm">thread</a> rather than inline. Prefer this method when the callback is a closure or bound function: unregistering through <code class="no-highlight">OnClipboardChange</code> requires passing the identical function object back, whereas the hook can stop itself.</p>
 
 <h3 id="ClipboardHook">ClipboardHook Object</h3>
-<p>Carries the same surface as a <a href="WinEvent.htm">WinEvent</a> hook.</p>
+<p>Carries the same surface as a <a href="WinEvent.htm">WinEvent</a> hook; both derive from <code>Ks.EventHook</code>.</p>
 <table class="info">
   <tr><th style="width:12em">Member</th><th abbr="Descr">Description</th></tr>
   <tr><td>Stop()</td><td>Cancels the subscription so the callback no longer fires. This is permanent.</td></tr>
@@ -129,7 +130,7 @@ Clipboard.<span class="func">All</span> := Saved</pre>
   <tr><td>Paused</td><td>Gets or sets this hook's own pause switch. A stopped hook reports false and ignores writes.</td></tr>
   <tr><td>Status</td><td>The effective state: <code class="no-highlight">"Active"</code>, <code class="no-highlight">"Paused"</code> or <code class="no-highlight">"Stopped"</code>.</td></tr>
   <tr><td>IsActive</td><td>Whether the hook is firing. A paused hook is <strong>not</strong> active.</td></tr>
-  <tr><td>Count</td><td>Remaining number of times the callback will fire; -1 means unlimited.</td></tr>
+  <tr><td>Count</td><td>Remaining number of times the callback will fire; -1 means unlimited. A stopped hook reports 0.</td></tr>
   <tr><td>Callback</td><td>The function this hook calls.</td></tr>
 </table>
 <p><code>Status</code> separates the three states a hook can be in, where <code>IsActive</code> only answers whether it is firing and so is false while the hook is paused as well as after it is stopped. See <a href="WinEvent.htm#Hook">WinEvent subscription members</a>.</p>

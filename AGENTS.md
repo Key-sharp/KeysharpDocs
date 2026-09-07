@@ -255,7 +255,7 @@ AutoHotkeyDocs conventions:
 Keep these ideas separate:
 
 - "Supported on macOS; requires Accessibility permission."
-- "Supported on Linux when `keysharp-inputd` is installed."
+- "Supported on Linux when `keysharp-input` is installed."
 - "Partially supported on Wayland; activation depends on the compositor
   protocol."
 - "Unverified on macOS."

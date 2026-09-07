@@ -42,6 +42,8 @@ MsgBox A_DirSeparator</pre>
 <table class="info">
   <tr><th>Export</th><th>Description</th></tr>
   <tr id="KS_App"><td><a href="lib/App.htm">App</a></td><td>The running application: its assembly identity and metadata, the command line it was launched with, and the exit in progress.</td></tr>
+  <tr id="KS_Audio"><td><a href="lib/Audio.htm">Audio</a></td><td>Plays sounds from files or memory, operates audio devices and application sessions, meters levels, and records from a microphone or an output device.</td></tr>
+  <tr id="KS_Base64"><td><a href="lib/Base64.htm">Base64</a></td><td>Converts between binary data and Base64 text.</td></tr>
   <tr id="KS_Boolean"><td><a href="lib/Boolean.htm">Boolean</a></td><td>The type of a truth value, so that a boolean can be told apart from the Integer 1 or 0.</td></tr>
   <tr id="KS_Clipboard"><td><a href="lib/Clipboard.htm">Clipboard</a></td><td>Reads and writes the system clipboard as text, images, files, HTML, RTF or a native format.</td></tr>
   <tr id="KS_ClipboardHook"><td><a href="lib/Clipboard.htm#ClipboardHook">ClipboardHook</a></td><td>The subscription returned by <a href="lib/Clipboard.htm#OnChange">Clipboard.OnChange</a>.</td></tr>
@@ -50,6 +52,8 @@ MsgBox A_DirSeparator</pre>
   <tr id="KS_Font"><td><a href="lib/Font.htm">Font</a></td><td>A font as a value object, plus the platform's standard interface, emoji and monospace families.</td></tr>
   <tr id="KS_HashMap"><td><a href="lib/HashMap.htm">HashMap</a></td><td>An unordered hash table, faster than <a href="lib/Map.htm">Map</a> where ordering is not needed.</td></tr>
   <tr id="KS_Highlight"><td><a href="lib/Highlight.htm">Highlight</a></td><td>Outlines a region of the screen with a colored, click-through border.</td></tr>
+  <tr id="KS_Http"><td><a href="lib/Http.htm">Http</a></td><td>Sends HTTP requests, as static shortcuts or as a session carrying headers, credentials and cookies.</td></tr>
+  <tr id="KS_HttpResponse"><td><a href="lib/Http.htm#Response">Http.Response</a></td><td>What a server answered: status, headers and body.</td></tr>
   <tr id="KS_Image"><td><a href="lib/Image.htm">Image</a></td><td>Captures, loads, manipulates and saves images.</td></tr>
   <tr id="KS_Json"><td><a href="lib/Json.htm">Json</a></td><td>Converts between JSON text and Keysharp objects.</td></tr>
   <tr id="KS_Lock"><td><a href="lib/Lock.htm">Lock</a></td><td>A mutual-exclusion lock guarding code shared between <a href="lib/RealThread.htm">real threads</a>.</td></tr>
@@ -61,6 +65,7 @@ MsgBox A_DirSeparator</pre>
   <tr id="KS_StringBuffer"><td><a href="lib/StringBuffer.htm">StringBuffer</a></td><td>A mutable text buffer for building large strings efficiently.</td></tr>
   <tr id="KS_Task"><td><a href="lib/Task.htm">Task</a></td><td>Work that finishes later, such as the result of an asynchronous .NET call.</td></tr>
   <tr id="KS_Taskbar"><td><a href="lib/Taskbar.htm">Taskbar</a></td><td>Draws a badge and a progress bar on a window's taskbar button.</td></tr>
+  <tr id="KS_Url"><td><a href="lib/Url.htm">Url</a></td><td>Percent-encodes and decodes text for URLs and form bodies.</td></tr>
   <tr id="KS_WinEvent"><td><a href="lib/WinEvent.htm">WinEvent</a></td><td>Calls a function when windows are created, activated, moved or closed.</td></tr>
 </table>
 
@@ -69,8 +74,6 @@ MsgBox A_DirSeparator</pre>
   <tr><th>Export</th><th>Description</th></tr>
   <tr id="KS_ATan2"><td><a href="lib/Math.htm#ATan2">ATan2</a></td><td>Returns the arc tangent of y/x, using the signs of both values to determine the quadrant.</td></tr>
   <tr id="KS_Await"><td><a href="lib/Await.htm">Await</a></td><td>Waits for work which finishes later and returns its value.</td></tr>
-  <tr id="KS_Base64Decode"><td><a href="lib/StringFunctions.htm#Base64Decode">Base64Decode</a></td><td>Decodes Base64 text into a <a href="lib/Buffer.htm">Buffer</a>.</td></tr>
-  <tr id="KS_Base64Encode"><td><a href="lib/StringFunctions.htm#Base64Encode">Base64Encode</a></td><td>Encodes binary data as Base64 text.</td></tr>
   <tr id="KS_ClipCursor"><td><a href="lib/ClipCursor.htm">ClipCursor</a></td><td>Confines the mouse cursor to a region of the screen, or releases it.</td></tr>
   <tr id="KS_Collect"><td><a href="lib/Collect.htm">Collect</a></td><td>Runs a garbage collection.</td></tr>
   <tr id="KS_ComponentAvailable"><td><a href="lib/ComponentAvailable.htm">ComponentAvailable</a></td><td>Reports whether the parser or compiler component is installed, compatible and loadable.</td></tr>

@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Url - Methods | Keysharp</title>
+<meta name="description" content="The Url class percent-encodes and decodes text for URLs and form bodies." />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../static/theme.css" rel="stylesheet" type="text/css" />
+<link href="../static/dark.css" rel="stylesheet" type="text/css" media="(prefers-color-scheme: dark)" id="dark_css" />
+<script src="../static/content.js" type="text/javascript"></script>
+</head>
+<body>
+
+<h1>Url</h1>
+<pre class="NoIndent">class Url extends Object</pre>
+
+<p>Percent-encoding, as URLs and form bodies use it. Both methods are called on the class itself; a Url object is never constructed.</p>
+<p>The class is named Url rather than Uri so that the CLR's own <code class="no-highlight">Uri</code>, reachable through <a href="Clr.htm">Clr</a>, keeps its name.</p>
+<p>The class is exported by the <a href="../Modules.htm#KS">KS module</a>:</p>
+<pre>#Import "Ks" { Url }</pre>
+
+<h2 id="toc">Table of Contents</h2>
+<ul class="indent">
+  <li><a href="#Encode">Encode</a>: Percent-encodes text.</li>
+  <li><a href="#Decode">Decode</a>: Resolves percent-escapes.</li>
+  <li><a href="#Examples">Examples</a></li>
+</ul>
+
+<h2 id="Encode">Encode</h2>
+<p>Percent-encodes text.</p>
+<pre class="Syntax">Text := Url.<span class="func">Encode</span>(Text <span class="optional">, Encoding := "UTF-8"</span>)</pre>
+
+<h3 id="Encode_Parameters">Parameters</h3>
+<dl>
+  <dt>Text</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#strings">String</a></p>
+    <p>The text to encode.</p>
+  </dd>
+  <dt>Encoding</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#strings">String</a></p>
+    <p>The encoding the text's bytes are taken in, named as for <a href="FileEncoding.htm">FileEncoding</a>. It defaults to UTF-8, which is what a URL means by percent-encoded text. A name which cannot be resolved throws a <a href="Error.htm#ValueError">ValueError</a>.</p>
+  </dd>
+</dl>
+
+<h3 id="Encode_Return_Value">Return Value</h3>
+<p>Type: <a href="../Concepts.htm#strings">String</a></p>
+<p>Returns the text with everything outside the RFC 3986 unreserved set — <code class="no-highlight">A-Z a-z 0-9 - . _ ~</code> — percent-encoded. That is the escaping a path segment, a query value and a form field each need.</p>
+<p>Escaping is per byte rather than per character, which is the only form a URL can carry: <code class="no-highlight">Url.Encode("&#228;")</code> returns <code class="no-highlight">%C3%A4</code> under the default UTF-8, and <code class="no-highlight">Url.Encode("ab", "UTF-16")</code> returns <code class="no-highlight">a%00b%00</code>.</p>
+<p>A space becomes <code class="no-highlight">%20</code>, never <code class="no-highlight">+</code>. A plus sign means a space only inside an <code class="no-highlight">application/x-www-form-urlencoded</code> body; writing one into a path or a query value would corrupt it.</p>
+
+<h2 id="Decode">Decode</h2>
+<p>Resolves percent-escapes.</p>
+<pre class="Syntax">Text := Url.<span class="func">Decode</span>(Text <span class="optional">, Encoding := "UTF-8"</span>)</pre>
+
+<h3 id="Decode_Parameters">Parameters</h3>
+<dl>
+  <dt>Text</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#strings">String</a></p>
+    <p>The text to decode.</p>
+  </dd>
+  <dt>Encoding</dt>
+  <dd>
+    <p>Type: <a href="../Concepts.htm#strings">String</a></p>
+    <p>The encoding the escaped bytes are read in, named as for <a href="FileEncoding.htm">FileEncoding</a>. Defaults to UTF-8.</p>
+  </dd>
+</dl>
+
+<h3 id="Decode_Return_Value">Return Value</h3>
+<p>Type: <a href="../Concepts.htm#strings">String</a></p>
+<p>Returns the decoded text.</p>
+<p>A <code class="no-highlight">%</code> which is not followed by two hexadecimal digits stands for itself, since a real URL commonly carries one. A <code class="no-highlight">+</code> also stands for itself: it means a space only inside a form body, where the caller knows that and this method cannot.</p>
+
+<h2 id="Examples">Examples</h2>
+<pre class="NoIndent">#Import "Ks" { Url }
+
+Url.Encode("a b&amp;c=d")  <em>; "a%20b%26c%3Dd"</em>
+Url.Decode("a%20b%26c") <em>; "a b&amp;c"</em>
+Url.Decode("100%")      <em>; "100%" — a lone % stands for itself</em>
+</pre>
+
+<p>There is no query-string builder, because with these one is a single expression:</p>
+<pre class="NoIndent">#Import "Ks" { Http, Url }
+
+Res := Http.Get("https://example.com/search?q=" Url.Encode(Query))
+</pre>
+
+</body>
+</html>

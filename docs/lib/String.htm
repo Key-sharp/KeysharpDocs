@@ -22,6 +22,10 @@
 <p>If <em>Value</em> is a number, the <a href="../Concepts.htm#number-default-format">default decimal formatting</a> is used.</p>
 <p>If <em>Value</em> is an object, the return value is the result of calling <code>Value.ToString()</code>. If the object has no such method, a <a href="Error.htm#MethodError">MethodError</a> is thrown. This method is not implemented by default, so must be defined by the script.</p>
 
+<h2 id="Length">Length</h2>
+<pre class="Syntax">Count := StringValue.<span class="func">Length</span></pre>
+<p>The number of characters in the string, the same count <a href="StrLen.htm">StrLen</a> returns.</p>
+
 <h2 id="StartsWith">StartsWith</h2>
 <pre class="Syntax">Result := StringValue.<span class="func">StartsWith</span>(Token <span class="optional">, CaseSense</span>)</pre>
 <p>Returns 1 (true) if the string begins with <em>Token</em>, or 0 (false) otherwise. <em>CaseSense</em> selects the comparison mode and follows <a href="InStr.htm">InStr</a>: omitted or <code>Off</code> is case-insensitive, <code>On</code> is case-sensitive, and <code>Locale</code> compares according to the current user's locale. Both <code>On</code> and <code>Off</code> are culture-invariant.</p>

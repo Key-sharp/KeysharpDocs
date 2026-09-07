@@ -85,13 +85,13 @@
 <table class="info">
   <tr><th>Feature</th><th>Availability</th><th>Requirement or limitation</th></tr>
   <tr><td>Script execution</td><td>Available</td><td>The parser, compiler and runtime are functional.</td></tr>
-  <tr><td>Hotkeys and hotstrings</td><td>Available</td><td>Requires Input Monitoring. <code>#</code>/Win maps to Command and <code>!</code>/Alt maps to Option.</td></tr>
+  <tr><td>Hotkeys and hotstrings</td><td>Available</td><td>The suppression-capable hook requires Input Monitoring and Accessibility. <code>#</code>/Win maps to Command and <code>!</code>/Alt maps to Option.</td></tr>
   <tr><td>Keyboard and mouse sending</td><td>Available</td><td>Requires Accessibility.</td></tr>
-  <tr><td>Global keyboard and mouse hooks</td><td>Available</td><td>Requires Input Monitoring.</td></tr>
+  <tr><td>Global keyboard and mouse hooks</td><td>Available</td><td>The suppression-capable hook requires Input Monitoring and Accessibility.</td></tr>
   <tr><td>Cursor confinement</td><td>Partial</td><td><code>ClipCursor</code> suppresses out-of-bounds movement and requires Input Monitoring and Accessibility.</td></tr>
   <tr><td>GUI windows</td><td>Available</td><td>Uses Eto.Forms; some controls differ from Windows.</td></tr>
   <tr><td>Screen capture and pixel functions</td><td>Available</td><td>Requires Screen Recording.</td></tr>
-  <tr><td>Window management</td><td>Partial</td><td>Uses Accessibility APIs; controlling foreign applications requires permission.</td></tr>
+  <tr><td>Window management</td><td>Partial</td><td>Uses Accessibility APIs. Monitoring also requires Screen Recording because macOS otherwise omits foreign window titles from its window inventory.</td></tr>
   <tr><td>Registry APIs</td><td>Unavailable</td><td>Windows-only.</td></tr>
   <tr><td>COM APIs</td><td>Available</td><td><a href="lib/ComObject.htm">ComObject</a> addresses Apple Events rather than COM, and requires Automation permission for each application it controls. See <a href="#macOS_AppleEvents">Interprocess automation with ComObject</a>.</td></tr>
 </table>
@@ -110,8 +110,8 @@
 <table class="info">
   <tr><th>Permission</th><th>Required for</th><th>Capability name</th></tr>
   <tr><td><strong>Input Monitoring</strong></td><td>Hotkeys, hotstrings and reading keyboard or mouse input.</td><td><code>InputMonitoring</code></td></tr>
-  <tr><td><strong>Accessibility</strong></td><td>Sending input and controlling or querying other application windows.</td><td><code>InputControl</code>, <code>WindowControl</code> or <code>WindowMonitoring</code>, according to the operation.</td></tr>
-  <tr><td><strong>Screen Recording</strong></td><td><code>PixelGetColor</code>, <code>ImageSearch</code>, <a href="lib/Image.htm"><code>Image</code></a> capture and foreign-window titles.</td><td><code>ScreenCapture</code> or <code>WindowMonitoring</code></td></tr>
+  <tr><td><strong>Accessibility</strong></td><td>Sending or suppressing input, and controlling or querying other application windows.</td><td><code>InputControl</code>, <code>WindowMonitoring</code> or <code>WindowControl</code>, according to the operation.</td></tr>
+  <tr><td><strong>Screen Recording</strong></td><td><code>PixelGetColor</code>, <code>ImageSearch</code> and <a href="lib/Image.htm"><code>Image</code></a> capture; foreign window-title inventory.</td><td><code>ScreenCapture</code> or <code>WindowMonitoring</code>, according to the operation.</td></tr>
   <tr><td><strong>Automation</strong></td><td>Controlling another application with <a href="lib/ComObject.htm">ComObject</a>. Granted separately for each application controlled.</td><td>Requested when the first Apple event is sent.</td></tr>
 </table>
 

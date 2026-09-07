@@ -12,15 +12,15 @@
 <body>
 <h1>WinFromPoint</h1>
 <p>Returns the window at a screen position.</p>
-<pre class="Syntax">HWND := <span class="func">WinFromPoint</span>(X, Y)</pre>
+<pre class="Syntax">HWND := <span class="func">WinFromPoint</span>(<span class="optional">X, Y</span>)</pre>
 <h2 id="Parameters">Parameters</h2>
 <dl>
   <dt>X, Y</dt>
-  <dd><p>Type: Integer</p><p>The point in screen coordinates.</p></dd>
+  <dd><p>Type: Integer</p><p>The point in screen coordinates. If both are omitted, the current cursor position is used. Reading the cursor position is not separately permission-gated.</p></dd>
 </dl>
 <h2 id="Return_Value">Return Value</h2>
 <p>Type: Integer</p>
-<p>Returns the window handle at the specified point.</p>
+<p>Returns the window handle at the specified point. The operation can require WindowMonitoring on platforms which protect foreign-window information.</p>
 <h2 id="Related">Related</h2>
 <p><a href="MouseGetPos.htm">MouseGetPos</a>, <a href="WinExist.htm">WinExist</a>, <a href="../misc/WinTitle.htm">WinTitle</a></p>
 </body>

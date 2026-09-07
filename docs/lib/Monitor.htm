@@ -143,9 +143,9 @@ M.<span class="func">SetVCP</span>(Code, Value)</pre>
   <tr><td><code>Paused</code></td><td>Gets or sets this subscription's own pause switch. A stopped subscription reports false and ignores writes.</td></tr>
   <tr><td><code>Status</code></td><td>The effective state: <code class="no-highlight">"Active"</code>, <code class="no-highlight">"Paused"</code> or <code class="no-highlight">"Stopped"</code>.</td></tr>
   <tr><td><code>IsActive</code></td><td>Whether the subscription is firing. A paused subscription is <strong>not</strong> active.</td></tr>
-  <tr><td><code>Count</code></td><td>Remaining callback count, or -1 for unlimited.</td></tr>
+  <tr><td><code>Count</code></td><td>Remaining callback count, or -1 for unlimited. A stopped subscription reports 0.</td></tr>
 </table>
-<p><code>Status</code> separates the three states a subscription can be in, where <code>IsActive</code> only answers whether it is firing and so is false while the subscription is paused as well as after it is stopped. This is the surface a <a href="WinEvent.htm#Hook">WinEvent hook</a> carries, minus that class's global pause switch.</p>
+<p><code>Status</code> separates the three states a subscription can be in, where <code>IsActive</code> only answers whether it is firing and so is false while the subscription is paused as well as after it is stopped. This is the surface a <a href="WinEvent.htm#Hook">WinEvent hook</a> carries, minus that class&#39;s global pause switch; both derive from <code>Ks.EventHook</code>.</p>
 <p>The subscription stops during <code>__Delete</code>, but garbage collection is non-deterministic. Call <code>Stop()</code> when it is no longer needed.</p>
 
 <h2 id="MonitorPlatforms">Platform Remarks</h2>

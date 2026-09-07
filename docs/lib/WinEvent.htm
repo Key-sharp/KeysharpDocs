@@ -58,10 +58,11 @@ WinEvent.<span class="func">Paused</span> := NewState</pre>
   <tr><td><code>Status</code></td><td>The effective state: <code class="no-highlight">"Active"</code>, <code class="no-highlight">"Paused"</code> or <code class="no-highlight">"Stopped"</code>.</td></tr>
   <tr><td><code>IsActive</code></td><td>Whether the hook is firing. A paused hook is <strong>not</strong> active.</td></tr>
   <tr><td><code>EventType</code></td><td>The event name.</td></tr>
-  <tr><td><code>Count</code></td><td>Remaining callback count, or -1 for unlimited.</td></tr>
+  <tr><td><code>Count</code></td><td>Remaining callback count, or -1 for unlimited. A stopped hook reports 0.</td></tr>
 </table>
 <p>A hook is in exactly one of three states, which <code>Status</code> separates: <code class="no-highlight">"Active"</code> while it fires, <code class="no-highlight">"Paused"</code> while dispatch is suppressed by its own <code>Paused</code> or by the global <a href="#Global">WinEvent.Paused</a>, and <code class="no-highlight">"Stopped"</code> once <code>Stop()</code> has run. <code>IsActive</code> only answers whether it is firing, so it is false in both of the other two states.</p>
-<p><code class="no-highlight">"Stopped"</code> is permanent. A stopped hook cannot be paused or resumed, so <code>Paused</code> reads false there and writing to it does nothing.</p>
+<p><code class="no-highlight">"Stopped"</code> is permanent. A stopped hook cannot be paused or resumed, so <code>Paused</code> reads false there, writing to it does nothing, and <code>Count</code> reads 0.</p>
+<p>These members are defined by <code>Ks.EventHook</code>, which every subscription object derives from, so <a href="Monitor.htm#OnChange">Monitor.OnChange</a> and <a href="Clipboard.htm#ClipboardHook">ClipboardHook</a> subscriptions carry them identically.</p>
 <pre>hook := WinEvent.Active(OnActive)
 hook.Pause()
 MsgBox hook.Status "  " hook.IsActive   <em>; Paused  0</em>

@@ -122,12 +122,13 @@
 <p><code>ToClr()</code> hands out the live underlying bitmap, not a copy: it goes stale once the image is next transformed or disposed. See <a href="Clr.htm#ToClr">ToClr on built-in objects</a>.</p>
 
 <h3 id="GetPixelData">GetPixelData</h3>
-<pre class="Syntax">Data := Picture.<span class="func">GetPixelData</span>(<span class="optional">BytesPerPixel := 1</span>)</pre>
-<p>Returns a tightly packed <a href="Buffer.htm">Buffer</a>. Use 1 for grayscale or 4 for RGBA. The data is suitable for native calls and OCR libraries.</p>
+<pre class="Syntax">Data := Picture.<span class="func">GetPixelData</span>(<span class="optional">BytesPerPixel := 4, Buffer</span>)</pre>
+<p>Returns a tightly packed <a href="Buffer.htm">Buffer</a>. Use 4 for RGBA or 1 for grayscale. The data is suitable for native calls and OCR libraries.</p>
+<p>Pass <em>Buffer</em> to write into storage you already own instead of allocating a new one, and that same object is returned &mdash; for the capture-in-a-loop case, where a fresh multi-megabyte Buffer per frame dominates the cost. It may be a <a href="Buffer.htm">Buffer</a> or any object exposing <code>Ptr</code> and <code>Size</code>, and must hold at <em>least</em> <code class="no-highlight">Width * Height * BytesPerPixel</code> bytes. Exactly that many are written from the start and anything beyond is left alone, so one buffer sized for the largest capture serves smaller ones too.</p>
 
 <h3 id="SetPixelData">SetPixelData</h3>
 <pre class="Syntax">Picture.<span class="func">SetPixelData</span>(Data <span class="optional">, BytesPerPixel := 4</span>)</pre>
-<p>Overwrites the image from a tightly packed Buffer. Use 1 for grayscale or 4 for RGBA.</p>
+<p>Overwrites the image from a tightly packed Buffer. Use 4 for RGBA or 1 for grayscale. <em>BytesPerPixel</em> matches <a href="#GetPixelData">GetPixelData</a> and <a href="#FromBuffer">FromBuffer</a>, so <code class="no-highlight">Picture.SetPixelData(Picture.GetPixelData())</code> round-trips.</p>
 
 <h2 id="Search">Searching</h2>
 <p>Searches compare RGB values and ignore alpha. Each method takes an optional region as flat <code class="no-highlight">X, Y, Width, Height</code> parameters; each region parameter defaults independently, with an omitted origin meaning 0 and an omitted size running to the far edge, so <code class="no-highlight">Search(Needle, 100, 100)</code> scans from (100, 100) to the bottom-right corner. Regions are clamped to the image and returned coordinates remain absolute image pixels.</p>

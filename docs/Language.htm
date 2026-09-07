@@ -97,7 +97,8 @@ MsgBox "This line is not commented out."
 <em>/* This is also valid, but no other code can share the line. */</em>
 MsgBox "This line is not commented out."
 </pre>
-<p>Excluding tabs and spaces, <code><em>/*</em></code> must appear at the start of the line, while <code><em>*/</em></code> can appear only at the start or end of a line. It is also valid to omit <code><em>*/</em></code>, in which case the remainder of the file is commented out.</p>
+<p>In AutoHotkey, excluding tabs and spaces, <code><em>/*</em></code> must appear at the start of the line, while <code><em>*/</em></code> can appear only at the start or end of a line. It is also valid to omit <code><em>*/</em></code>, in which case the remainder of the file is commented out.</p>
+<p>Keysharp accepts <code><em>/*</em></code> anywhere on a line and treats the comment as whitespace, so <code>x := 1<em>/*c*/</em>23</code> reads as <code class="no-highlight">1 23</code> and produces the string <code class="no-highlight">"123"</code> by <a href="Variables.htm#concat">concatenation</a>, where AutoHotkey reports a missing operand. Because it is whitespace and not nothing, it separates what it sits between: <code>a<em>/*c*/</em>.5</code> is the member access <code>a .5</code>, not a concatenation with <code class="no-highlight">0.5</code>. A block comment which spans lines acts as a line break instead, so an expression continues across it only through <a href="Scripts.htm#continuation-line">operator continuation</a>. An unterminated <code><em>/*</em></code> comments out the remainder of the file, as in AutoHotkey.</p>
 <p>Since comments are filtered out when the script is read from file, they do not impact performance or memory utilization.</p>
 
 <h2 id="expressions">Expressions</h2>
@@ -238,6 +239,7 @@ MsgBox "This one doesn't. The result was " result "."</pre>
 <p>Parentheses can also be omitted when calling a <a href="Concepts.htm#methods">method</a> in this same context, but only when the target object is either a variable or a directly named property, such as <code>myVar.myMethod</code> or <code>myVar.myProp.myMethod</code>.</p>
 <p>As with function call expressions, the target of a function call statement does not have to be a predefined function; it can instead be a variable containing a <a href="misc/Functor.htm">function object</a>.</p>
 <p>A function call statement can <a href="Scripts.htm#continuation">span multiple lines</a>.</p>
+<p>The name must be followed by whitespace, a <code>(</code>, or the end of the line. A comma written immediately after it is a syntax error &mdash; <em>function calls require a space or "(" &mdash; use a comma only between parameters</em> &mdash; which catches the AutoHotkey&nbsp;v1 command form <code class="no-highlight">MsgBox, "a"</code>. With a space before it the comma omits the first parameter instead, so <code class="no-highlight">MsgBox , "a"</code> passes <code class="no-highlight">"a"</code> as the second. The error applies to any name that begins a statement, including a bare variable (<code class="no-highlight">x, y := 2</code>) and a member chain (<code class="no-highlight">obj.Method, 1</code>); a name that indexes or calls before the comma is an <a href="#expression-statements">expression statement</a> and is unaffected (<code class="no-highlight">arr[1], x := 4</code>).</p>
 <p>Function call statements have the following limitations:</p>
 <ul>
   <li>If there is a return value, it is always discarded.</li>

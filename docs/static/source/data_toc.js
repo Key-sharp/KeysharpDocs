@@ -16,7 +16,9 @@ tocData = [
     ["Strings and Collections","",
     [
       ["StringBuffer","lib/StringBuffer.htm"],
-      ["String and Base64 Functions","lib/StringFunctions.htm"],
+      ["String Functions","lib/StringFunctions.htm"],
+      ["Base64","lib/Base64.htm"],
+      ["Url","lib/Url.htm"],
       ["C# Regular Expressions","lib/RegExCs.htm"],
       ["C# String Formatting","lib/FormatCs.htm"],
       ["Boolean","lib/Boolean.htm"],
@@ -27,6 +29,7 @@ tocData = [
     [
       ["File Path Functions","lib/FilePath.htm"],
       ["RunScript / ProcessInfo","lib/RunScript.htm"],
+      ["Http","lib/Http.htm"],
       ["Mail","lib/Mail.htm"]
     ]],
     ["Desktop and Graphics","",
@@ -40,7 +43,8 @@ tocData = [
       ["WinEvent","lib/WinEvent.htm"],
       ["WinFromPoint","lib/WinFromPoint.htm"],
       ["WinMaximizeAll","lib/WinMaximizeAll.htm"],
-      ["Clipboard","lib/Clipboard.htm"]
+      ["Clipboard","lib/Clipboard.htm"],
+      ["Audio","lib/Audio.htm"]
     ]],
     ["Runtime and Interop","",
     [
